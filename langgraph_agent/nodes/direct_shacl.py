@@ -58,11 +58,20 @@ Return ONLY valid Turtle. No explanations, no markdown fences."""
 
 
 def _validate_turtle(text: str) -> Tuple[bool, str]:
-    """Validate Turtle syntax. Returns (is_valid, error_message)."""
+    """Validate Turtle syntax and basic SHACL rules. Returns (is_valid, error_message)."""
     try:
         from rdflib import Graph
+        from rdflib.namespace import SH
+        from rdflib.term import Literal
+        
         g = Graph()
         g.parse(data=_SHACL_PREFIXES + "\n" + text, format="turtle")
+        
+        # Check for common PySHACL ConstraintLoadErrors that are syntactically valid Turtle
+        for s, p, o in g:
+            if p == SH.pattern and not isinstance(o, Literal):
+                return False, "sh:pattern must be a string literal enclosed in quotes, e.g., sh:pattern \"^[0-9]+$\" ;"
+                
         return True, ""
     except Exception as exc:
         return False, str(exc)

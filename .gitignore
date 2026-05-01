@@ -23,6 +23,8 @@ build/
 # IDE
 .vscode/
 .idea/
+.kilo/
+.ruff_cache/
 *.swp
 *.swo
 *~
@@ -64,10 +66,12 @@ tests/
 .docker/
 
 # Pipeline runtime outputs
-# output/
+output/
+latex/
 
 # LLM cache (local, large)
 cache/llm_cache.db
+cache/
 
 # LangGraph checkpoints
 langgraph_agent/.langgraph_cache/

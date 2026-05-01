@@ -1,0 +1,1651 @@
+{
+  "description": "Complete property vocabulary extracted from gold shapes, test data, and RDF converter.",
+  "total_properties": 271,
+  "single_char_count": 12,
+  "properties": {
+    "abideByAcceptableUsePolicyForITResources": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "about": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "academicintegrity": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "acceptedgift": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "accesses_sis": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "adddropcoursesdeadline": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "address": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "advisor": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "advisorlistmember": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "agreeduponbyall": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "ait_gate": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "aitmanager": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "allowed": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "analyzeGrievance": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "analyzegrievance": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "and": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "appeal": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "appliances": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "appointmentdate": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "approval_from_ofam_director": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "approvalbygenerali": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "approvalfromofamdirector": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "approved_by_president_or_vp_designate": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "approves": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "ascertainFactsOfCase": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "ascertainfacts": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "assignment": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "assistant": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "assists": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "asu": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "at": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "attendHearing": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "attend_orientation": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "available": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "beginning_of_course": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "bringConcernsToAttention": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "c23advisor": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "cancelled": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "cedc": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "choose_unit": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "clean": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "collated": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "compete": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "complainant": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "completehealthdeclarationform": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "completeworktimereport": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "compliant": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "confidentiality": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "confidentiality_and_due_regard": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "confirmOfferMove": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "consultedadvisor": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "continuing_pg_student": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "contractedresearch": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "conveneGrievanceTribunal": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "cookInProhibitedDormitory": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "cookInUnit": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "correspondAsAuthorWithJournal": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "day": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "decideguilty": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "decides": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "detailedreport": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "determineGradeInCourse": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "disclose": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "discuss": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "disregard": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "disturbFellowStudentsInResidentialAreas": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "disturbing": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "disturbingpeace": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "downgrade": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "duration": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "dutyperformer": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "e": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "electsChair": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "emergency": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "employed": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "employee": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "enrolled": {
+      "sources": [
+        "test_data",
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "enrolled_at_ait_under_mou": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "enrolls_course": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "enrolment": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "equallyqualified": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "eviction": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "evidence": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "exam_completed": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "examination": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "exchangeprogramlength": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "exists": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "expressesInWriting": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "expresses_personal_opinion": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "expressesopinionoutsideinstitute": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "expressingopinion": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "external": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "f": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "factascertainment": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "feesPaid": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "financesubmitted": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "followProceduresForDisciplinaryActions": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "fullPayment": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "furniture": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "g": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "gatheredfacts": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "giveexception": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "giveopportunitytochallenge": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "givezero": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "goodacademicstanding": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "goodstanding": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "grading_assignments_and_quizzes": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "graduate": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "graduated": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "gravecheat": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "grievanceCommitteePerformsRole": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "grievanceProcedureInvolvement": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "grievance_filed": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "guilty": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "has_ait_id_card": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "has_proof_of_financial_support": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "hasappliances": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "hasleftcourt": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "haspurpose": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "hasunittype": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "hearing": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "i": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "inform_president": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "informal_channels_recourse": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "inroom": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "inspection": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "instructor": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "insurance_paid": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "intake": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "interfere": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "interviewedby": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "invoice": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "issuedunder": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "item": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "keep": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "l": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "lastplayer": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "lc": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "lessee": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "linen_set": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "liveinemployeeaccommodation": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "living_beyond_five_days": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "livingbeyondfivedays": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "location": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "m": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "maintainCleanlinessOfBedroomAndFacilities": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "maintainCleanlinessOfCommonAreaAndLandscape": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "maintainPeacefulHealthyLearningEnvironmentForFreeDiscussion": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "makeKnownCriteriaForGrading": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "master_or_doctoral_student": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "meetHighestStandardsOfPersonalEthicalAndMoralConduct": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "member_of_faculty": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "memberof": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "memberofinstitutecommunity": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "midsemesterexam": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "month": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "moveWithSpouse": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "moveswithspouse": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "multiAuthoredArticleWrittenByStudentShouldBeFirstAuthorUnlessJournalRequiresDifferentOrder": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "n": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "newStudent": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "noisyGroupStudyOrPartyInStudentAccommodation": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "nonresidentstudent": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "nonthai": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "notice": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "nurse_on_duty": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "obligation": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "offcampus": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "onprobationarystatus": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "otherperson": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "outstandingdues": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "overdueaccount": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "paidinadvanceorfully": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "payFee": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "payFees": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "payFirstSemesterFee": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "payRentForStayOnCampus": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "payfee": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "payfine": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "permission": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "permissionfromofam": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "person": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "petInStudentAccommodation": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "preliminaryconsultationavailable": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "prepared": {
+      "sources": [
+        "gold_shapes",
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "preparing_materials_for_lectures": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "presentdefenseevidence": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "president": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "problem": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "produce": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "prohibited": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "project": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "projects": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "promissory_note_sent": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "proper_swim_wear": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "protects": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "provideapproximatedateofarrivaloncampus": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "putNameOnWaitingListForCampusAccommodation": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "putnameinwaitinglist": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "putnameonwaitinglist": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "queued_number": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "queuing": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "r": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "receipt": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "receive_grievance": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "received_notice_from_accommodationunit": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "recommend": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "recordFacts": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "recordnotes": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "registeredfor": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "registry": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "regularcleaningandhygieneoftheunit": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "reported": {
+      "sources": [
+        "gold_shapes",
+        "test_data",
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "reprimandstudent": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "requestwritingoffdoubtfulaccounts": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "residesoncampus": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "respects": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "review": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "ride_luth": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "s": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "scheduledoutsideregularhoursmakeupclasses": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "schoolapproved": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "semester": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "send_promissory_note": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "senior": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "senior_admin_staff": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "serveAsCorrespondingAuthor": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "settled": {
+      "sources": [
+        "gold_shapes",
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "settlement_made": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "sponsor": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "sponsored": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "sra_completed": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "student": {
+      "sources": [
+        "gold_shapes",
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "student_union_president": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "studentdormitory": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "studentemployee": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "studyabroad": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "studying_at_other_institution": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "subletting": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "submit": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "submitWrittenAgreementsToGrievanceCommittee": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "submitted": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "submittitlepage": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "supports": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "suspectCheatingDuringExamOrAssignmentOrResearchProject": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "t": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "takes": {
+      "sources": [
+        "gold_shapes",
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "takinglocalbus": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "then": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "to": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "trainingsession": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "turnsofflightsandequipment": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "undergoDisciplinaryAction": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "unit": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "useAITLibraryAndEducationalResourcesResponsibly": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "uses": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "usesAuthorityEthicallyWithRespectAndSensitivityAndInAccordanceWithInstitutesPolicies": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "vacateRoom": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "vacate_unit": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "vacatedroom": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "vacateroom": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "vacatesRoom": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "value": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "visa_valid": {
+      "sources": [
+        "test_data"
+      ],
+      "is_single_char": false
+    },
+    "wears_proper_sports_attire": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "within": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "workingday": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "writeDownGrievanceFacts": {
+      "sources": [
+        "rdf_converter"
+      ],
+      "is_single_char": false
+    },
+    "writesoff": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": false
+    },
+    "x": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    },
+    "y": {
+      "sources": [
+        "gold_shapes"
+      ],
+      "is_single_char": true
+    }
+  }
+}

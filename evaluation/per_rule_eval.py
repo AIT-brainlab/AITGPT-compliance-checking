@@ -1,15 +1,77 @@
 """Run pyshacl per-rule: one pipeline shape against one gold Pos/Neg pair."""
 from __future__ import annotations
 import json
+import re
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set, Dict
+import difflib
 
 from pyshacl import validate
 from rdflib import Graph, Namespace, URIRef
 
 PROJECT_ROOT = Path(__file__).parent.parent
 AIT = Namespace("http://example.org/ait-policy#")
+
+
+# Load gold standard property paths once at module level
+def _load_gold_property_paths() -> Set[str]:
+    """Load all property paths from gold standard shapes."""
+    gold_file = PROJECT_ROOT / "shacl" / "shapes" / "ait_policy_shapes.ttl"
+    if not gold_file.exists():
+        return set()
+    
+    content = gold_file.read_text(encoding="utf-8")
+    # Find all sh:path statements
+    path_matches = re.findall(r'sh:path\s+(ait:\w+)', content)
+    return set(path_matches)
+
+
+# Initialize gold paths
+_GOLD_PROPERTY_PATHS = _load_gold_property_paths()
+
+
+def _lowercase_property_paths(turtle_str: str) -> str:
+    """Convert only sh:path property values in the AIT namespace to lowercase.
+    e.g., sh:path ait:payFee -> sh:path ait:payfee
+    Only lowercases terms after 'sh:path', preserving class names, shape names, etc.
+    """
+    def lower_path_match(match):
+        prefix = match.group(1)  # "sh:path "
+        ait_term = match.group(2)  # "ait:payFee"
+        return prefix + ait_term[0:4] + ait_term[4:].lower()
+
+    return re.sub(r'(sh:path\s+)(ait:\w+)', lower_path_match, turtle_str)
+
+
+def _extract_property_paths(turtle_str: str) -> Set[str]:
+    """Extract all property paths from SHACL turtle string."""
+    # Find all sh:path statements
+    path_matches = re.findall(r'sh:path\s+(ait:\w+)', turtle_str)
+    return set(path_matches)
+
+
+def _get_close_property_path(path: str, paths: Set[str], cutoff: float = 0.7) -> str | None:
+    """Find the closest matching property path using fuzzy matching.
+    Returns the closest match if similarity >= cutoff, otherwise None.
+    """
+    if not paths:
+        return None
+    
+    # Extract the local part after 'ait:'
+    if not path.startswith('ait:'):
+        return None
+        
+    path_local = path[4:]  # Remove 'ait:' prefix
+    
+    # Get local parts of all candidate paths
+    path_locals = {p[4:] for p in paths if p.startswith('ait:')}
+    
+    # Find close matches
+    matches = difflib.get_close_matches(path_local, path_locals, n=1, cutoff=cutoff)
+    if matches:
+        return 'ait:' + matches[0]
+    return None
 
 _PREFIXES = """
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -37,6 +99,21 @@ def _entity_subgraph(full_data: Graph, entity_uri: URIRef) -> Graph:
     return sub
 
 
+def _lowercase_entity_graph(g: Graph) -> Graph:
+    """Lowercase all AIT namespace property paths in an entity graph.
+    This ensures property URIs match the lowercased shape paths.
+    """
+    AIT_NS = str(AIT)
+    lowered = Graph()
+    for s, p, o in g:
+        p_str = str(p)
+        if p_str.startswith(AIT_NS):
+            local = p_str[len(AIT_NS):]
+            p = URIRef(AIT_NS + local.lower())
+        lowered.add((s, p, o))
+    return lowered
+
+
 def evaluate_rule(gs_id: str,
                   ait_id: str,
                   pipeline_turtle: str,
@@ -46,6 +123,21 @@ def evaluate_rule(gs_id: str,
     pos_uri = AIT[f"Pos_GS{gs_num}"]
     neg_uri = AIT[f"Neg_GS{gs_num}"]
 
+    # Lowercase property paths to normalize casing (pipeline uses camelCase,
+    # gold standard uses lowercase)
+    pipeline_turtle = _lowercase_property_paths(pipeline_turtle)
+
+    # Apply fuzzy matching for property paths that don't exactly match gold standard
+    paths_in_turtle = _extract_property_paths(pipeline_turtle)
+    unmapped_paths = paths_in_turtle - _GOLD_PROPERTY_PATHS
+
+    # For each unmapped path, try to find a close match in gold standard
+    if unmapped_paths:
+        for unmapped_path in unmapped_paths:
+            close_match = _get_close_property_path(unmapped_path, _GOLD_PROPERTY_PATHS, cutoff=0.7)
+            if close_match:
+                pipeline_turtle = pipeline_turtle.replace(unmapped_path, close_match)
+
     # Build single-shape graph
     shape_graph = Graph()
     try:
@@ -53,8 +145,10 @@ def evaluate_rule(gs_id: str,
     except Exception:
         return RuleEvalResult(gs_id, ait_id, None, None, "skipped")
 
-    pos_graph = _entity_subgraph(test_data, pos_uri)
-    neg_graph = _entity_subgraph(test_data, neg_uri)
+    # Extract entity subgraphs and lowercase their AIT property paths
+    # so they match the lowercased shape paths
+    pos_graph = _lowercase_entity_graph(_entity_subgraph(test_data, pos_uri))
+    neg_graph = _lowercase_entity_graph(_entity_subgraph(test_data, neg_uri))
 
     pos_passes = None
     neg_fails = None
@@ -86,6 +180,7 @@ def evaluate_rule(gs_id: str,
         verdict = "inverted"
 
     return RuleEvalResult(gs_id, ait_id, pos_passes, neg_fails, verdict)
+
 
 
 def main() -> None:

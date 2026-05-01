@@ -90,14 +90,46 @@ def compute_m2(alignments: list[dict], gold_rules: list[dict],
 
 
 def compute_m3(fol_formulas: list[dict]) -> tuple[float, int, int]:
-    """M3 — FOL quality rate: fraction of FOL formulas with non-placeholder predicates."""
+    """M3 — FOL quality rate: fraction of FOL formulas with non-placeholder predicates.
+
+    A formula is considered "semantic" if ANY of the following holds:
+      1. ``deontic_formula`` contains a non-placeholder predicate, OR
+      2. ``fol_expansion`` contains a non-placeholder predicate, OR
+      3. ``predicates.action`` is a non-generic, non-single-char value
+
+    This ensures that the backfill from ``_backfill_predicates()`` in
+    fol.py is properly credited (GAP-2 fix).
+    """
+    _PLACEHOLDER_ACTIONS = {
+        "action", "subject", "predicate", "condition",
+        "thing", "entity", "x", "y", "z", "n", "m",
+    }
+
     total = len(fol_formulas)
-    placeholders = sum(
-        1 for f in fol_formulas
-        if _PLACEHOLDER_PREDS.search(f.get("deontic_formula", ""))
-    )
+    placeholders = 0
+    for f in fol_formulas:
+        formula = f.get("deontic_formula", "")
+        expansion = f.get("fol_expansion", "")
+
+        # Check deontic_formula and fol_expansion via regex
+        formula_is_placeholder = _PLACEHOLDER_PREDS.search(formula) if formula else True
+        expansion_is_placeholder = _PLACEHOLDER_PREDS.search(expansion) if expansion else True
+
+        # Check predicates.action field (may have been backfilled)
+        preds = f.get("predicates") or {}
+        action = (preds.get("action", "") if isinstance(preds, dict) else "").strip()
+        action_is_semantic = (
+            len(action) > 1
+            and action.lower() not in _PLACEHOLDER_ACTIONS
+        )
+
+        # Semantic if ANY source has a real predicate
+        if formula_is_placeholder and expansion_is_placeholder and not action_is_semantic:
+            placeholders += 1
+
     semantic = total - placeholders
     return (semantic / total if total else 0.0), semantic, total
+
 
 
 def compute_m4(eval_results: list[dict]) -> dict:

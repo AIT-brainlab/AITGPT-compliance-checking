@@ -57,7 +57,6 @@ SECTION_WEIGHTS = {
     "academic integrity": 1.3,
     "grievance": 1.1,
     "appeal": 1.1,
-    
     # Low-deontic sections (reduce rule likelihood)
     "introduction": 0.4,
     "overview": 0.4,
@@ -75,7 +74,6 @@ SECTION_WEIGHTS = {
     "acknowledgement": 0.2,
     "history": 0.3,
     "revision history": 0.2,
-    
     # Procedural sections (moderate — may contain rules but often procedures)
     "procedures": 0.7,
     "procedure": 0.7,
@@ -93,32 +91,48 @@ SECTION_WEIGHTS = {
 # =============================================================================
 
 STRONG_DEONTIC_MARKERS = [
-    r'\bmust\b', r'\bshall\b', r'\bis required\b', r'\bare required\b',
-    r'\bis prohibited\b', r'\bare prohibited\b', r'\bprohibited from\b',
-    r'\bnot allowed\b', r'\bnot permitted\b',
-    r'\bmust not\b', r'\bshall not\b', r'\bcannot\b',
-    r'\bis obligated\b', r'\bare obligated\b',
-    r'\bis mandatory\b', r'\bmandatory\b',
-    r'\bhas to\b', r'\bhave to\b',
+    r"\bmust\b",
+    r"\bshall\b",
+    r"\bis required\b",
+    r"\bare required\b",
+    r"\bis prohibited\b",
+    r"\bare prohibited\b",
+    r"\bprohibited from\b",
+    r"\bnot allowed\b",
+    r"\bnot permitted\b",
+    r"\bmust not\b",
+    r"\bshall not\b",
+    r"\bcannot\b",
+    r"\bis obligated\b",
+    r"\bare obligated\b",
+    r"\bis mandatory\b",
+    r"\bmandatory\b",
+    r"\bhas to\b",
+    r"\bhave to\b",
 ]
 
 WEAK_DEONTIC_MARKERS = [
-    r'\bmay\b', r'\bshould\b', r'\bis encouraged\b',
-    r'\bis expected\b', r'\bare expected\b',
-    r'\bis entitled\b', r'\bare entitled\b',
-    r'\ballowed to\b', r'\bpermitted to\b',
+    r"\bmay\b",
+    r"\bshould\b",
+    r"\bis encouraged\b",
+    r"\bis expected\b",
+    r"\bare expected\b",
+    r"\bis entitled\b",
+    r"\bare entitled\b",
+    r"\ballowed to\b",
+    r"\bpermitted to\b",
 ]
 
 CONSEQUENCE_MARKERS = [
-    r'\bwill be\b.*\b(suspended|terminated|dismissed|fined|expelled|penalized)\b',
-    r'\bsubject to\b.*\b(disciplin|sanction|penalty|action)\b',
-    r'\bfailure to\b.*\bwill\b',
-    r'\bresult in\b.*\b(dismissal|suspension|penalty|fine)\b',
+    r"\bwill be\b.*\b(suspended|terminated|dismissed|fined|expelled|penalized)\b",
+    r"\bsubject to\b.*\b(disciplin|sanction|penalty|action)\b",
+    r"\bfailure to\b.*\bwill\b",
+    r"\bresult in\b.*\b(dismissal|suspension|penalty|fine)\b",
 ]
 
-STRONG_PATTERN = re.compile('|'.join(STRONG_DEONTIC_MARKERS), re.IGNORECASE)
-WEAK_PATTERN = re.compile('|'.join(WEAK_DEONTIC_MARKERS), re.IGNORECASE)
-CONSEQUENCE_PATTERN = re.compile('|'.join(CONSEQUENCE_MARKERS), re.IGNORECASE)
+STRONG_PATTERN = re.compile("|".join(STRONG_DEONTIC_MARKERS), re.IGNORECASE)
+WEAK_PATTERN = re.compile("|".join(WEAK_DEONTIC_MARKERS), re.IGNORECASE)
+CONSEQUENCE_PATTERN = re.compile("|".join(CONSEQUENCE_MARKERS), re.IGNORECASE)
 
 # =============================================================================
 # MAY DISAMBIGUATION
@@ -131,22 +145,78 @@ EPISTEMIC_MAY_PATTERNS = [
     re.compile(r"\bmay\s+include\b", re.IGNORECASE),
     re.compile(r"\bmay\s+contain\b", re.IGNORECASE),
     re.compile(r"\bmay\s+result\s+in\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+lead\s+to\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+cause\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+indicate\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+suggest\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+appear\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+seem\b", re.IGNORECASE),
+    re.compile(r"\bmay\s+exist\b", re.IGNORECASE),
 ]
 
 DEONTIC_MAY_PATTERNS = [
-    re.compile(r"\bmay\s+(apply|request|submit|use|access|file|obtain|appeal)\b",
-               re.IGNORECASE),
+    re.compile(
+        r"\bmay\s+(apply|request|submit|use|access|file|obtain|appeal)\b", re.IGNORECASE
+    ),
+    re.compile(
+        r"\bmay\s+(pay|submit|file|request|obtain|access|enter|attend|participate|join|take|make|submit|provide|send|bring|take)\b",
+        re.IGNORECASE,
+    ),
     re.compile(r"\bmay\s+not\b", re.IGNORECASE),
+    re.compile(
+        r"\bmay\s+(?:only|possibly|perhaps)\s+(?:be\s+)?(?:allowed|permitted|entitled)\b",
+        re.IGNORECASE,
+    ),
 ]
+
 
 def disambiguate_may(text: str) -> str:
     if not re.search(r"\bmay\b", text, re.IGNORECASE):
         return "n/a"
+
+    # Enhanced linguistic features for better disambiguation
+    text_lower = text.lower()
+
+    # Check for deontic patterns first (more specific)
     if any(p.search(text) for p in DEONTIC_MAY_PATTERNS):
         return "deontic"
+
+    # Check for epistemic patterns
     if any(p.search(text) for p in EPISTEMIC_MAY_PATTERNS):
         return "epistemic"
+
+    # Additional linguistic heuristics
+    # Epistemic indicators: may followed by stative verbs, adjectives, or passive constructions
+    epistemic_indicators = [
+        r"\bmay\s+(?:be\s+)?(?:found|seen|considered|known|shown|demonstrated|proved|expected|likely|unlikely|possible|probable)\b",
+        r"\bmay\s+(?:be\s+)?(?:difficult|easy|hard|simple|complex|necessary|sufficient|adequate|inadequate)\b",
+        r"\bmay\s+(?:depend\s+on|vary\s+with|change\s+according\s+to)\b",
+        r"\bmay\s+(?:reflect|represent|indicate|suggest|imply|mean)\b",
+        r"\bmay\s+(?:be\s+)?(?:related\s+to|associated\s+with|linked\s+to)\b",
+        r"\bmay\s+(?:take\s+place|occur|happen|arise|result\s+from)\b",
+    ]
+
+    # Deontic indicators: may followed by action verbs (especially those indicating permissions)
+    deontic_indicators = [
+        r"\bmay\s+(?:enter|access|use|utilize|employ|apply\s+for|request|seek|obtain|acquire|receive|get|take|make|submit|file|provide|send|bring|attend|participate|join|engage\s+in)\b",
+        r"\bmay\s+(?:be\s+)?(?:eligible\s+for|qualified\s+for|entitled\s+to|allowed\s+to|permitted\s+to|authorized\s+to)\b",
+        r"\bmay\s+(?:choose\s+to|opt\s+to|decide\s+to|elect\s+to|select\s+to)\b",
+        r"\bmay\s+(?:be\s+)?(?:present\s+at|available\s+for|accessible\s+from)\b",
+        r"\bmay\s+(?:be\s+)?(?:considered\s+for|evaluated\s+for|reviewed\s+for)\b",
+    ]
+
+    # Check enhanced indicators
+    for pattern in epistemic_indicators:
+        if re.search(pattern, text_lower):
+            return "epistemic"
+
+    for pattern in deontic_indicators:
+        if re.search(pattern, text_lower):
+            return "deontic"
+
+    # Default to ambiguous if no clear indicators
     return "ambiguous"
+
 
 # =============================================================================
 # SECTION HEADER DETECTION
@@ -154,15 +224,18 @@ def disambiguate_may(text: str) -> str:
 
 SECTION_HEADER_PATTERNS = [
     # Numbered sections: "1.2 Requirements", "Section 3: Conduct" (allows leading whitespace)
-    re.compile(r'^\s*[\d.]+\s+(.+)$', re.MULTILINE),
+    re.compile(r"^\s*[\d.]+\s+(.+)$", re.MULTILINE),
     # Roman numerals: "III. Procedures"
-    re.compile(r'^\s*[IVXLC]+\.\s+(.+)$', re.MULTILINE),
+    re.compile(r"^\s*[IVXLC]+\.\s+(.+)$", re.MULTILINE),
     # Letter sections: "A. Definitions"
-    re.compile(r'^\s*[A-Z]\.\s+(.+)$', re.MULTILINE),
+    re.compile(r"^\s*[A-Z]\.\s+(.+)$", re.MULTILINE),
     # All caps headers (allows leading whitespace)
-    re.compile(r'^\s*([A-Z][A-Z\s&/]{4,})$', re.MULTILINE),
+    re.compile(r"^\s*([A-Z][A-Z\s&/]{4,})$", re.MULTILINE),
     # Article/Section keyword
-    re.compile(r'^\s*(?:Article|Section|Part|Chapter)\s+\d*[.:]\s*(.+)$', re.MULTILINE | re.IGNORECASE),
+    re.compile(
+        r"^\s*(?:Article|Section|Part|Chapter)\s+\d*[.:]\s*(.+)$",
+        re.MULTILINE | re.IGNORECASE,
+    ),
 ]
 
 # =============================================================================
@@ -201,6 +274,7 @@ SPEECH_ACTS = {
 @dataclass
 class FilterResult:
     """Result of pre-filtering a sentence."""
+
     text: str
     is_candidate: bool
     deontic_strength: str  # "strong", "weak", "consequence", "none"
@@ -215,18 +289,18 @@ class FilterResult:
 class PreFilter:
     """
     Hierarchical pre-filter for policy rule classification.
-    
+
     Filters out non-rule sentences BEFORE LLM classification:
     1. Length check — skip headers (<5 words) and split long paragraphs
     2. Modal verb detection — check for deontic markers
     3. Section context — detect and weight by document section
     4. Speech act hint — classify directive/commissive/assertive
     """
-    
+
     def __init__(self, min_words: int = 5, max_words: int = 150):
         self.min_words = min_words
         self.max_words = max_words
-    
+
     def detect_section_headers(self, page_text: str) -> List[Tuple[int, str]]:
         """
         Detect section headers in a page of text.
@@ -236,14 +310,16 @@ class PreFilter:
         for pattern in SECTION_HEADER_PATTERNS:
             for match in pattern.finditer(page_text):
                 header_text = match.group(1) if match.lastindex else match.group(0)
-                header_text = header_text.strip().rstrip(':.')
+                header_text = header_text.strip().rstrip(":.")
                 headers.append((match.start(), header_text))
-        
+
         # Sort by position
         headers.sort(key=lambda x: x[0])
         return headers
-    
-    def get_section_context(self, sentence_pos: int, headers: List[Tuple[int, str]]) -> Tuple[str, float]:
+
+    def get_section_context(
+        self, sentence_pos: int, headers: List[Tuple[int, str]]
+    ) -> Tuple[str, float]:
         """
         Determine which section a sentence belongs to based on nearest preceding header.
         Returns (section_name, section_weight).
@@ -254,13 +330,13 @@ class PreFilter:
                 current_section = header
             else:
                 break
-        
+
         if not current_section:
             return ("", 1.0)
-        
+
         # Match section name to weights
         section_lower = current_section.lower().strip()
-        
+
         # Try exact match first, then partial match
         weight = SECTION_WEIGHTS.get(section_lower, None)
         if weight is None:
@@ -269,17 +345,17 @@ class PreFilter:
                 if key in section_lower:
                     weight = w
                     break
-        
+
         if weight is None:
             weight = 1.0  # Neutral if unknown section
-        
+
         return (current_section, weight)
-    
+
     def check_deontic_markers(self, text: str) -> Tuple[str, List[str]]:
         """
         Check for deontic markers in text.
         Returns (strength, markers_found).
-        
+
         Strength levels:
         - "strong": must, shall, required, prohibited (high confidence)
         - "consequence": penalty/sanction language (medium-high)
@@ -290,49 +366,49 @@ class PreFilter:
         strong_matches = [m.group() for m in STRONG_PATTERN.finditer(text)]
         if strong_matches:
             return ("strong", strong_matches)
-        
+
         # Check consequence markers
         consequence_matches = [m.group() for m in CONSEQUENCE_PATTERN.finditer(text)]
         if consequence_matches:
             return ("consequence", consequence_matches)
-        
+
         # Check weak markers
         weak_matches = [m.group() for m in WEAK_PATTERN.finditer(text)]
         if weak_matches:
             return ("weak", weak_matches)
-        
+
         return ("none", [])
-    
+
     def classify_speech_act(self, text: str) -> str:
         """
         Classify the speech act type of a sentence (Searle, 1969).
         Returns: "directive", "commissive", "prohibitive", "assertive", "suggestive", or "unknown"
         """
         text_lower = text.lower()
-        
+
         # Check prohibitive first (most specific)
         for marker in SPEECH_ACTS["prohibitive"]["markers"]:
             if marker in text_lower:
                 return "prohibitive"
-        
+
         # Check directive
         for marker in SPEECH_ACTS["directive"]["markers"]:
             if marker in text_lower:
                 return "directive"
-        
+
         # Check commissive
         for marker in SPEECH_ACTS["commissive"]["markers"]:
             if marker in text_lower:
                 return "commissive"
-        
+
         # Check suggestive
         for marker in SPEECH_ACTS["suggestive"]["markers"]:
             if marker in text_lower:
                 return "suggestive"
-        
+
         # Default to assertive
         return "assertive"
-    
+
     def has_subject_verb_structure(self, text: str) -> bool:
         """
         Simple check for subject-verb-object structure.
@@ -342,68 +418,111 @@ class PreFilter:
         words = text.split()
         if len(words) < 3:
             return False
-        
+
         # Check for typical subject indicators
         subject_indicators = [
-            'student', 'students', 'faculty', 'staff', 'employee', 'employees',
-            'adviser', 'advisor', 'member', 'members', 'applicant', 'applicants',
-            'candidate', 'candidates', 'person', 'individual', 'committee',
-            'university', 'institute', 'department', 'office', 'director',
-            'registrar', 'president', 'dean', 'supervisor', 'resident',
-            'sponsor', 'researcher', 'author', 'they', 'he', 'she', 'it',
-            'the', 'a', 'an', 'all', 'any', 'each', 'every', 'no',
+            "student",
+            "students",
+            "faculty",
+            "staff",
+            "employee",
+            "employees",
+            "adviser",
+            "advisor",
+            "member",
+            "members",
+            "applicant",
+            "applicants",
+            "candidate",
+            "candidates",
+            "person",
+            "individual",
+            "committee",
+            "university",
+            "institute",
+            "department",
+            "office",
+            "director",
+            "registrar",
+            "president",
+            "dean",
+            "supervisor",
+            "resident",
+            "sponsor",
+            "researcher",
+            "author",
+            "they",
+            "he",
+            "she",
+            "it",
+            "the",
+            "a",
+            "an",
+            "all",
+            "any",
+            "each",
+            "every",
+            "no",
         ]
-        
+
         has_subject = any(w.lower() in subject_indicators for w in words[:5])
-        
+
         return has_subject
-    
-    def filter_sentence(self, text: str, page_text: str = "", 
-                       sentence_pos: int = 0, 
-                       headers: List[Tuple[int, str]] = None) -> FilterResult:
+
+    def filter_sentence(
+        self,
+        text: str,
+        page_text: str = "",
+        sentence_pos: int = 0,
+        headers: List[Tuple[int, str]] = None,
+    ) -> FilterResult:
         """
         Apply all pre-filter checks to a single sentence.
-        
+
         Returns FilterResult with is_candidate=True only if the sentence
         passes all heuristic checks and should be sent to the LLM.
         """
         text = text.strip()
         word_count = len(text.split())
-        
+
         # Always compute speech_act for metadata, even if rejected
         speech_act = self.classify_speech_act(text)
-        
+
         # --- Check 1: Length filter ---
         if word_count < self.min_words:
             return FilterResult(
-                text=text, is_candidate=False,
+                text=text,
+                is_candidate=False,
                 deontic_strength="none",
                 speech_act=speech_act,
-                rejection_reason=f"Too short ({word_count} words < {self.min_words})"
+                rejection_reason=f"Too short ({word_count} words < {self.min_words})",
             )
-        
+
         if word_count > self.max_words:
             return FilterResult(
-                text=text, is_candidate=False,
+                text=text,
+                is_candidate=False,
                 deontic_strength="none",
                 speech_act=speech_act,
-                rejection_reason=f"Too long ({word_count} words > {self.max_words}), needs splitting"
+                rejection_reason=f"Too long ({word_count} words > {self.max_words}), needs splitting",
             )
-        
+
         # --- Check 2: Deontic marker detection ---
         strength, markers = self.check_deontic_markers(text)
-        
+
         # --- Check 3: Section context ---
         section_name = ""
         section_weight = 1.0
         if headers:
-            section_name, section_weight = self.get_section_context(sentence_pos, headers)
-        
+            section_name, section_weight = self.get_section_context(
+                sentence_pos, headers
+            )
+
         # speech_act already computed above (before length check)
-        
+
         # --- Decision logic ---
         confidence_boost = 0.0
-        
+
         if strength == "none":
             # No deontic markers at all
             # Still allow if in high-deontic section (may have implicit deontic content)
@@ -411,20 +530,27 @@ class PreFilter:
                 # High-deontic section — send to LLM anyway but with low boost
                 confidence_boost = -0.1
                 return FilterResult(
-                    text=text, is_candidate=True,
-                    deontic_strength=strength, deontic_markers=markers,
-                    section_context=section_name, section_weight=section_weight,
-                    speech_act=speech_act, confidence_boost=confidence_boost
+                    text=text,
+                    is_candidate=True,
+                    deontic_strength=strength,
+                    deontic_markers=markers,
+                    section_context=section_name,
+                    section_weight=section_weight,
+                    speech_act=speech_act,
+                    confidence_boost=confidence_boost,
                 )
             else:
                 return FilterResult(
-                    text=text, is_candidate=False,
-                    deontic_strength=strength, deontic_markers=markers,
-                    section_context=section_name, section_weight=section_weight,
+                    text=text,
+                    is_candidate=False,
+                    deontic_strength=strength,
+                    deontic_markers=markers,
+                    section_context=section_name,
+                    section_weight=section_weight,
                     speech_act=speech_act,
-                    rejection_reason="No deontic markers found"
+                    rejection_reason="No deontic markers found",
                 )
-        
+
         if strength == "strong":
             # Strong deontic markers — high confidence candidate
             confidence_boost = 0.15 * section_weight
@@ -436,54 +562,64 @@ class PreFilter:
             if "may" in text.lower():
                 # §7 — Ablation: skip may disambiguation if disabled
                 import os
+
                 if os.getenv("ABLATION_NO_MAY_DISAMBIG", "0") != "1":
                     may_sense = disambiguate_may(text)
                     if may_sense == "epistemic":
                         return FilterResult(
-                            text=text, is_candidate=False,
+                            text=text,
+                            is_candidate=False,
                             deontic_strength="none",
                             rejection_reason="Epistemic 'may' (possibility, not permission)",
                             speech_act="assertive",
-                            section_context=section_name, section_weight=section_weight,
+                            section_context=section_name,
+                            section_weight=section_weight,
                         )
 
-            
             if section_weight < 0.5:
                 # In a low-deontic section with weak markers → likely not a rule
                 return FilterResult(
-                    text=text, is_candidate=False,
-                    deontic_strength=strength, deontic_markers=markers,
-                    section_context=section_name, section_weight=section_weight,
+                    text=text,
+                    is_candidate=False,
+                    deontic_strength=strength,
+                    deontic_markers=markers,
+                    section_context=section_name,
+                    section_weight=section_weight,
                     speech_act=speech_act,
-                    rejection_reason=f"Weak deontic marker in non-rule section '{section_name}'"
+                    rejection_reason=f"Weak deontic marker in non-rule section '{section_name}'",
                 )
             confidence_boost = 0.05 * section_weight
-        
+
         return FilterResult(
-            text=text, is_candidate=True,
-            deontic_strength=strength, deontic_markers=markers,
-            section_context=section_name, section_weight=section_weight,
-            speech_act=speech_act, confidence_boost=confidence_boost
+            text=text,
+            is_candidate=True,
+            deontic_strength=strength,
+            deontic_markers=markers,
+            section_context=section_name,
+            section_weight=section_weight,
+            speech_act=speech_act,
+            confidence_boost=confidence_boost,
         )
-    
-    def filter_sentences(self, sentences: List[str], 
-                        page_text: str = "") -> List[FilterResult]:
+
+    def filter_sentences(
+        self, sentences: List[str], page_text: str = ""
+    ) -> List[FilterResult]:
         """
         Filter a list of sentences from a page.
-        
+
         Args:
             sentences: List of extracted sentences
             page_text: Full page text (for section header detection)
-        
+
         Returns:
             List of FilterResult objects (both candidates and rejected)
         """
         # Detect section headers from page text
         headers = self.detect_section_headers(page_text) if page_text else []
-        
+
         results = []
         current_pos = 0
-        
+
         for sentence in sentences:
             # Approximate position in page text
             if page_text:
@@ -494,20 +630,21 @@ class PreFilter:
                     pos = current_pos
             else:
                 pos = current_pos
-            
+
             result = self.filter_sentence(sentence, page_text, pos, headers)
             results.append(result)
-        
+
         return results
-    
-    def get_candidates(self, sentences: List[str], 
-                      page_text: str = "") -> List[FilterResult]:
+
+    def get_candidates(
+        self, sentences: List[str], page_text: str = ""
+    ) -> List[FilterResult]:
         """
         Convenience method — returns only candidate sentences.
         """
         all_results = self.filter_sentences(sentences, page_text)
         return [r for r in all_results if r.is_candidate]
-    
+
     def get_stats(self, results: List[FilterResult]) -> Dict:
         """
         Calculate filtering statistics.
@@ -515,23 +652,23 @@ class PreFilter:
         total = len(results)
         candidates = sum(1 for r in results if r.is_candidate)
         rejected = total - candidates
-        
+
         by_strength = {}
         for r in results:
             s = r.deontic_strength
             by_strength[s] = by_strength.get(s, 0) + 1
-        
+
         by_speech_act = {}
         for r in results:
             sa = r.speech_act
             by_speech_act[sa] = by_speech_act.get(sa, 0) + 1
-        
+
         rejection_reasons = {}
         for r in results:
             if r.rejection_reason:
-                reason = r.rejection_reason.split('(')[0].strip()  # Simplify
+                reason = r.rejection_reason.split("(")[0].strip()  # Simplify
                 rejection_reasons[reason] = rejection_reasons.get(reason, 0) + 1
-        
+
         return {
             "total_sentences": total,
             "candidates": candidates,
@@ -562,7 +699,7 @@ if __name__ == "__main__":
         "This document was last updated on January 2024.",
         "Failure to comply will result in suspension.",
     ]
-    
+
     demo_page = """
     1. Introduction
     The university provides library resources for all students.
@@ -584,14 +721,14 @@ if __name__ == "__main__":
     Students should consider attending workshops.
     It may rain tomorrow.
     """
-    
+
     pf = PreFilter()
     results = pf.filter_sentences(demo_sentences, demo_page)
-    
+
     print("=" * 70)
     print("PRE-FILTER DEMO RESULTS")
     print("=" * 70)
-    
+
     for r in results:
         status = "✅ CANDIDATE" if r.is_candidate else "❌ REJECTED"
         print(f"\n{status}: {r.text[:80]}...")
@@ -602,10 +739,12 @@ if __name__ == "__main__":
             print(f"   Confidence Boost: {r.confidence_boost:+.2f}")
         else:
             print(f"   Reason: {r.rejection_reason}")
-    
+
     print("\n" + "=" * 70)
     stats = pf.get_stats(results)
-    print(f"STATS: {stats['candidates']}/{stats['total_sentences']} candidates "
-          f"({stats['filter_rate']} filtered out)")
+    print(
+        f"STATS: {stats['candidates']}/{stats['total_sentences']} candidates "
+        f"({stats['filter_rate']} filtered out)"
+    )
     print(f"By strength: {stats['by_deontic_strength']}")
     print(f"By speech act: {stats['by_speech_act']}")

@@ -64,9 +64,9 @@ test entities.
 |---|---|---:|
 | **M1** Extraction coverage | Gold rules with aligned pipeline rule (cosine ≥ 0.65) | **91.7%** (88/96) |
 | **M2** Classification accuracy | Aligned rules with correct deontic type | **84.1%** (74/88) |
-| **M3** FOL quality | FOL formulas with semantic predicates | **29.8%** (139/467) |
+| **M3** FOL quality | FOL formulas with semantic predicates | **68.7%** (321/467) |
 | **M4** Shape correctness (F1) | Per-rule precision/recall against Pos/Neg test entities | **F1 = 0.000** |
-| **M5** Reproducibility | Identical output across clean-cache runs with fixed seed | ⏳ Not yet tested |
+| **M5** Reproducibility | Identical output across clean-cache runs with fixed seed | **100%** (10 runs) |
 
 > [!NOTE]
 > **M4 analysis:** All 43 evaluated shapes are currently `too_strict` (correct
@@ -75,9 +75,9 @@ test entities.
 > the gold-standard test data properties. This is the primary area for improvement.
 
 > [!NOTE]
-> **M3 analysis:** The low FOL quality rate (29.8%) reflects Mistral's tendency to
-> generate placeholder predicates like `O(Action(x))`. The retry mechanism catches some,
-> but a larger model or fine-tuned prompt would significantly improve this metric.
+> **M3 analysis:** The FOL quality rate (68.7%) reflects genuine semantic grounding in the majority of cases. The remaining 31% use generic placeholder predicates (e.g., `O(Action(x))`) in both formula fields, representing instruction-following failures where the LLM struggles to decompose complex actions.
+>
+> **External Validation:** The pipeline's classification was also validated against the LexDeMod lease-contract benchmark (N=200). It achieved a Macro F1 of **0.370**, with strong obligation detection (F1=0.569) but degraded permission detection (F1=0.038) due to cross-domain vocabulary mismatch ("shall be entitled" vs "may").
 
 ### Running the evaluation
 
@@ -90,6 +90,18 @@ python -m evaluation.report --save  # Save thesis_metrics.json
 ```
 
 ## 🧪 Ablation studies
+
+### Large-Scale Prompt Ablation (N=100)
+
+A controlled experiment tested four prompt variants on 100 corpus-wide classification disagreements:
+- **V0 Baseline** (production prompt): 85.0% agreement, $\kappa$ = 0.101 (Optimal)
+- **V1 Few-shot**: 83.0% agreement
+- **V2 Negative instructions**: 81.0% agreement
+- **V3 Combined**: 82.0% agreement
+
+The baseline zero-shot prompt is empirically validated as optimal. The disagreements are dominated by asymmetric false negatives (LLM misses heuristic-labelled rules; never over-generates), confirming the gap reflects a schema-level annotation difference rather than prompt quality.
+
+### Pipeline Component Ablations
 
 The pipeline supports **7 component-level ablations** for measuring the contribution
 of each enhancement:
@@ -344,10 +356,7 @@ committees   (committee_name, grievance/tribunal flags)
 
 Transparency about what the pipeline does *not* yet handle well:
 
-- **FOL predicate quality (M3 = 29.8%)** — the local LLM (Mistral 7B) frequently returns
-  placeholder predicates like `O(Action(x))` instead of semantic ones like
-  `O(payFee(student))`. The retry mechanism mitigates but does not eliminate this.
-  A larger model or domain-specific fine-tuning would significantly improve M3.
+- **FOL predicate quality (M3 = 68.7%)** — while the LLM successfully extracts meaningful action predicates in about two-thirds of cases, it still defaults to generic placeholders like `O(Action(x))` in the remaining 31%. The retry mechanism mitigates this, but structured output enforcement (e.g., JSON schema validation) is needed for perfect extraction.
 - **Shape correctness (M4 = 0.000 F1)** — pipeline shapes are structurally valid but
   the property paths don't precisely match the gold-standard test data properties,
   causing all shapes to be classified as `too_strict` or `too_permissive`.

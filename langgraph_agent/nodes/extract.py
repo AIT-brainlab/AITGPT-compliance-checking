@@ -25,11 +25,14 @@ _MULTI_NL = re.compile(r"\n{2,}")
 _TRAILING_LIST_NUM = re.compile(r"\s*\n?\s*\d+\.\s*$")
 
 import os
+
 USE_SPACY = os.getenv("EXTRACT_SPACY", "0") == "1"
 
 if USE_SPACY:
     import spacy
+
     _nlp = spacy.load("en_core_web_sm", disable=["ner", "tagger"])
+
 
 def _normalise(raw: str) -> str:
     """Clean PDF extraction artifacts before sentence splitting."""
@@ -41,27 +44,38 @@ def _normalise(raw: str) -> str:
     raw = re.sub(r"[ \t]+", " ", raw)
     return raw
 
+
 def _split_sentences(raw: str) -> List[str]:
     raw = _normalise(raw)
     if USE_SPACY:
         doc = _nlp(raw)
         return [s.text.strip() for s in doc.sents if s.text.strip()]
 
+    # Enhanced sentence boundary detection for policy documents
     # First pass: split on list markers (they always start a new item)
     items = _LIST_MARKER.split(raw)
 
-    # Second pass: split each item on sentence boundaries
+    # Second pass: split each item on sentence boundaries with improved patterns
     sentences: list[str] = []
     for item in items:
         item = item.strip()
         if not item:
             continue
-        # Split on . or ; followed by whitespace + capital letter
-        parts = re.split(r"(?<=[.;])\s+(?=[A-Z])", item)
+
+        # Enhanced splitting patterns for policy documents
+        # Split on various sentence endings followed by whitespace and capital letter or number
+        # Also handle colon introductions, semicolons, and policy-specific patterns
+        parts = re.split(
+            r"(?<=[.!?])\s+(?=[A-Z0-9])|(?<=:)\s+(?=[A-Z])|(?<=;)\s+(?=[A-Z])", item
+        )
+
         for p in parts:
+            p = p.strip()
             # Strip trailing list markers that leaked through
-            p = _TRAILING_LIST_NUM.sub("", p.strip())
-            if p:
+            p = _TRAILING_LIST_NUM.sub("", p)
+            # Additional cleanup for policy document artifacts
+            p = re.sub(r"\s+", " ", p)  # Normalize whitespace
+            if p and len(p) >= _MIN_WORDS:  # Only keep if meets minimum word count
                 sentences.append(p)
 
     return sentences
@@ -73,7 +87,7 @@ def _is_noise(text: str) -> bool:
         return True
     if _NOISE.match(text):
         return True
-    if text.isupper() and len(words) < 8:   # likely a section header in all-caps
+    if text.isupper() and len(words) < 8:  # likely a section header in all-caps
         return True
     return False
 
