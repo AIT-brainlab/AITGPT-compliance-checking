@@ -117,7 +117,11 @@ def compute_m3(fol_formulas: list[dict]) -> tuple[float, int, int]:
 
         # Check predicates.action field (may have been backfilled)
         preds = f.get("predicates") or {}
-        action = (preds.get("action", "") if isinstance(preds, dict) else "").strip()
+        raw_action = preds.get("action", "") if isinstance(preds, dict) else ""
+        # LLM sometimes returns action as dict/list — coerce to string
+        if isinstance(raw_action, (dict, list)):
+            raw_action = " ".join(str(v) for v in (raw_action.values() if isinstance(raw_action, dict) else raw_action))
+        action = str(raw_action).strip()
         action_is_semantic = (
             len(action) > 1
             and action.lower() not in _PLACEHOLDER_ACTIONS
@@ -250,11 +254,11 @@ def format_markdown(r: MetricsReport) -> str:
 
 | Metric | Definition | Value |
 |--------|-----------|-------|
-| **M1** Extraction coverage | Gold rules with aligned pipeline rule (≥ 0.65 cosine) | **{r.m1_extraction_coverage:.1%}** ({r.m1_aligned}/{r.m1_total}) |
+| **M1** Extraction coverage | Gold rules with aligned pipeline rule (>= 0.65 cosine) | **{r.m1_extraction_coverage:.1%}** ({r.m1_aligned}/{r.m1_total}) |
 | **M2** Classification coverage | Aligned rules with correct deontic type | **{r.m2_classification_coverage:.1%}** ({r.m2_correct_type}/{r.m2_aligned_with_type}) |
 | **M3** FOL quality rate | FOL formulas with semantic predicates | **{r.m3_fol_quality:.1%}** ({r.m3_semantic}/{r.m3_total_fol}) |
 | **M4** Shape correctness | F1 score against Pos/Neg test entities | **F1 = {r.m4_f1:.3f}** (P={r.m4_precision:.3f}, R={r.m4_recall:.3f}) |
-| **M5** Reproducibility | Identical output across clean-cache runs | {'✅ PASS' if r.m5_reproducible else '⏳ Not yet tested'} |
+| **M5** Reproducibility | Identical output across clean-cache runs | {'PASS' if r.m5_reproducible else 'Not yet tested'} |
 
 ### M4 Breakdown
 

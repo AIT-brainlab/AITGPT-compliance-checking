@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List
 
 from langgraph_agent.state import FOLItem, PipelineState, SHACLShape
+from langgraph_agent.corpus_config import get_corpus_config
 from rdflib import Graph, Namespace, RDFS
 
 
@@ -32,15 +33,20 @@ def _safe_str(val) -> str:
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
-_TTL_PREFIXES = """\
-@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh:     <http://www.w3.org/ns/shacl#> .
-@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
-@prefix ait:    <http://example.org/ait-policy#> .
-@prefix deontic: <http://example.org/deontic#> .
+def _get_ttl_prefixes() -> str:
+    """Generate Turtle prefix block from corpus config."""
+    cfg = get_corpus_config()
+    return (
+        f"@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+        f"@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .\n"
+        f"@prefix sh:     <http://www.w3.org/ns/shacl#> .\n"
+        f"@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .\n"
+        f"@prefix {cfg.prefix}:    <{cfg.namespace}> .\n"
+        f"@prefix deontic: <http://example.org/deontic#> .\n\n"
+    )
 
-"""
+# Backward-compatible alias (used once in shacl_node)
+_TTL_PREFIXES = None
 
 # ── Subject → target class inference ───────────────────────────────────────
 _SUBJECT_MAP = [
@@ -72,6 +78,16 @@ _SUBJECT_MAP = [
 ]
 
 
+def _get_ontology_path() -> Path:
+    return get_corpus_config().ontology_path
+
+def _get_property_list_path() -> Path:
+    return get_corpus_config().vocabulary_path
+
+def _get_namespace() -> Namespace:
+    return Namespace(get_corpus_config().namespace)
+
+# Keep backward-compatible aliases for code that references these directly
 _ONTOLOGY_PATH = PROJECT_ROOT / "shacl" / "ontology" / "ait_policy_ontology.ttl"
 _PROPERTY_LIST_PATH = PROJECT_ROOT / "shacl" / "ontology" / "property_list.txt"
 AIT = Namespace("http://example.org/ait-policy#")
@@ -86,60 +102,44 @@ def _load_ontology_classes() -> set[str]:
     global _ontology_classes
     if _ontology_classes is None:
         g = Graph()
-        if _ONTOLOGY_PATH.exists():
-            g.parse(str(_ONTOLOGY_PATH), format="turtle")
+        onto_path = _get_ontology_path()
+        ns = _get_namespace()
+        if onto_path.exists():
+            g.parse(str(onto_path), format="turtle")
         _ontology_classes = {
             str(s).split("#")[-1] for s in g.subjects(RDFS.subClassOf, None)
         } | {
             str(s).split("#")[-1]
             for s, _, _ in g.triples((None, None, None))
-            if str(s).startswith(str(AIT))
+            if str(s).startswith(str(ns))
         }
     return _ontology_classes
 
 
 def _load_ontology_properties() -> list[str]:
-    """Load the known property vocabulary from the extracted property list.
+    """Load the known property vocabulary from the corpus config.
 
-    Returns a list of valid property names (without the ``ait:`` prefix).
-    The list is derived from gold-standard shapes, TDD test data, and the
-    RDF converter — see ``scripts/extract_vocab.py``.
+    Returns a list of valid property names (without the namespace prefix).
+    The list is loaded from the vocabulary file specified in the corpus config.
     """
     global _ontology_properties, _ontology_properties_lower
     if _ontology_properties is None:
-        if _PROPERTY_LIST_PATH.exists():
-            _ontology_properties = [
-                line.strip()
-                for line in _PROPERTY_LIST_PATH.read_text(encoding="utf-8").splitlines()
-                if line.strip()
-            ]
-        else:
-            _ontology_properties = []
+        cfg = get_corpus_config()
+        _ontology_properties = cfg.load_vocabulary()
         # Build lowercase lookup: lowercase_form -> original_form
         _ontology_properties_lower = {}
         for p in _ontology_properties:
             low = p.lower()
-            # Prefer the first (canonical) form if there are duplicates
             if low not in _ontology_properties_lower:
                 _ontology_properties_lower[low] = p
     return _ontology_properties
 
 
-def _normalize_property_path(raw_path: str) -> str:
-    """Normalize a generated property path against the known ontology vocabulary.
-
-    Strategy:
-      1. Exact match (case-sensitive) — return as-is
-      2. Case-insensitive match — return the canonical form
-      3. Fuzzy match (difflib, cutoff=0.6) — return the closest match
-      4. No match — return the lowercased raw path (still better than camelCase)
-
-    This implements the ontology-constrained property path normalization
-    described in §GAP-1 of the gap analysis.
-    """
+def _normalize_property_path(raw_path: str, rule_text: str = "") -> str:
+    """Normalize a generated property path against the known ontology vocabulary."""
     props = _load_ontology_properties()
     if not props:
-        return raw_path  # No vocabulary available, pass through
+        return raw_path
 
     # 1. Exact match
     if raw_path in props:
@@ -153,14 +153,109 @@ def _normalize_property_path(raw_path: str) -> str:
     if raw_lower in _ontology_properties_lower:
         return _ontology_properties_lower[raw_lower]
 
-    # 3. Fuzzy match against lowercase forms
+    # 3. Fuzzy match (cutoff lowered from 0.6 to 0.55)
     all_lower = list(_ontology_properties_lower.keys())
-    matches = difflib.get_close_matches(raw_lower, all_lower, n=1, cutoff=0.6)
+    matches = difflib.get_close_matches(raw_lower, all_lower, n=1, cutoff=0.55)
     if matches:
         return _ontology_properties_lower[matches[0]]
 
-    # 4. Fallback: return lowercased raw path
+    # 4. Keyword overlap match using rule text
+    if rule_text:
+        best_prop = _keyword_match_property(raw_lower, rule_text)
+        if best_prop:
+            return best_prop
+
+    # 5. Fallback: return lowercased raw path
     return raw_lower
+
+
+# -- Keyword-based property matching -----------------------------------------
+
+def _get_stop_words() -> frozenset:
+    """Load stop words from corpus config (universal + corpus-specific)."""
+    return get_corpus_config().full_stop_words()
+
+def _get_domain_words() -> list[str]:
+    """Load domain words from corpus config, sorted by length for greedy matching."""
+    return get_corpus_config().sorted_domain_words()
+
+# Backward-compatible module-level references (lazily evaluated)
+_STOP_WORDS = None
+_DOMAIN_WORDS = None
+
+def _ensure_word_lists():
+    """Lazy-load word lists from config on first use."""
+    global _STOP_WORDS, _DOMAIN_WORDS
+    if _STOP_WORDS is None:
+        _STOP_WORDS = _get_stop_words()
+    if _DOMAIN_WORDS is None:
+        _DOMAIN_WORDS = _get_domain_words()
+
+
+def _extract_subwords(text):
+    """Greedily extract known domain words from a concatenated string."""
+    _ensure_word_lists()
+    found = set()
+    remaining = text.lower()
+    for word in _DOMAIN_WORDS:
+        if word in remaining:
+            found.add(word)
+            remaining = remaining.replace(word, " ", 1)
+    leftovers = set(re.findall(r"[a-z]{4,}", remaining))
+    found.update(leftovers - _STOP_WORDS)
+    return found if len(found) >= 2 else set()
+
+
+def _tokenize_to_keywords(text):
+    """Extract meaningful keywords from text."""
+    _ensure_word_lists()
+    words = set(re.findall(r"[a-z]{3,}", text.lower()))
+    return words - _STOP_WORDS
+
+
+def _split_camel_and_snake(prop):
+    """Split a camelCase or snake_case property name into keyword tokens."""
+    _ensure_word_lists()
+    parts = prop.replace("_", " ").strip()
+    parts = re.sub(r"([a-z])([A-Z])", r"\1 \2", parts)
+    words = set(re.findall(r"[a-z]{3,}", parts.lower()))
+    if len(words) <= 1 and len(prop) > 10:
+        extracted = _extract_subwords(prop.lower())
+        if extracted:
+            words = extracted
+    return words - _STOP_WORDS
+
+
+def _keyword_match_property(raw_path, rule_text):
+    """Find the best ontology property by keyword overlap with rule text."""
+    global _ontology_properties_lower
+    if not _ontology_properties_lower:
+        return None
+
+    rule_keywords = _tokenize_to_keywords(rule_text)
+    raw_keywords = _split_camel_and_snake(raw_path)
+    combined_keywords = rule_keywords | raw_keywords
+
+    if not combined_keywords:
+        return None
+
+    best_score = 0
+    best_prop = None
+
+    for prop_lower, prop_canonical in _ontology_properties_lower.items():
+        prop_keywords = _split_camel_and_snake(prop_lower)
+        if not prop_keywords:
+            continue
+        overlap = prop_keywords & combined_keywords
+        score = sum(len(kw) for kw in overlap) if overlap else 0
+        if len(overlap) >= 2 or (len(overlap) == 1 and max(len(k) for k in overlap) >= 6):
+            if score > best_score:
+                best_score = score
+                best_prop = prop_canonical
+
+    if best_prop and best_score >= 8:
+        return best_prop
+    return None
 
 
 def _candidates_from_subject(subj: str) -> list[str]:
@@ -265,6 +360,15 @@ def _infer_target_class(text: str, fol: FOLItem | None = None) -> str:
         if re.search(pattern, t):
             return cls
 
+    # --- Strategy B2: corpus config target class patterns ---
+    try:
+        cfg = get_corpus_config()
+        for pattern, cls in cfg.target_class_patterns:
+            if pattern.search(t):
+                return cls
+    except Exception:
+        pass
+
     # --- Strategy C: fallback — but narrower than Person ---
     return "Person"
 
@@ -335,8 +439,8 @@ def _property_path(fol: FOLItem) -> str:
     if raw is None:
         raw = _slugify(fol["text"], max_words=4, first_lower=True)
 
-    # --- Normalize against known ontology vocabulary ---
-    return _normalize_property_path(raw)
+    # --- Normalize against known ontology vocabulary (with rule text) ---
+    return _normalize_property_path(raw, rule_text=fol.get("text", ""))
 
 
 # Datatype mapping for common policy attributes
@@ -608,7 +712,7 @@ def _try_direct_fallback(fol: FOLItem) -> SHACLShape | None:
         _strip_fences,
         _validate_turtle,
         _repair_turtle,
-        _llm,
+        _get_llm,
     )
 
     shape_id = fol["rule_id"].replace("-", "_")
@@ -620,7 +724,7 @@ def _try_direct_fallback(fol: FOLItem) -> SHACLShape | None:
         )
         from langchain_core.messages import HumanMessage
 
-        response = _llm.invoke([HumanMessage(content=prompt)])
+        response = _get_llm().invoke([HumanMessage(content=prompt)])
         turtle = _strip_fences(response.content.strip())
         valid, parse_error = _validate_turtle(turtle)
 
@@ -647,7 +751,7 @@ def shacl_node(state: PipelineState) -> PipelineState:
     errors: List[str] = []
 
     new_shapes: List[SHACLShape] = []
-    ttl_blocks: List[str] = [_TTL_PREFIXES]
+    ttl_blocks: List[str] = [_get_ttl_prefixes()]
     # Track shape metadata for override detection (§5.3)
     shape_meta: list[dict] = []
 

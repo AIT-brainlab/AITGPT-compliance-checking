@@ -25,6 +25,7 @@ logging.getLogger("rdflib.term").setLevel(logging.ERROR)
 
 from langgraph_agent.graph import build_graph
 from langgraph_agent.state import PipelineState
+from langgraph_agent.corpus_config import get_corpus_config, reset_config_cache
 
 SOURCES = {
     "ait": {
@@ -81,7 +82,24 @@ def _initial_state(source: str) -> PipelineState:
     )
 
 
-def run(source: str, verbose: bool = False, ablation: str = "baseline") -> dict:
+def run(source: str, verbose: bool = False, ablation: str = "baseline",
+        corpus: str | None = None) -> dict:
+    # Set corpus config (defaults to source name if not specified)
+    corpus_name = corpus or source
+    os.environ["POLICYCHECKER_CORPUS"] = corpus_name
+    reset_config_cache()  # ensure fresh config for this run
+
+    # Load corpus config — if a config file exists, override SOURCES entry
+    try:
+        cfg = get_corpus_config(corpus_name)
+        if source not in SOURCES:
+            SOURCES[source] = {
+                "name": cfg.display_name,
+                "pdf_dir": str(cfg.pdf_dir),
+            }
+    except FileNotFoundError:
+        pass  # fall back to hardcoded SOURCES
+
     # Apply ablation environment variables
     if ablation in ABLATIONS:
         os.environ.update(ABLATIONS[ablation])
@@ -178,8 +196,12 @@ def main() -> None:
         default="baseline",
         help="Run an ablation study (output goes to output/<source>_<ablation>/)",
     )
+    parser.add_argument(
+        "--corpus", default=None,
+        help="Corpus config name (default: same as --source). Loads config/<name>.yaml",
+    )
     args = parser.parse_args()
-    run(args.source, verbose=args.verbose, ablation=args.ablation)
+    run(args.source, verbose=args.verbose, ablation=args.ablation, corpus=args.corpus)
 
 
 if __name__ == "__main__":

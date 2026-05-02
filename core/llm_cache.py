@@ -61,6 +61,9 @@ class LLMCache:
             ON llm_cache(last_accessed)
         """)
         
+        # Enable WAL mode for better concurrent read/write performance
+        cursor.execute("PRAGMA journal_mode=WAL")
+        
         conn.commit()
         conn.close()
     

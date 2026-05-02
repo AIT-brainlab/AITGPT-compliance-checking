@@ -2055,8 +2055,8 @@
     "rule_id": "AIT-0234",
     "text": "Student Welfare Matters ● Gender related matters ● Personal Counseling/Wellness Counseling by a professional psychologist ● Dispute Mediation ● Any other problem that a student may wish to seek advise",
     "source_document": "Student-Handbook_August-2021.pdf",
-    "rule_type": "obligation",
-    "confidence": 0.65,
+    "rule_type": "permission",
+    "confidence": 0.9500000000000001,
     "prefilter_strength": "weak",
     "section_context": ""
   },
@@ -2532,7 +2532,7 @@
     "rule_id": "AIT-0292",
     "text": "The separation of one or more cases from a group of cases previously set for a consolidation hearing should not, however, be considered to affect the remaining cases in the group.",
     "source_document": "Student-Handbook_August-2021.pdf",
-    "rule_type": "obligation",
+    "rule_type": "prohibition",
     "confidence": 0.8500000000000001,
     "prefilter_strength": "weak",
     "section_context": ""

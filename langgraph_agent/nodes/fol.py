@@ -14,6 +14,7 @@ from langchain_core.messages import HumanMessage
 
 from langgraph_agent.llm import DEFAULT_MODEL, get_llm
 from langgraph_agent.state import FOLItem, PipelineState, RuleItem
+from langgraph_agent.corpus_config import get_corpus_config
 
 # Fine-tuning data collection
 _TRAINING_DATA_PATH = (
@@ -50,7 +51,15 @@ def _save_training_example(text: str, rule_type: str, parsed: dict) -> None:
 
 
 _cache = get_cache()
-_llm = get_llm()
+_llm_instance = None
+
+
+def _get_llm():
+    """Lazy LLM initialization — avoids import-time hangs and allows config changes."""
+    global _llm_instance
+    if _llm_instance is None:
+        _llm_instance = get_llm()
+    return _llm_instance
 
 _FOL_PROMPT = """\
 You are a formal logician specialising in deontic logic for institutional policy.
@@ -64,15 +73,23 @@ deontic operators:
 Rule type: {rule_type}
 Rule text: "{text}"
 
+DOMAIN VOCABULARY — When choosing a predicate name for the action, you MUST \
+prefer one from this list of known institutional policy properties. Pick the \
+one that BEST matches the rule's main action or constraint:
+{vocabulary_hint}
+
+If NO property in the list is a reasonable match, you may create a new \
+camelCase predicate — but this should be rare.
+
 EXAMPLES OF GOOD FORMALIZATIONS:
 Rule: "Students must submit their thesis by the deadline."
-Good: {{"deontic_type": "obligation", "deontic_formula": "O(submitThesis(student))", "fol_expansion": "∀x (Student(x) → O(submitThesis(x)))", "predicates": {{"subject": "student", "action": "submitThesis", "condition": ""}}, "shacl_hint": "submitThesis property"}}
+Good: {{"deontic_type": "obligation", "deontic_formula": "O(submittitlepage(student))", "fol_expansion": "∀x (Student(x) → O(submittitlepage(x)))", "predicates": {{"subject": "student", "action": "submittitlepage", "condition": ""}}, "shacl_hint": "submittitlepage property"}}
 
 Rule: "Faculty may attend meetings with prior approval."
-Good: {{"deontic_type": "permission", "deontic_formula": "P(attendMeeting(faculty))", "fol_expansion": "∀x (Faculty(x) → P(attendMeeting(x)))", "predicates": {{"subject": "faculty", "action": "attendMeeting", "condition": "with prior approval"}}, "shacl_hint": "attendMeeting property"}}
+Good: {{"deontic_type": "permission", "deontic_formula": "P(attendHearing(faculty))", "fol_expansion": "∀x (Faculty(x) → P(attendHearing(x)))", "predicates": {{"subject": "faculty", "action": "attendHearing", "condition": "with prior approval"}}, "shacl_hint": "attendHearing property"}}
 
-Rule: "Students must not plagiarize any work."
-Good: {{"deontic_type": "prohibition", "deontic_formula": "F(plagiarizeWork(student))", "fol_expansion": "∀x (Student(x) → F(plagiarizeWork(x)))", "predicates": {{"subject": "student", "action": "plagiarizeWork", "condition": ""}}, "shacl_hint": "plagiarizeWork property"}}
+Rule: "Students must not disturb fellow students in residential areas."
+Good: {{"deontic_type": "prohibition", "deontic_formula": "F(disturbFellowStudentsInResidentialAreas(student))", "fol_expansion": "∀x (Student(x) → F(disturbFellowStudentsInResidentialAreas(x)))", "predicates": {{"subject": "student", "action": "disturbFellowStudentsInResidentialAreas", "condition": ""}}, "shacl_hint": "disturbFellowStudentsInResidentialAreas property"}}
 
 EXAMPLES OF BAD FORMALIZATIONS TO AVOID:
 Bad: {{"deontic_type": "obligation", "deontic_formula": "O(Action(x))", "fol_expansion": "...", "predicates": {{"subject": "...", "action": "Action", ...}}}}
@@ -89,7 +106,13 @@ Output ONLY a JSON object (no markdown):
 }}"""
 
 
-FOL_PROMPT_VERSION = 2
+def _get_vocabulary_hint() -> str:
+    """Load vocabulary hint from corpus config (cached inside config object)."""
+    cfg = get_corpus_config()
+    return cfg.vocabulary_hint()
+
+
+FOL_PROMPT_VERSION = 3  # v3: ontology vocabulary injection for property path alignment
 
 _PLACEHOLDER_PREDS = re.compile(
     r"[OPF]\(\s*(Action|Subject|Predicate|Condition|Thing|Entity|x|y|z|\?\w)\s*[()]",
@@ -407,24 +430,23 @@ Rule type: {rule_type}
 Rule text: "{text}"
 Previous (BAD) formula: {bad_formula}
 
+DOMAIN VOCABULARY — Pick from these known property names:
+{vocabulary_hint}
+
 Rules:
-- Extract the MAIN ACTION VERB from the rule text (e.g., from "must submit thesis" -> "submitThesis")
-- Use camelCase or snake_case for predicate names (e.g., "submitThesis", "attendMeeting", "payFee")
+- Pick a predicate from the DOMAIN VOCABULARY list above that best captures the rule's main action
+- If no vocabulary term fits, create a new camelCase predicate from the rule's main verb
 - Do NOT use: Action, Subject, Predicate, Condition, Thing, Entity, or any single letter (x, y, z)
 - The predicate must be SEMANTIC and meaningful in the policy domain
 
 EXAMPLES:
-Rule: "Students must submit their thesis by the deadline."
-Good: "O(submitThesis(student))"
+Rule: "Students must pay fees before registration."
+Good: "O(payFee(student))"    [payFee is in the vocabulary]
 Bad: "O(Action(x))"
 
-Rule: "Faculty may attend meetings with prior approval."
-Good: "P(attendMeeting(faculty))"
-Bad: "P(Predicate(y))"
-
-Rule: "Students must not plagiarize any work."
-Good: "F(plagiarizeWork(student))"
-Bad: "F(Condition(z))"
+Rule: "Students must not cook in prohibited dormitory areas."
+Good: "F(cookInProhibitedDormitory(student))"    [cookInProhibitedDormitory is in the vocabulary]
+Bad: "F(Predicate(y))"
 
 Output ONLY a JSON object:
 {{
@@ -446,8 +468,11 @@ def _generate_with_retry(
     # §7 — Ablation: disable retry loop
     if os.getenv("ABLATION_NO_FOL_RETRY", "0") == "1":
         max_retries = 0
-    prompt = _FOL_PROMPT.format(text=text, rule_type=rule_type)
-    response = _llm.invoke([HumanMessage(content=prompt)])
+    llm = _get_llm()
+    prompt = _FOL_PROMPT.format(
+        text=text, rule_type=rule_type, vocabulary_hint=_get_vocabulary_hint()
+    )
+    response = llm.invoke([HumanMessage(content=prompt)])
     parsed = _parse_fol(response.content)
 
     if not parsed:
@@ -457,13 +482,22 @@ def _generate_with_retry(
         if not _is_placeholder(parsed):
             return parsed
         # Re-prompt with the bad example
-        retry_prompt = _FOL_RETRY_PROMPT.format(
-            text=text,
-            rule_type=rule_type,
-            bad_formula=parsed.get("deontic_formula", ""),
-        )
-        response = _llm.invoke([HumanMessage(content=retry_prompt)])
-        parsed = _parse_fol(response.content) or parsed
+        try:
+            retry_prompt = _FOL_RETRY_PROMPT.format(
+                text=text,
+                rule_type=rule_type,
+                bad_formula=parsed.get("deontic_formula", ""),
+                vocabulary_hint=_get_vocabulary_hint(),
+            )
+            response = llm.invoke([HumanMessage(content=retry_prompt)])
+            parsed = _parse_fol(response.content) or parsed
+        except Exception as exc:
+            import logging
+            logging.getLogger(__name__).warning(
+                "FOL retry %d/%d timed out for rule: %.60s... (%s)",
+                attempt + 1, max_retries, text, exc,
+            )
+            break  # Stop retrying — use what we have
 
     # If still placeholder after retry, enhance with extracted predicates
     if _is_placeholder(parsed):

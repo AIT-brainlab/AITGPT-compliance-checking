@@ -15,7 +15,15 @@ from langgraph_agent.llm import SECOND_MODEL, get_second_llm
 from langgraph_agent.state import PipelineState, RuleItem
 
 _cache = get_cache()
-_llm = get_second_llm()
+_llm_instance = None
+
+
+def _get_llm():
+    """Lazy LLM initialization."""
+    global _llm_instance
+    if _llm_instance is None:
+        _llm_instance = get_second_llm()
+    return _llm_instance
 
 RECLASSIFY_PROMPT_VERSION = "v1"
 
@@ -78,7 +86,7 @@ def reclassify_node(state: PipelineState) -> PipelineState:
         else:
             try:
                 prompt = _RECLASSIFY_PROMPT.format(text=text)
-                response = _llm.invoke([HumanMessage(content=prompt)])
+                response = _get_llm().invoke([HumanMessage(content=prompt)])
                 result = _parse(response.content)
                 _cache.set(text, model, "reclassification", result,
                            extra_params={"prompt_version": RECLASSIFY_PROMPT_VERSION})

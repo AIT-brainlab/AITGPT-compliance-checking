@@ -16,7 +16,15 @@ from langgraph_agent.llm import DEFAULT_MODEL, get_llm
 from langgraph_agent.state import PipelineState, RuleItem, SentenceItem
 
 _cache = get_cache()
-_llm = get_llm()
+_llm_instance = None
+
+
+def _get_llm():
+    """Lazy LLM initialization."""
+    global _llm_instance
+    if _llm_instance is None:
+        _llm_instance = get_llm()
+    return _llm_instance
 
 CONFIDENCE_HIGH = 0.6
 CONFIDENCE_LOW = 0.4
@@ -112,7 +120,7 @@ def classify_node(state: PipelineState) -> PipelineState:
         else:
             try:
                 prompt = _build_prompt(item, hint)
-                response = _llm.invoke([HumanMessage(content=prompt)])
+                response = _get_llm().invoke([HumanMessage(content=prompt)])
                 result = _parse_response(response.content)
                 _cache.set(text, model, "classification", result, extra_params=cache_params)
             except Exception as exc:

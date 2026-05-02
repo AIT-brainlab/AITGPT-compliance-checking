@@ -1,360 +1,360 @@
 {
   "conforms": false,
-  "shape_count": 500,
+  "shape_count": 491,
   "entity_count": 180,
-  "violation_count": 12283,
+  "violation_count": 10734,
   "violations": [
     {
-      "focus_node": "http://example.org/ait-policy#Neg_GS089",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS096",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS009",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS083",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS054",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS018",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS031",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS043",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS013",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS071",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS028",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS044",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS031",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS014",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS097",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS007",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS090",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS040",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS071",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS063",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS096",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS040",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS009",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS093",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS093",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS064",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
       "focus_node": "http://example.org/ait-policy#Pos_GS043",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS047",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS035",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS062",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS017",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS037",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS064",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS066",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Pos_GS056",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
-      "focus_node": "http://example.org/ait-policy#Neg_GS013",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS020",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS089",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS007",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS084",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS097",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS037",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS083",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS018",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS003",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS020",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "focus_node": "http://example.org/ait-policy#Pos_GS054",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Pos_GS063",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS075",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS093",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Neg_GS084",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS075",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS014",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS044",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS096",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS037",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS028",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS018",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS013",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS085",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS066",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS089",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS083",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS047",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS089",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS009",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS031",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS011",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS084",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS018",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS062",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS047",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS040",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS046",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS017",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Neg_GS056",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
-      "focus_node": "http://example.org/ait-policy#Neg_GS066",
-      "source_shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
-      "source_path": "http://example.org/ait-policy#submittitlepage",
-      "result_message": "Students must submit a leave form if they are travelling out of the country.",
+      "focus_node": "http://example.org/ait-policy#Neg_GS085",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS071",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS090",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS063",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS064",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS007",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS003",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS035",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS035",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS028",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS046",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS096",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS031",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS040",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS007",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS074",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS064",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS009",
+      "source_shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
+      "source_path": "http://example.org/ait-policy#meetHighestStandardsOfPersonalEthicalAndMoralConduct",
+      "result_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     }
   ],
   "pipeline_shapes": 443,
-  "valid_shapes": 404
+  "valid_shapes": 394
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-26T14:30:08.928456",
+  "timestamp": "2026-05-02T14:17:36.931410",
   "source": "ait",
   "pipeline_version": "dev",
   "environment": {
@@ -11,38 +11,38 @@
     "pipeline_version": "dev",
     "extract_spacy": "0",
     "ollama_model_digest": "6577803aa9a0",
-    "git_sha": "1776b17b"
+    "git_sha": "0be6c9a7"
   },
   "summary": {
     "sentences_extracted": 1663,
     "candidates_prefiltered": 461,
     "rules_classified": 443,
-    "fol_formulas_ok": 385,
-    "fol_formulas_failed": 58,
+    "fol_formulas_ok": 352,
+    "fol_formulas_failed": 91,
     "shacl_shapes_total": 443,
-    "shacl_shapes_valid": 404,
-    "shacl_shapes_fol_mediated": 385,
-    "shacl_shapes_direct_nl": 58,
+    "shacl_shapes_valid": 394,
+    "shacl_shapes_fol_mediated": 352,
+    "shacl_shapes_direct_nl": 91,
     "shacl_shapes_fol_fallback": 0,
     "validation_conforms": false,
-    "violations": 12283,
+    "violations": 10734,
     "likely_false_positives": 0,
-    "actionable_violations": 12283,
-    "total_errors": 6
+    "actionable_violations": 10734,
+    "total_errors": 12
   },
   "violation_triage": {
     "by_severity": {
-      "Violation": 12011,
-      "Info": 272
+      "Violation": 10602,
+      "Info": 132
     },
     "by_source_shape": [
       {
-        "shape": "http://example.org/ait-policy#AIT_0271Shape",
-        "count": 560,
-        "distinct_entities": 140,
-        "pct_entities": 77.8,
+        "shape": "http://example.org/ait-policy#AIT_0202Shape",
+        "count": 462,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:unwarrantedInquiry"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:hasAdditionalPayment"
       },
       {
         "shape": "http://example.org/ait-policy#Gs049Shape",
@@ -50,23 +50,23 @@
         "distinct_entities": 140,
         "pct_entities": 77.8,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:interviewedby"
+        "sample_message": "Less than 1 values on ait:Neg_GS061->ait:interviewedby"
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0202Shape",
-        "count": 330,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:hasAdditionalPayment"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0199Shape",
+        "shape": "http://example.org/ait-policy#AIT_0059Shape",
         "count": 264,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:registeredForCurrentSemester"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:hasStudentID"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0235Shape",
+        "count": 198,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:hasMedicalInsurance"
       },
       {
         "shape": "http://example.org/ait-policy#Gs087Shape",
@@ -74,15 +74,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:enrolment"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs066Shape",
-        "count": 196,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:moveswithspouse"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:enrolment"
       },
       {
         "shape": "http://example.org/ait-policy#Gs014Shape",
@@ -90,7 +82,15 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:putnameonwaitinglist"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:putnameonwaitinglist"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs066Shape",
+        "count": 196,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:moveswithspouse"
       },
       {
         "shape": "http://example.org/ait-policy#Gs097Shape",
@@ -98,15 +98,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:takes"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs056Shape",
-        "count": 192,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:submit"
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:takes"
       },
       {
         "shape": "http://example.org/ait-policy#Gs044Shape",
@@ -114,7 +106,15 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:sra_completed"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:sra_completed"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs056Shape",
+        "count": 192,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:submit"
       },
       {
         "shape": "http://example.org/ait-policy#Gs075Shape",
@@ -122,7 +122,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:payfee"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:payfee"
       },
       {
         "shape": "http://example.org/ait-policy#Gs011Shape",
@@ -130,15 +130,7 @@
         "distinct_entities": 65,
         "pct_entities": 36.1,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:semester"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0008Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:hasStudentID"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:semester"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0445Shape",
@@ -146,72 +138,86 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS089->ait:goesToAITClinic"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:goesToAITClinic"
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0171Shape_prop1",
-        "count": 89,
+        "shape": "http://example.org/ait-policy#AIT_0019Shape",
+        "count": 132,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Arrival on Campus New students are expected to arrive within a period of 3 days before the first day of the semester."
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:hasDismissalStatus"
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0435Shape_prop1",
-        "count": 89,
+        "shape": "http://example.org/ait-policy#AIT_0008Shape",
+        "count": 132,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "UIA subscription is mandatory for every student residing on campus and its current fee of 400 Baht/month is monthly collected with accommodation renta"
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:hasStudentID"
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0185Shape_prop1",
+        "shape": "http://example.org/ait-policy#AIT_0204Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS043->ait:dismissed"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0150Shape_prop1",
         "count": 66,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Students must submit a leave form if they are travelling out of the country."
+        "sample_message": "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct."
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0001Shape_prop1",
+        "shape": "http://example.org/ait-policy#AIT_0070Shape_prop1",
         "count": 66,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "For any multi-authored article based on a student thesis, research study or dissertation, the student should normally be the first author, unless ther"
+        "sample_message": "Regular cleaning and hygiene of the unit has to be maintained by the student."
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0396Shape_prop1",
+        "shape": "http://example.org/ait-policy#AIT_0095Shape_prop1",
         "count": 66,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Email: gru@ait.ac.th Report on Ninety Days of Stay Students, together with spouses and dependents, if staying in Thailand longer than ninety days must"
+        "sample_message": "Self-funded students are required to pay a one-month advance deposit."
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0444Shape_prop1",
+        "shape": "http://example.org/ait-policy#AIT_0313Shape_prop1",
         "count": 66,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Please extend your cooperation to the security guards on duty when an ID card is demanded. ● Your guests should know your personal details (name, hous"
+        "sample_message": "Any issue or concern involving student welfare that is related to accommodation should be brought to the attention of the Director, Office of Student "
       }
     ],
     "likely_false_positive_count": 0,
-    "actionable_violation_count": 12283
+    "actionable_violation_count": 10734
   },
   "rule_type_distribution": {
-    "obligation": 328,
-    "prohibition": 65,
-    "permission": 49,
+    "obligation": 326,
+    "prohibition": 66,
+    "permission": 50,
     "exemption": 1
   },
   "errors": [
-    "shacl[override]: ait:AIT_0042Shape deontic:overrides ait:AIT_0435Shape",
-    "shacl[override]: ait:AIT_0050Shape deontic:overrides ait:AIT_0359Shape",
-    "shacl[override]: ait:AIT_0133Shape deontic:overrides ait:AIT_0130Shape",
-    "shacl[override]: ait:AIT_0314Shape deontic:overrides ait:AIT_0435Shape",
-    "shacl[override]: ait:AIT_0322Shape deontic:overrides ait:AIT_0359Shape",
-    "shacl[override]: ait:AIT_0326Shape deontic:overrides ait:AIT_0175Shape"
+    "shacl[override]: ait:AIT_0054Shape deontic:overrides ait:AIT_0332Shape",
+    "shacl[override]: ait:AIT_0055Shape deontic:overrides ait:AIT_0246Shape",
+    "shacl[override]: ait:AIT_0133Shape deontic:overrides ait:AIT_0132Shape",
+    "shacl[override]: ait:AIT_0135Shape deontic:overrides ait:AIT_0004Shape",
+    "shacl[override]: ait:AIT_0139Shape deontic:overrides ait:AIT_0129Shape",
+    "shacl[override]: ait:AIT_0154Shape deontic:overrides ait:AIT_0155Shape",
+    "shacl[override]: ait:AIT_0193Shape deontic:overrides ait:AIT_0246Shape",
+    "shacl[override]: ait:AIT_0245Shape deontic:overrides ait:AIT_0430Shape",
+    "shacl[override]: ait:AIT_0374Shape deontic:overrides ait:AIT_0246Shape",
+    "shacl[override]: ait:AIT_0427Shape deontic:overrides ait:AIT_0176Shape",
+    "shacl[override]: ait:AIT_0437Shape deontic:overrides ait:AIT_0425Shape",
+    "shacl[override]: ait:AIT_0452Shape deontic:overrides ait:AIT_0389Shape"
   ]
 }

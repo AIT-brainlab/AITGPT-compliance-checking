@@ -13,20 +13,35 @@ from langchain_core.messages import HumanMessage
 
 from langgraph_agent.llm import DEFAULT_MODEL, get_llm
 from langgraph_agent.state import PipelineState, RuleItem, SHACLShape
+from langgraph_agent.corpus_config import get_corpus_config
 
 _cache = get_cache()
-_llm = get_llm()
+_llm_instance = None
+
+
+def _get_llm():
+    """Lazy LLM initialization."""
+    global _llm_instance
+    if _llm_instance is None:
+        _llm_instance = get_llm()
+    return _llm_instance
 
 MAX_REPAIR_ATTEMPTS = 2
 DIRECT_SHACL_PROMPT_VERSION = "v1"
 
-_SHACL_PREFIXES = """\
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-@prefix ait:  <http://example.org/ait-policy#> .
-"""
+def _get_shacl_prefixes() -> str:
+    """Generate SHACL prefixes from corpus config."""
+    cfg = get_corpus_config()
+    return (
+        f"@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+        f"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
+        f"@prefix sh:   <http://www.w3.org/ns/shacl#> .\n"
+        f"@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .\n"
+        f"@prefix {cfg.prefix}:  <{cfg.namespace}> .\n"
+    )
+
+# Backward-compatible alias
+_SHACL_PREFIXES = None
 
 _DIRECT_PROMPT = """\
 Translate this policy rule DIRECTLY into a valid SHACL NodeShape in Turtle syntax.
@@ -35,13 +50,13 @@ Rule type: {rule_type}
 Rule text: "{text}"
 
 Requirements:
-- Use these prefixes: ait: <http://example.org/ait-policy#>  sh: <http://www.w3.org/ns/shacl#>
+- Use the namespace prefix {ns_prefix}: <{namespace}>  and  sh: <http://www.w3.org/ns/shacl#>
 - The shape MUST be a sh:NodeShape with sh:targetClass, sh:severity, sh:property
 - Obligations  → sh:minCount 1  and sh:severity sh:Violation
 - Prohibitions → sh:maxCount 0  and sh:severity sh:Violation
 - Permissions  → sh:severity sh:Info
 
-Shape name: ait:{shape_id}Shape
+Shape name: {ns_prefix}:{shape_id}Shape
 
 Return ONLY the Turtle block for this shape. No explanations, no markdown fences."""
 
@@ -90,7 +105,7 @@ def _repair_turtle(turtle: str, error: str, rule_id: str) -> Tuple[str, bool]:
     for attempt in range(1, MAX_REPAIR_ATTEMPTS + 1):
         try:
             prompt = _REPAIR_PROMPT.format(turtle=turtle, error=error)
-            response = _llm.invoke([HumanMessage(content=prompt)])
+            response = _get_llm().invoke([HumanMessage(content=prompt)])
             repaired = _strip_fences(response.content.strip())
             valid, new_error = _validate_turtle(repaired)
             if valid:
@@ -132,7 +147,7 @@ def direct_shacl_node(state: PipelineState) -> PipelineState:
                     rule_type=rule["rule_type"],
                     shape_id=shape_id,
                 )
-                response = _llm.invoke([HumanMessage(content=prompt)])
+                response = _get_llm().invoke([HumanMessage(content=prompt)])
                 turtle = _strip_fences(response.content.strip())
                 valid, parse_error = _validate_turtle(turtle)
 
