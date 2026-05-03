@@ -439,6 +439,73 @@
 % ═══════════════════════════════════════════════════════════════════════
 \appendix
 
+\begin{frame}{Backup: How We Measured (TDD Evaluation)}
+    \textbf{Q: ``How do you know the shapes are correct?''}
+
+    \vspace{0.2cm}
+    \textbf{Test-Driven Development approach} with 96 gold-standard shapes and 180 test entities:
+
+    \vspace{0.2cm}
+    \begin{enumerate}
+        \item \textbf{Gold Standard}: 96 hand-written SHACL shapes (one per rule) with known-correct constraints
+        \item \textbf{Test Entities}: For each shape, we created:
+        \begin{itemize}
+            \item \texttt{Pos\_GSxxx}: A compliant entity (should \textcolor{green!60!black}{\textbf{pass}})
+            \item \texttt{Neg\_GSxxx}: A non-compliant entity (should \textcolor{red}{\textbf{fail}})
+        \end{itemize}
+        \item \textbf{Alignment}: Pipeline output matched to gold shapes via cosine similarity ($\geq$0.65) + TF-IDF + fuzzy matching
+        \item \textbf{Evaluation}: Run \texttt{pyshacl} on each pipeline shape against its Pos/Neg entity pair
+    \end{enumerate}
+
+    \vspace{0.3cm}
+    \begin{alertblock}{Verdict Categories}
+        \textbf{correct} = Pos passes + Neg fails \quad|\quad \textbf{too\_strict} = both fail \quad|\quad \textbf{too\_permissive} = both pass \quad|\quad \textbf{inverted} = Pos fails + Neg passes
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Backup: Why Not 100\%? --- Root Cause Analysis}
+    \textbf{Q: ``Why aren't your metrics higher?''}
+
+    \vspace{0.2cm}
+    \small
+    \begin{tabular}{@{}lccl@{}}
+        \toprule
+        \textbf{Metric} & \textbf{Value} & \textbf{Gap} & \textbf{Root Cause} \\
+        \midrule
+        \textbf{M1} Extraction & 85.4\% & 14 rules & Alignment threshold (cosine $<$0.65 for \\
+        & & missed & paraphrased rules) + 14 gold rules not \\
+        & & & extracted by the pipeline \\
+        \addlinespace
+        \textbf{M2} Classification & 85.4\% & 12 wrong & Permission ambiguity (``may'' = deontic \\
+        & & type & vs.\ epistemic) accounts for most errors \\
+        \addlinespace
+        \textbf{M4} F1=0.866 & R=0.778 & 12 too & \textbf{Too permissive}: shape lacks constraint \\
+        & & permissive & (missing \texttt{sh:minCount} or wrong path) \\
+        & & 8 inverted & \textbf{Inverted}: upstream deontic misclass. \\
+        & & & (prohibition $\leftrightarrow$ obligation) \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.3cm}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{What we can fix (engineering):}
+        \begin{itemize}
+            \item Alignment threshold tuning
+            \item Vocabulary coverage expansion
+            \item Constraint pattern refinement
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \textbf{What is fundamentally hard:}
+        \begin{itemize}
+            \item ``May'' disambiguation (linguistic)
+            \item Prohibition detection (40\% LLM acc.)
+            \item ``Should'' as weak obligation
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
 \begin{frame}{Backup: Output Stability Explained}
     \textbf{Q: ``Show me the 100\% reproducibility.''}
 
