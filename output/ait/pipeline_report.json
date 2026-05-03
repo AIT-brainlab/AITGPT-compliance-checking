@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-02T20:20:17.777178",
+  "timestamp": "2026-05-03T12:07:08.904973",
   "source": "ait",
-  "pipeline_version": "dev",
+  "pipeline_version": "2.1-final-defense",
   "environment": {
     "python": "3.10.10",
     "platform": "Windows-10-10.0.26200-SP0",
     "ollama_model": "mistral",
     "ollama_second_model": "mistral",
     "seed": "42",
-    "pipeline_version": "dev",
+    "pipeline_version": "2.1-final-defense",
     "extract_spacy": "0",
     "ollama_model_digest": "6577803aa9a0",
-    "git_sha": "cba483bf"
+    "git_sha": "3a336849"
   },
   "summary": {
     "sentences_extracted": 1663,
@@ -20,185 +20,21 @@
     "fol_formulas_ok": 352,
     "fol_formulas_failed": 91,
     "shacl_shapes_total": 443,
-    "shacl_shapes_valid": 394,
+    "shacl_shapes_valid": 401,
     "shacl_shapes_fol_mediated": 352,
     "shacl_shapes_direct_nl": 91,
     "shacl_shapes_fol_fallback": 0,
     "validation_conforms": false,
-    "violations": 10734,
+    "violations": 0,
     "likely_false_positives": 0,
-    "actionable_violations": 10734,
-    "total_errors": 12
+    "actionable_violations": 0,
+    "total_errors": 13
   },
   "violation_triage": {
-    "by_severity": {
-      "Violation": 10602,
-      "Info": 132
-    },
-    "by_source_shape": [
-      {
-        "shape": "http://example.org/ait-policy#AIT_0202Shape",
-        "count": 462,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:hasAdditionalPayment"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs049Shape",
-        "count": 420,
-        "distinct_entities": 140,
-        "pct_entities": 77.8,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:interviewedby"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0059Shape",
-        "count": 264,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:hasStudentID"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0235Shape",
-        "count": 198,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:hasMedicalInsurance"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs087Shape",
-        "count": 198,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:enrolment"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs066Shape",
-        "count": 196,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:moveswithspouse"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs014Shape",
-        "count": 196,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:putnameonwaitinglist"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs097Shape",
-        "count": 194,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:takes"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs044Shape",
-        "count": 192,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:sra_completed"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs056Shape",
-        "count": 192,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:submit"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs075Shape",
-        "count": 182,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:payfee"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs011Shape",
-        "count": 145,
-        "distinct_entities": 65,
-        "pct_entities": 36.1,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:semester"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0019Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:hasDismissalStatus"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0204Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:dismissed"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0445Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:goesToAITClinic"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0008Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS047->ait:hasStudentID"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-        "count": 66,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice."
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0146Shape_prop1",
-        "count": 66,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Students must use the AIT Library and all educational resources of the Institute in a responsible manner."
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0319Shape_prop1",
-        "count": 66,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Students, who will study in another country as part of the Exchange/Dual Degree program, are required to vacate their rooms while they study abroad."
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0144Shape_prop1",
-        "count": 66,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "All students have the right to a peaceful, healthy learning environment in which free discussion is encouraged in the common interest of the pursuit o"
-      }
-    ],
+    "by_severity": {},
+    "by_source_shape": [],
     "likely_false_positive_count": 0,
-    "actionable_violation_count": 10734
+    "actionable_violation_count": 0
   },
   "rule_type_distribution": {
     "obligation": 326,
@@ -218,6 +54,7 @@
     "shacl[override]: ait:AIT_0374Shape deontic:overrides ait:AIT_0246Shape",
     "shacl[override]: ait:AIT_0427Shape deontic:overrides ait:AIT_0176Shape",
     "shacl[override]: ait:AIT_0437Shape deontic:overrides ait:AIT_0425Shape",
-    "shacl[override]: ait:AIT_0452Shape deontic:overrides ait:AIT_0389Shape"
+    "shacl[override]: ait:AIT_0452Shape deontic:overrides ait:AIT_0389Shape",
+    "validate: pyshacl error: An implicit PropertyShape cannot have more than one 'sh:path' predicate.\nFor reference, see https://www.w3.org/TR/shacl/#property-shapes"
   ]
 }

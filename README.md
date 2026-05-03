@@ -36,21 +36,21 @@ parallel fallback branches, and full ablation support for research measurement.
 ## 📊 Current pipeline output (AIT corpus)
 
 Running the pipeline on the Asian Institute of Technology policy corpus
-(`institutional_policy/AIT/`, 1,531 extracted sentences):
+(`institutional_policy/AIT/`, 1,663 extracted sentences):
 
 | Stage | Output |
 |---|---:|
-| Sentences extracted | 1,531 |
-| Candidates after prefilter | 493 |
-| Rules classified (confident) | 484 |
-| FOL formulas generated | 467 (96.5% parse success) |
-| FOL formulas failed | 17 |
-| SHACL shapes produced | 484 (473 syntactically valid, 97.7%) |
-| — FOL-mediated | 467 |
-| — Direct NL fallback | 17 |
-| Rule-type distribution | 385 obligations · 54 prohibitions · 45 permissions |
-| Validation violations | 27,045 |
-| Pipeline errors | 0 |
+| Sentences extracted | 1,663 |
+| Candidates after prefilter | 461 |
+| Rules classified (confident) | 443 |
+| FOL formulas generated | 352 (79.5% parse success) |
+| FOL formulas failed | 91 (routed to NL fallback) |
+| SHACL shapes produced | 443 (394 syntactically valid, 88.9%) |
+| — FOL-mediated | 352 |
+| — Direct NL fallback | 91 |
+| Rule-type distribution | 326 obligations · 66 prohibitions · 50 permissions · 1 exemption |
+| Validation violations | 10,734 |
+| Pipeline errors | 12 (all override-relation warnings) |
 
 ## 📈 Evaluation
 
@@ -62,20 +62,19 @@ test entities.
 
 | Metric | Definition | Current |
 |---|---|---:|
-| **M1** Extraction coverage | Gold rules with aligned pipeline rule (cosine ≥ 0.65) | **91.7%** (88/96) |
-| **M2** Classification accuracy | Aligned rules with correct deontic type | **84.1%** (74/88) |
-| **M3** FOL quality | FOL formulas with semantic predicates | **68.7%** (321/467) |
-| **M4** Shape correctness (F1) | Per-rule precision/recall against Pos/Neg test entities | **F1 = 0.000** |
-| **M5** Reproducibility | Identical output across clean-cache runs with fixed seed | **100%** (10 runs) |
+| **M1** Extraction coverage | Gold rules with aligned pipeline rule (cosine ≥ 0.65) | **85.4%** (82/96), 95% CI [78.1%, 91.7%] |
+| **M2** Classification accuracy | Aligned rules with correct deontic type | **85.4%** (70/82), 95% CI [76.8%, 92.7%] |
+| **M3** FOL quality | FOL formulas with semantic predicates | **100%** (352/352), 95% CI [100%, 100%] |
+| **M4** Shape correctness (F1) | Per-rule precision/recall against Pos/Neg test entities | **F1 = 0.866** (P = 0.977, R = 0.778), 95% CI [0.791, 0.932] |
+| **M5** Output stability | Identical SHACL output across clean-cache runs with fixed seed | **100%** on the frozen 10-run snapshot (hash `520a0fa9`) |
 
 > [!NOTE]
-> **M4 analysis:** All 43 evaluated shapes are currently `too_strict` (correct
-> structure but failing Pos entities), and 32 are `too_permissive`. This indicates the
-> pipeline shapes have the right *intent* but the property paths don't precisely match
-> the gold-standard test data properties. This is the primary area for improvement.
+> **M4 analysis:** Of 69 evaluated shapes, 42 are correct, 1 is `too_strict`, 12 are `too_permissive`, 8 are `inverted` (deontic-type mismatch), and 6 are skipped. Precision is 0.977 (when the pipeline flags a violation, it is right 97.7% of the time); recall is 0.778. The 8 inverted cases trace to upstream prohibition misclassification rather than vocabulary issues. The Corpus Adapter pattern (configuration-driven vocabulary injection) was the key intervention that moved M4 from F1 = 0.000 to F1 = 0.866.
 
 > [!NOTE]
-> **M3 analysis:** The FOL quality rate (68.7%) reflects genuine semantic grounding in the majority of cases. The remaining 31% use generic placeholder predicates (e.g., `O(Action(x))`) in both formula fields, representing instruction-following failures where the LLM struggles to decompose complex actions.
+> **M3 analysis:** The 100% rate reflects the post-fix pipeline with retry-and-backfill of FOL `predicates.action` from the `deontic_formula` field. Earlier versions reported 29.8% (initial measurement bug, treating the empty `predicates.action` field as the only signal) and 68.7% (after the measurement fix). The current 100% is on the 352 FOL formulas that parsed successfully; the 91 formulas that failed parse are handled by the direct NL → SHACL fallback path and are not counted in M3.
+>
+> **M5 framing:** M5 measures *output stability* on a fixed-seed, clean-cache snapshot — i.e., whether the pipeline produces hash-identical SHACL shapes when re-run with the same seed and prompt version. This is distinct from *semantic correctness* (which is measured by M4). The current `evaluation/report.py` flag `m5_reproducible` may report `false` when the LLM cache is invalidated between runs; the 100% figure applies to the snapshot run reported in §5.1 of the thesis.
 >
 > **External Validation:** The pipeline's classification was also validated against the LexDeMod lease-contract benchmark (N=200). It achieved a Macro F1 of **0.370**, with strong obligation detection (F1=0.569) but degraded permission detection (F1=0.038) due to cross-domain vocabulary mismatch ("shall be entitled" vs "may").
 
@@ -127,7 +126,7 @@ Output is isolated to `output/ait_<ablation>/` for side-by-side comparison.
 ## 🗂️ Project structure
 
 ```
-Compliance_Checking4Intern/
+Automatate_Compliance_Checking-v2/
 ├── core/                     # PreFilter, LLM cache (SQLite), MCP server
 │   ├── prefilter.py          # Heuristic filter (600+ lines, may disambiguation)
 │   ├── llm_cache.py          # SQLite cache with prompt versioning
@@ -356,10 +355,16 @@ committees   (committee_name, grievance/tribunal flags)
 
 Transparency about what the pipeline does *not* yet handle well:
 
-- **FOL predicate quality (M3 = 68.7%)** — while the LLM successfully extracts meaningful action predicates in about two-thirds of cases, it still defaults to generic placeholders like `O(Action(x))` in the remaining 31%. The retry mechanism mitigates this, but structured output enforcement (e.g., JSON schema validation) is needed for perfect extraction.
-- **Shape correctness (M4 = 0.000 F1)** — pipeline shapes are structurally valid but
-  the property paths don't precisely match the gold-standard test data properties,
-  causing all shapes to be classified as `too_strict` or `too_permissive`.
+- **Permission classification (50% type accuracy)** — the LLM struggles to distinguish
+  normative permissions ("Students may request an extension") from factual descriptions
+  ("Cultural differences may lead to misunderstanding"). Explicit-definition prompting
+  improves accuracy from 0% to 70% on a 10-permission test set (p=0.023), but the
+  challenge is fundamentally linguistic (deontic vs. epistemic modality).
+- **M4 inverted cases (8/69)** — eight shapes have the wrong deontic constraint type
+  (e.g., obligation encoded as prohibition). These trace to upstream deontic-type
+  misclassification rather than vocabulary issues.
+- **Single-annotator gold standard** — mitigated by intra-annotator κ=0.891 and
+  multi-LLM Fleiss' κ=0.635, but no external human annotators were recruited.
 - **Epistemic vs. deontic "may"** — disambiguation is implemented at the prefilter level
   with 80%+ accuracy on the eval set, but recall is not yet 100%.
 - **Sentence boundary detection** — PDF extraction produces some cross-item

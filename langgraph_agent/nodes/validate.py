@@ -99,11 +99,26 @@ def validate_node(state: PipelineState) -> PipelineState:
     data_graph.parse(str(test_data), format="turtle")
     entity_count = len(set(data_graph.subjects()))
 
-    # Run validation
-    try:
-        conforms, results_graph, results_text = validate(
+    # Run validation — with sanitization retry for duplicate sh:path errors
+    def _sanitize_duplicate_paths(g: Graph) -> int:
+        """Remove duplicate sh:path triples from implicit PropertyShapes (BNodes).
+        Returns number of BNodes sanitized."""
+        fixed = 0
+        for bnode in set(g.subjects(SH.path)):
+            if not isinstance(bnode, BNode):
+                continue
+            paths = list(g.objects(bnode, SH.path))
+            if len(paths) > 1:
+                # Keep only the first path, remove the rest
+                for extra in paths[1:]:
+                    g.remove((bnode, SH.path, extra))
+                fixed += 1
+        return fixed
+
+    def _run_pyshacl(sg: Graph) -> tuple:
+        return validate(
             data_graph,
-            shacl_graph=shapes_graph,
+            shacl_graph=sg,
             ont_graph=Graph().parse(str(ontology)) if ontology.exists() else None,
             inference="rdfs",
             abort_on_first=False,
@@ -111,14 +126,35 @@ def validate_node(state: PipelineState) -> PipelineState:
             advanced=True,
             debug=False,
         )
+
+    try:
+        conforms, results_graph, results_text = _run_pyshacl(shapes_graph)
     except Exception as exc:
-        errors.append(f"validate: pyshacl error: {exc}")
-        return {
-            "validation_results": {"error": str(exc)},
-            "conforms": False,
-            "current_step": "validate",
-            "errors": errors,
-        }
+        if "sh:path" in str(exc):
+            # Sanitize and retry
+            fixed = _sanitize_duplicate_paths(shapes_graph)
+            errors.append(
+                f"validate: sanitized {fixed} implicit PropertyShapes with "
+                f"duplicate sh:path — retrying validation"
+            )
+            try:
+                conforms, results_graph, results_text = _run_pyshacl(shapes_graph)
+            except Exception as exc2:
+                errors.append(f"validate: pyshacl error after sanitization: {exc2}")
+                return {
+                    "validation_results": {"error": str(exc2)},
+                    "conforms": False,
+                    "current_step": "validate",
+                    "errors": errors,
+                }
+        else:
+            errors.append(f"validate: pyshacl error: {exc}")
+            return {
+                "validation_results": {"error": str(exc)},
+                "conforms": False,
+                "current_step": "validate",
+                "errors": errors,
+            }
 
     # Parse violations — resolve anonymous property shapes to parent NodeShape
     violations = []

@@ -10,6 +10,7 @@ Usage:
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from collections import Counter
@@ -46,7 +47,7 @@ class MetricsReport:
     m4_inverted: int = 0
     m4_skipped: int = 0
 
-    m5_reproducible: bool = False
+    m5_reproducible: bool | None = None
 
     pipeline_stats: dict = field(default_factory=dict)
 
@@ -161,6 +162,37 @@ def compute_m4(eval_results: list[dict]) -> dict:
     }
 
 
+def compute_m5(output_dir: Path) -> bool | None:
+    """M5 — Output stability: hash shapes_generated.ttl and compare to stored hash.
+
+    Returns:
+        True  — hash matches previous run (PASS)
+        False — hash differs from previous run (FAIL)
+        None  — first run, no previous hash to compare (NOT YET TESTED)
+    """
+    shapes_path = output_dir / "shapes_generated.ttl"
+    hash_path = output_dir / ".m5_hash"
+
+    if not shapes_path.exists():
+        return None
+
+    # Compute SHA-256 of current shapes
+    current_hash = hashlib.sha256(
+        shapes_path.read_bytes()
+    ).hexdigest()[:8]  # short hash, same style as thesis (520a0fa9)
+
+    if hash_path.exists():
+        previous_hash = hash_path.read_text(encoding="utf-8").strip()
+        match = current_hash == previous_hash
+        # Update stored hash for next comparison
+        hash_path.write_text(current_hash, encoding="utf-8")
+        return match
+    else:
+        # First run — store hash, report as not yet tested
+        hash_path.write_text(current_hash, encoding="utf-8")
+        return None
+
+
 # ── Aggregate report ──────────────────────────────────────────────────────
 
 def build_report(source: str = "ait") -> MetricsReport:
@@ -207,7 +239,7 @@ def build_report(source: str = "ait") -> MetricsReport:
         m4_too_permissive=m4["too_permissive"],
         m4_inverted=m4["inverted"],
         m4_skipped=m4["skipped"],
-        m5_reproducible=False,  # computed separately by diffing two runs
+        m5_reproducible=compute_m5(out),
         pipeline_stats=pipeline_report.get("summary", {}),
     )
     return report
@@ -222,6 +254,9 @@ def _load_json(path: Path, default):
 # ── Formatters ─────────────────────────────────────────────────────────────
 
 def format_console(r: MetricsReport) -> str:
+    _m5 = ("PASS (hash-identical to previous run)" if r.m5_reproducible is True
+           else "FAIL (output changed)" if r.m5_reproducible is False
+           else "NOT YET TESTED (run report again to compare)")
     lines = [
         "",
         "=" * 60,
@@ -243,7 +278,7 @@ def format_console(r: MetricsReport) -> str:
         f"too_permissive = {r.m4_too_permissive}, inverted = {r.m4_inverted}, "
         f"skipped = {r.m4_skipped}",
         "",
-        f"  M5 — Reproducibility     :  {'PASS' if r.m5_reproducible else 'NOT YET TESTED'}",
+        f"  M5 — Output Stability    :  {_m5}",
         "",
         "=" * 60,
     ]

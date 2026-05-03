@@ -20,6 +20,10 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+# Load .env so PIPELINE_VERSION, OLLAMA_* etc. are available via os.getenv()
+from dotenv import load_dotenv
+load_dotenv(PROJECT_ROOT / ".env")
+
 # Suppress rdflib's verbose tracebacks for ISO8601 parsing on failed literals
 logging.getLogger("rdflib.term").setLevel(logging.ERROR)
 
