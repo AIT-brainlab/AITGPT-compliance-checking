@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List
 
 from pyshacl import validate
-from rdflib import Graph, Namespace, RDF, SH, BNode
+from rdflib import Graph, Literal, Namespace, RDF, SH, BNode, XSD
 
 from langgraph_agent.state import PipelineState, SHACLShape
 from langgraph_agent.corpus_config import get_corpus_config
@@ -76,6 +76,55 @@ def _merge_shapes(pipeline_shapes: List[SHACLShape]) -> Graph:
     return g
 
 
+def _sanitize_shapes_graph(g: Graph) -> list[str]:
+    """Proactively fix known issues in the merged shapes graph before pyshacl.
+
+    Two issues arise when pipeline shapes are merged with gold shapes:
+      1) BNodes may acquire duplicate sh:path triples → pyshacl rejects
+      2) sh:maxCount / sh:minCount may not have xsd:integer datatype → pyshacl rejects
+
+    Returns a list of diagnostic messages for each fix applied.
+    """
+    msgs: list[str] = []
+
+    # Fix 1: Deduplicate sh:path on BNodes
+    dup_path_fixed = 0
+    for bnode in set(g.subjects(SH.path)):
+        if not isinstance(bnode, BNode):
+            continue
+        paths = list(g.objects(bnode, SH.path))
+        if len(paths) > 1:
+            for extra in paths[1:]:
+                g.remove((bnode, SH.path, extra))
+            dup_path_fixed += 1
+    if dup_path_fixed:
+        msgs.append(
+            f"validate: sanitized {dup_path_fixed} implicit PropertyShapes "
+            f"with duplicate sh:path"
+        )
+
+    # Fix 2: Ensure sh:maxCount and sh:minCount are xsd:integer literals
+    count_fixed = 0
+    for pred in (SH.maxCount, SH.minCount):
+        for s, o in list(g.subject_objects(pred)):
+            if isinstance(o, Literal) and o.datatype == XSD.integer:
+                continue  # already correct
+            try:
+                int_val = int(o)
+            except (ValueError, TypeError):
+                int_val = 0  # fallback for unparseable values
+            g.remove((s, pred, o))
+            g.add((s, pred, Literal(int_val, datatype=XSD.integer)))
+            count_fixed += 1
+    if count_fixed:
+        msgs.append(
+            f"validate: fixed {count_fixed} sh:maxCount/sh:minCount literals "
+            f"to xsd:integer datatype"
+        )
+
+    return msgs
+
+
 def validate_node(state: PipelineState) -> PipelineState:
     shapes: List[SHACLShape] = state.get("shacl_shapes", [])
     errors: List[str] = []
@@ -99,22 +148,10 @@ def validate_node(state: PipelineState) -> PipelineState:
     data_graph.parse(str(test_data), format="turtle")
     entity_count = len(set(data_graph.subjects()))
 
-    # Run validation — with sanitization retry for duplicate sh:path errors
-    def _sanitize_duplicate_paths(g: Graph) -> int:
-        """Remove duplicate sh:path triples from implicit PropertyShapes (BNodes).
-        Returns number of BNodes sanitized."""
-        fixed = 0
-        for bnode in set(g.subjects(SH.path)):
-            if not isinstance(bnode, BNode):
-                continue
-            paths = list(g.objects(bnode, SH.path))
-            if len(paths) > 1:
-                # Keep only the first path, remove the rest
-                for extra in paths[1:]:
-                    g.remove((bnode, SH.path, extra))
-                fixed += 1
-        return fixed
+    # ── Proactive sanitization before pyshacl ──────────────────────────
+    errors.extend(_sanitize_shapes_graph(shapes_graph))
 
+    # Run validation
     def _run_pyshacl(sg: Graph) -> tuple:
         return validate(
             data_graph,
@@ -130,31 +167,13 @@ def validate_node(state: PipelineState) -> PipelineState:
     try:
         conforms, results_graph, results_text = _run_pyshacl(shapes_graph)
     except Exception as exc:
-        if "sh:path" in str(exc):
-            # Sanitize and retry
-            fixed = _sanitize_duplicate_paths(shapes_graph)
-            errors.append(
-                f"validate: sanitized {fixed} implicit PropertyShapes with "
-                f"duplicate sh:path — retrying validation"
-            )
-            try:
-                conforms, results_graph, results_text = _run_pyshacl(shapes_graph)
-            except Exception as exc2:
-                errors.append(f"validate: pyshacl error after sanitization: {exc2}")
-                return {
-                    "validation_results": {"error": str(exc2)},
-                    "conforms": False,
-                    "current_step": "validate",
-                    "errors": errors,
-                }
-        else:
-            errors.append(f"validate: pyshacl error: {exc}")
-            return {
-                "validation_results": {"error": str(exc)},
-                "conforms": False,
-                "current_step": "validate",
-                "errors": errors,
-            }
+        errors.append(f"validate: pyshacl error: {exc}")
+        return {
+            "validation_results": {"error": str(exc)},
+            "conforms": False,
+            "current_step": "validate",
+            "errors": errors,
+        }
 
     # Parse violations — resolve anonymous property shapes to parent NodeShape
     violations = []

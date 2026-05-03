@@ -1,360 +1,360 @@
 {
   "conforms": false,
-  "shape_count": 491,
+  "shape_count": 496,
   "entity_count": 180,
-  "violation_count": 10734,
+  "violation_count": 11522,
   "violations": [
     {
-      "focus_node": "http://example.org/ait-policy#Neg_GS047",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "focus_node": "http://example.org/ait-policy#Pos_GS055",
+      "source_shape": "http://example.org/ait-policy#AIT_0027Shape_prop1",
+      "source_path": "http://example.org/ait-policy#vacate_unit",
+      "result_message": "CREDIT POLICY notice from the Accommodation Unit, and the tenant is required to vacate the housing unit within two weeks.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
-      "focus_node": "http://example.org/ait-policy#Pos_GS031",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "focus_node": "http://example.org/ait-policy#Pos_GS008",
+      "source_shape": "http://example.org/ait-policy#AIT_0027Shape_prop1",
+      "source_path": "http://example.org/ait-policy#vacate_unit",
+      "result_message": "CREDIT POLICY notice from the Accommodation Unit, and the tenant is required to vacate the housing unit within two weeks.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
-      "focus_node": "http://example.org/ait-policy#Pos_GS018",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "focus_node": "http://example.org/ait-policy#Neg_GS008",
+      "source_shape": "http://example.org/ait-policy#AIT_0027Shape_prop1",
+      "source_path": "http://example.org/ait-policy#vacate_unit",
+      "result_message": "CREDIT POLICY notice from the Accommodation Unit, and the tenant is required to vacate the housing unit within two weeks.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
-      "focus_node": "http://example.org/ait-policy#Pos_GS064",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "focus_node": "http://example.org/ait-policy#Neg_GS055",
+      "source_shape": "http://example.org/ait-policy#AIT_0027Shape_prop1",
+      "source_path": "http://example.org/ait-policy#vacate_unit",
+      "result_message": "CREDIT POLICY notice from the Accommodation Unit, and the tenant is required to vacate the housing unit within two weeks.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
-      "focus_node": "http://example.org/ait-policy#Pos_GS096",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS097",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS043",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS031",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS013",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS009",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS003",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS020",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS093",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS089",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS083",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS013",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS090",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "focus_node": "http://example.org/ait-policy#Pos_GS067",
+      "source_shape": "http://example.org/ait-policy#AIT_0027Shape_prop1",
+      "source_path": "http://example.org/ait-policy#vacate_unit",
+      "result_message": "CREDIT POLICY notice from the Accommodation Unit, and the tenant is required to vacate the housing unit within two weeks.",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Pos_GS056",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS071",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS066",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS084",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS007",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS035",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS040",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS074",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS096",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS028",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS062",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS011",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS009",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS044",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS054",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS018",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS017",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS043",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS047",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS066",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS007",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS056->ait:hasRegistrationFeePayment",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Pos_GS083",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS016",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS071",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS014",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS003",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS037",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS017",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS064",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS093",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Pos_GS037",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
-      "severity": "http://www.w3.org/ns/shacl#Violation"
-    },
-    {
-      "focus_node": "http://example.org/ait-policy#Neg_GS075",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS083->ait:hasRegistrationFeePayment",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     },
     {
       "focus_node": "http://example.org/ait-policy#Pos_GS075",
-      "source_shape": "http://example.org/ait-policy#AIT_0228Shape_prop1",
-      "source_path": "http://example.org/ait-policy#accesses_sis",
-      "result_message": "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice.",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS075->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS064",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS064->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS097",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS097->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS075",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS075->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS071",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS071->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS020",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS020->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS040",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS040->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS028",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS028->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS007",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS007->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS047",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS047->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS003",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS003->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS046",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS046->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS031",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS031->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS064",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS064->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS011",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS011->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS013",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS013->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS031",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS031->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS017",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS017->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS037",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS037->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS063",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS063->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS097",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS097->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS062",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS062->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS096",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS096->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS018",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS018->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS043",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS043->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS009",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS009->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS044",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS044->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS089",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS089->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS074",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS074->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS096",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS096->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS085",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS085->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS035",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS035->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS043",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS043->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS084",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS084->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS093",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS093->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS017",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS017->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS040",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS040->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS054",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS054->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS044",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS044->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS003",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Neg_GS003->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS009",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS009->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS084",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS084->ait:hasRegistrationFeePayment",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS090",
+      "source_shape": "http://example.org/ait-policy#AIT_0205Shape",
+      "source_path": "http://example.org/ait-policy#hasRegistrationFeePayment",
+      "result_message": "Less than 1 values on ait:Pos_GS090->ait:hasRegistrationFeePayment",
       "severity": "http://www.w3.org/ns/shacl#Violation"
     }
   ],
   "pipeline_shapes": 443,
-  "valid_shapes": 394
+  "valid_shapes": 401
 }

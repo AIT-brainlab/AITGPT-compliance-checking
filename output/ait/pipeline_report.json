@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-03T12:07:08.904973",
+  "timestamp": "2026-05-03T20:54:55.293834",
   "source": "ait",
   "pipeline_version": "2.1-final-defense",
   "environment": {
@@ -11,30 +11,194 @@
     "pipeline_version": "2.1-final-defense",
     "extract_spacy": "0",
     "ollama_model_digest": "6577803aa9a0",
-    "git_sha": "3a336849"
+    "git_sha": "e4e4947c"
   },
   "summary": {
     "sentences_extracted": 1663,
     "candidates_prefiltered": 461,
     "rules_classified": 443,
-    "fol_formulas_ok": 352,
-    "fol_formulas_failed": 91,
+    "fol_formulas_ok": 353,
+    "fol_formulas_failed": 90,
     "shacl_shapes_total": 443,
     "shacl_shapes_valid": 401,
-    "shacl_shapes_fol_mediated": 352,
-    "shacl_shapes_direct_nl": 91,
+    "shacl_shapes_fol_mediated": 353,
+    "shacl_shapes_direct_nl": 90,
     "shacl_shapes_fol_fallback": 0,
     "validation_conforms": false,
-    "violations": 0,
+    "violations": 11522,
     "likely_false_positives": 0,
-    "actionable_violations": 0,
-    "total_errors": 13
+    "actionable_violations": 11522,
+    "total_errors": 14
   },
   "violation_triage": {
-    "by_severity": {},
-    "by_source_shape": [],
+    "by_severity": {
+      "Violation": 11192,
+      "Info": 330
+    },
+    "by_source_shape": [
+      {
+        "shape": "http://example.org/ait-policy#Gs049Shape",
+        "count": 420,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS083->ait:interviewedby"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0202Shape",
+        "count": 330,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:hasAdditionalPayment"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0398Shape",
+        "count": 264,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:compliesWithImmigrationProvision"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0331Shape",
+        "count": 264,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:hasStudentID"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0235Shape",
+        "count": 198,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:hasMedicalInsurance"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0008Shape",
+        "count": 198,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:hasID"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs087Shape",
+        "count": 198,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:enrolment"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs066Shape",
+        "count": 196,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:moveswithspouse"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs014Shape",
+        "count": 196,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:putnameonwaitinglist"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs097Shape",
+        "count": 194,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:takes"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs044Shape",
+        "count": 192,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:sra_completed"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs056Shape",
+        "count": 192,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS083->ait:submit"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs075Shape",
+        "count": 182,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:payfee"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs011Shape",
+        "count": 145,
+        "distinct_entities": 65,
+        "pct_entities": 36.1,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:semester"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0205Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:hasRegistrationFeePayment"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0030Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:hasParent"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0445Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:goesToAITClinic"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0333Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS056->ait:arrivalDate"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0198Shape_prop1",
+        "count": 66,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "If fees remain unpaid by the start of a semester, a student’s status shall be ‘suspended due to financial inability’."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0360Shape_prop1",
+        "count": 66,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Students found guilty may face a fine of Baht 2,000 or the actual costs of the damage caused by smoking or burning."
+      }
+    ],
     "likely_false_positive_count": 0,
-    "actionable_violation_count": 0
+    "actionable_violation_count": 11522
   },
   "rule_type_distribution": {
     "obligation": 326,
@@ -55,6 +219,7 @@
     "shacl[override]: ait:AIT_0427Shape deontic:overrides ait:AIT_0176Shape",
     "shacl[override]: ait:AIT_0437Shape deontic:overrides ait:AIT_0425Shape",
     "shacl[override]: ait:AIT_0452Shape deontic:overrides ait:AIT_0389Shape",
-    "validate: pyshacl error: An implicit PropertyShape cannot have more than one 'sh:path' predicate.\nFor reference, see https://www.w3.org/TR/shacl/#property-shapes"
+    "validate: sanitized 2 implicit PropertyShapes with duplicate sh:path",
+    "validate: fixed 1 sh:maxCount/sh:minCount literals to xsd:integer datatype"
   ]
 }
