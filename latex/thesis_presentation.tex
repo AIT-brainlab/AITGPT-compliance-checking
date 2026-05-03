@@ -1,0 +1,615 @@
+\documentclass[aspectratio=169, 10pt]{beamer}
+
+% ── Packages ─────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% ── Theme Settings ───────────────────────────────────────────────────────
+\usetheme{Madrid}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{} % Remove navigation bar
+\setbeamercolor{item}{fg=darkred} % Custom bullet color
+
+% ── Title Page ───────────────────────────────────────────────────────────
+\title[Automated Policy Formalization]{Automated Institutional Policy Formalization}
+\subtitle{From Natural Language to Executable SHACL Constraints\\using LLMs, FOL, and the Corpus Adapter Pattern}
+\author{Phongkrit}
+\institute[AIT]{Asian Institute of Technology (AIT) \\ \vspace{0.2cm} \textit{Final Thesis Defense}}
+\date{May 2026}
+
+\begin{document}
+
+% ═══════════════════════════════════════════════════════════════════════
+% Slide 1: Title
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+% Slide 2: Outline
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Motivation \& Problem}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{The Problem: The Compliance Gap}
+    \begin{columns}
+        \column{0.45\textwidth}
+        \textbf{Natural Language Policies}
+        \begin{itemize}
+            \item Written for humans
+            \item Inherently ambiguous
+            \item \textit{``Students with outstanding fees cannot register for courses.''}
+        \end{itemize}
+        
+        \column{0.1\textwidth}
+        \centering
+        \Huge$\rightarrow$
+        
+        \column{0.45\textwidth}
+        \textbf{Machine-Executable Rules}
+        \begin{itemize}
+            \item Required for IT systems
+            \item Must be strictly boolean
+            \item Currently requires expensive \textbf{manual coding}
+        \end{itemize}
+    \end{columns}
+    
+    \vspace{0.5cm}
+    \begin{alertblock}{Research Objective}
+        Automate the translation of institutional policy text into executable SHACL validation constraints using LLMs and FOL, \textbf{without human-in-the-loop logic programming}.
+    \end{alertblock}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{Research Questions \& Hypotheses}
+    \begin{enumerate}
+        \item[\textbf{RQ1}] Can instruction-tuned LLMs reliably identify and classify deontic policy rules?
+        \begin{itemize}
+            \item[\textbf{H1}] Achieve $\geq$95\% rule identification accuracy
+        \end{itemize}
+        
+        \vspace{0.3cm}
+        \item[\textbf{RQ2}] Is First-Order Logic sufficient for institutional policy formalization?
+        \begin{itemize}
+            \item[\textbf{H2}] FOL with deontic operators is sufficient; SOL/HOL not required
+        \end{itemize}
+        
+        \vspace{0.3cm}
+        \item[\textbf{RQ3}] Can FOL formulas be automatically translated to executable SHACL constraints?
+        \begin{itemize}
+            \item[\textbf{H3}] Achieve $\geq$95\% syntactically valid and semantically correct SHACL shapes
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Pipeline Architecture}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{The 9-Node End-to-End Pipeline}
+    \centering
+    \begin{tikzpicture}[node distance=1.8cm, auto, thick, scale=0.72, every node/.style={transform shape}]
+        \node[draw, rounded corners, fill=blue!15, text width=1.9cm, align=center, font=\small] (pdf) {1. Extract\\(PDF$\rightarrow$sent.)};
+        \node[draw, rounded corners, fill=blue!15, text width=1.9cm, align=center, right of=pdf, xshift=0.9cm, font=\small] (prefilter) {2. Heuristic\\Pre-filter};
+        \node[draw, rounded corners, fill=blue!15, text width=1.9cm, align=center, right of=prefilter, xshift=0.9cm, font=\small] (classify) {3. LLM\\Classify};
+        \node[draw, rounded corners, fill=blue!10, text width=1.9cm, align=center, right of=classify, xshift=0.9cm, font=\small] (recls) {4. Reclassify\\(2nd opinion)};
+        \node[draw, rounded corners, fill=green!15, text width=1.9cm, align=center, right of=recls, xshift=0.9cm, font=\small] (fol) {5. FOL\\Formalize};
+
+        \node[draw, rounded corners, fill=orange!15, text width=1.9cm, align=center, below of=fol, yshift=-0.3cm, font=\small] (shacl) {6. SHACL\\(FOL-mediated)};
+        \node[draw, rounded corners, fill=orange!10, text width=1.9cm, align=center, below of=recls, yshift=-0.3cm, font=\small] (direct) {7. Direct SHACL\\(NL fallback)};
+        \node[draw, rounded corners, fill=yellow!15, text width=1.9cm, align=center, below of=classify, yshift=-0.3cm, font=\small] (validate) {8. Validate\\(pyshacl)};
+        \node[draw, rounded corners, fill=purple!10, text width=1.9cm, align=center, below of=prefilter, yshift=-0.3cm, font=\small] (report) {9. Report};
+
+        \draw[->] (pdf) -- (prefilter);
+        \draw[->] (prefilter) -- (classify);
+        \draw[->] (classify) -- (recls);
+        \draw[->] (classify) to [bend right=20] (fol);
+        \draw[->] (recls) -- (fol);
+        \draw[->] (fol) -- (shacl);
+        \draw[->] (fol) -- (direct);
+        \draw[->] (shacl) -- (validate);
+        \draw[->] (direct) to [bend left=10] (validate);
+        \draw[->] (validate) -- (report);
+    \end{tikzpicture}
+
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item Implemented as a \textbf{LangGraph state machine} (\texttt{langgraph\_agent/graph.py}) with conditional routing after \texttt{classify} and fan-out/fan-in around \texttt{fol}
+        \item \textbf{Corpus Adapter} injects domain-specific vocabulary at Stages 5--7
+        \item Local LLM inference via Ollama (Mistral 7B, \texttt{seed=42}, \texttt{temperature=0.1})
+        \item \textit{Override-rule detection} runs inside \texttt{validate} and \texttt{report} via the SHACL \texttt{deontic:overrides} relation, not as a separate node
+    \end{itemize}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{Translation Traceability: Full Pipeline Chain}
+    \small
+    \begin{tabular}{@{}lp{11cm}@{}}
+        \toprule
+        \textbf{Stage} & \textbf{Content} \\
+        \midrule
+        \textbf{1. NL Text} & ``A student who has outstanding fees must not register for courses.'' \\
+        \addlinespace
+        \textbf{2. Classified} & \texttt{PROHIBITION} (deontic marker: ``must not'', agent: student) \\
+        \addlinespace
+        \textbf{3. FOL} & $F(\forall x.\ Student(x) \wedge OutstandingFees(x) \rightarrow RegisterCourses(x))$ \\
+        \addlinespace
+        \textbf{4. SHACL} & \texttt{sh:targetClass ait:Student ; sh:path ait:registerCourses ; sh:maxCount 0} \\
+        \addlinespace
+        \textbf{5. Validate} & Pos entity: no registration $\rightarrow$ \textcolor{green!60!black}{\textbf{Conforms}} \quad Neg entity: has registration $\rightarrow$ \textcolor{red}{\textbf{Violation!}} \\
+        \bottomrule
+    \end{tabular}
+    
+    \vspace{0.4cm}
+    \textbf{Key Design Decision:} The FOL layer provides a \textbf{human-verifiable semantic checkpoint} between ambiguous language and opaque SHACL code---proven necessary by our ablation study (next slide).
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{Pipeline at Scale: The Data Funnel}
+    \centering
+    \begin{tikzpicture}[every node/.style={font=\small}, scale=0.85, transform shape]
+        % Funnel boxes
+        \node[draw, rounded corners, fill=blue!10, text width=12cm, align=center] (s1) at (0,4.5) {\textbf{1,663} sentences extracted from 5 AIT P\&P PDFs};
+        \node[draw, rounded corners, fill=blue!20, text width=10cm, align=center] (s2) at (0,3.3) {\textbf{461} candidates after heuristic pre-filter (27.7\%)};
+        \node[draw, rounded corners, fill=blue!30, text width=8.5cm, align=center] (s3) at (0,2.1) {\textbf{443} rules classified by LLM};
+        \node[draw, rounded corners, fill=green!25, text width=5cm, align=center] (s4a) at (-2.5,0.8) {\textbf{353} FOL-mediated\\shapes (79.7\%)};
+        \node[draw, rounded corners, fill=orange!20, text width=4cm, align=center] (s4b) at (2.5,0.8) {\textbf{90} direct NL\\shapes (20.3\%)};
+        \node[draw, rounded corners, fill=yellow!20, text width=7cm, align=center] (s5) at (0,-0.5) {\textbf{401} valid SHACL shapes $\rightarrow$ \textbf{11,522} violations};
+
+        \draw[->, thick] (s1) -- (s2);
+        \draw[->, thick] (s2) -- (s3);
+        \draw[->, thick] (s3) -- (s4a);
+        \draw[->, thick] (s3) -- (s4b);
+        \draw[->, thick] (s4a) -- (s5);
+        \draw[->, thick] (s4b) -- (s5);
+    \end{tikzpicture}
+
+    \vspace{0.3cm}
+    \textbf{Rule type distribution}: 326 obligation \quad|\quad 66 prohibition \quad|\quad 50 permission \quad|\quad 1 exemption
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Key Results}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Why Not Direct NL $\rightarrow$ SHACL? (Ablation Study)}
+    We ran a controlled experiment bypassing the FOL layer:
+    
+    \vspace{0.2cm}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Approach} & \textbf{Turtle Syntax Valid} & \textbf{Correct Constraint Type} \\
+            \midrule
+            Direct NL $\rightarrow$ SHACL & 38.3\% & 63.0\% \\
+            \textbf{NL $\rightarrow$ FOL $\rightarrow$ SHACL} & \textbf{100\%} & \textbf{100\%} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    
+    \vspace{0.3cm}
+    \textbf{Why the FOL layer is essential:}
+    \begin{enumerate}
+        \item \textbf{Deterministic}: FOL$\rightarrow$SHACL is a template function (zero variance)
+        \item \textbf{Decomposes complexity}: Semantic understanding (LLM) vs. syntax generation (code)
+        \item \textbf{Deontic encoding}: Explicit O/P/F type $\rightarrow$ correct constraint pattern
+        \item \textbf{Tool-agnostic}: Same FOL can compile to SHACL, SPARQL, or OWL
+    \end{enumerate}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{Pipeline Metrics with Confidence Intervals}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{llcc}
+            \toprule
+            \textbf{Metric} & \textbf{Definition} & \textbf{Value} & \textbf{95\% CI} \\
+            \midrule
+            \textbf{M1} & Gold rules aligned to pipeline output & \textbf{85.4\%} & [78.1\%, 91.7\%] \\
+            \textbf{M2} & Correct deontic type (among aligned) & \textbf{85.4\%} & [76.8\%, 92.7\%] \\
+            \textbf{M3} & FOL formulas with semantic predicates & \textbf{100\%} & [100\%, 100\%] \\
+            \textbf{M4} & Shape correctness F1 (Pos/Neg test) & \textbf{F1=0.866} & [0.791, 0.932] \\
+            \textbf{M5} & Output stability (hash-equality, fixed seed + cached LLM) & \textbf{100\%} & frozen 10-run snapshot \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    
+    \vspace{0.3cm}
+    \textbf{M4 Breakdown} (69 evaluated shapes):
+    \begin{itemize}
+        \item 42 correct \quad | \quad 1 too strict \quad | \quad 12 too permissive \quad | \quad 8 inverted \quad | \quad 6 skipped
+        \item Precision = 0.977 (when pipeline flags a violation, it's right 97.7\% of the time)
+    \end{itemize}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{The Vocabulary Grounding Problem \& Resolution}
+    \begin{columns}
+        \column{0.48\textwidth}
+        \textbf{Before: M4 = F1 0.000}
+        \begin{itemize}
+            \item LLM invents properties: \texttt{ait:payFee}
+            \item Gold standard uses: \texttt{ait:payfee}
+            \item 317 generated paths vs. 199 gold paths
+            \item Only 7 overlapped (2.2\%)
+        \end{itemize}
+        
+        \column{0.04\textwidth}
+        \centering
+        \Huge$\rightarrow$
+        
+        \column{0.48\textwidth}
+        \textbf{After Corpus Adapter: M4 = F1 0.866}
+        \begin{itemize}
+            \item Vocabulary injection via YAML config
+            \item 259 AIT properties loaded at inference
+            \item LLM constrained to institutional ontology
+            \item \textbf{P = 0.977, R = 0.778}
+        \end{itemize}
+    \end{columns}
+    
+    \vspace{0.5cm}
+    \begin{alertblock}{Key Insight}
+        LLMs excel at \textit{structural reasoning} (deontic types, constraint patterns) but require \textit{vocabulary guidance} for institutional ontology alignment. The Corpus Adapter resolves this.
+    \end{alertblock}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Annotation Reliability}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Multi-LLM Agreement Study (5 Models $\times$ 5 Organizations)}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{table}[]
+            \centering
+            \small
+            \begin{tabular}{llc}
+                \toprule
+                \textbf{Model} & \textbf{Org} & \textbf{Agreement} \\
+                \midrule
+                Mistral & Mistral AI & 88.0\% \\
+                Gemma3:4B & Google & 88.0\% \\
+                Qwen3:8B & Alibaba & 84.0\% \\
+                Phi4-mini & Microsoft & 82.0\% \\
+                Llama 3.1:8B & Meta & 76.0\% \\
+                \midrule
+                \multicolumn{2}{l}{\textbf{Fleiss' $\kappa$}} & \textbf{0.635} \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+        
+        \column{0.5\textwidth}
+        \textbf{Interpretation}: Substantial agreement across 6 annotators (1 human + 5 LLMs from 5 companies).
+
+        \vspace{0.3cm}
+        \textbf{Finding}: Prohibition is hardest---Llama 3.1 gets only 40\% on prohibitions, explaining the 8 inverted M4 cases.
+
+        \vspace{0.3cm}
+        \textbf{Intra-Annotator $\kappa$} = 0.891\\(``Almost perfect agreement'', 48/50 match)
+    \end{columns}
+
+    \vspace{0.2cm}
+    {\scriptsize\textit{Note: this panel uses Llama 3.1:8B (locally deployable) for cross-organization agreement; the RQ1 size comparison in Ch.5 separately tests Llama 3.1:70B and Mixtral 47B. Different studies, different questions.}}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Portability Experiment}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Cross-Domain Portability: AIT $\rightarrow$ GDPR}
+    \textit{Can the pipeline process GDPR rules without code changes?}
+    
+    \vspace{0.3cm}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Metric} & \textbf{With Adapter} & \textbf{Without Adapter} \\
+            \midrule
+            Deontic type accuracy & 93.3\% & 100\% \\
+            Property exact match & \textbf{11/15 (73.3\%)} & 1/15 (6.7\%) \\
+            Property match rate & \textbf{73.3\%} & 60.0\% \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    
+    \vspace{0.3cm}
+    \textbf{Key Findings:}
+    \begin{enumerate}
+        \item \textbf{Deontic classification is domain-independent} (93--100\% on both configs)
+        \item \textbf{Vocabulary injection $\rightarrow$ 10.9$\times$ improvement} in exact property matching
+        \item Only a YAML config change needed---zero code modifications
+    \end{enumerate}
+    
+    \vspace{0.2cm}
+    \begin{exampleblock}{Portability Recipe}
+        New corpus = \texttt{config/<name>.yaml} + \texttt{property\_list.txt} + \texttt{ontology.ttl}
+    \end{exampleblock}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Research Contributions}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Summary of Research Results}
+    \begin{table}[]
+        \centering
+        \small
+        \begin{tabular}{llccc}
+            \toprule
+            \textbf{RQ} & \textbf{Metric} & \textbf{Hypothesis} & \textbf{Result} & \textbf{Met?} \\
+            \midrule
+            RQ1 & Rule Identification & $\geq$95\% & 93.81\% & Approaching \\
+            RQ1 & Type Classification & -- & 75.9\% & See note \\
+            RQ2 & FOL Sufficiency & 100\% & 100\% & \textbf{Yes} \\
+            RQ2 & SOL/HOL Needed & 0 & 0 & \textbf{Yes} \\
+            RQ2 & M3 Predicate Quality & -- & \textbf{100\%} & \textbf{Yes} \\
+            RQ3 & SHACL Translation & $\geq$95\% & 100\% & \textbf{Yes} \\
+            RQ3 & M4 Shape Correctness & $>$0 & \textbf{F1=0.866} & \textbf{Yes} \\
+            \midrule
+            -- & Fleiss' $\kappa$ (5 LLMs) & -- & 0.635 & Substantial \\
+            -- & Intra-Annotator $\kappa$ & -- & 0.891 & Almost perfect \\
+            -- & Portability $\Delta$ & -- & +13.3pp & 10.9$\times$ exact \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\begin{frame}{Research Contributions}
+    \begin{enumerate}
+        \item \textbf{End-to-End Pipeline}: First fully automated NL $\rightarrow$ FOL $\rightarrow$ SHACL pipeline for institutional policy formalization
+        
+        \vspace{0.2cm}
+        \item \textbf{FOL Sufficiency Proof}: Empirical evidence that FOL with deontic operators is sufficient for 100\% of institutional policy rules (no SOL/HOL needed)
+        
+        \vspace{0.2cm}
+        \item \textbf{Corpus Adapter Pattern}: Configuration-driven vocabulary injection that resolves the vocabulary grounding problem (F1: 0.000 $\rightarrow$ 0.866)
+        
+        \vspace{0.2cm}
+        \item \textbf{Portability Framework}: Demonstrated cross-domain transfer with only a YAML config change (AIT $\rightarrow$ GDPR)
+        
+        \vspace{0.2cm}
+        \item \textbf{Evaluation Framework}: M1--M5 metrics with bootstrap CIs, multi-LLM IAA, and intra-annotator reliability
+    \end{enumerate}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Limitations \& Future Work}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Limitations \& Future Work}
+    \textbf{Known Limitations:}
+    \begin{itemize}
+        \item Permission classification remains challenging (50\% accuracy due to ``may'' ambiguity)
+        \item Single-annotator gold standard (mitigated by $\kappa$=0.891 intra-annotator reliability)
+        \item M4 inverted cases (8/69) trace to prohibition misclassification
+        \item LexDeMod cross-domain: Macro F1 = 0.370 (permission signals are domain-specific)
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Future Directions:}
+    \begin{itemize}
+        \item \textbf{Stage 0}: Automated ontology bootstrapping to eliminate manual vocabulary curation
+        \item \textbf{ABA Integration}: Assumption-Based Argumentation for normative conflict resolution
+        \item \textbf{Multi-institutional}: Cross-university and cross-domain validation at scale
+        \item \textbf{Production}: Interactive policy editor with real-time SHACL compliance dashboard
+    \end{itemize}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Conclusion}
+    \textbf{Main Contribution:} \\
+    The first corpus-agnostic methodology for automated institutional policy formalization into executable SHACL constraints, with demonstrated output stability and validated annotation reliability.
+    
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{Identifies rules} with 93.81\% validated accuracy ($\kappa$=0.7636)
+        \item \textbf{Proves FOL sufficiency} for institutional policy formalization
+        \item \textbf{Automates SHACL generation} with F1 = 0.866 shape correctness
+        \item \textbf{Demonstrates portability} across regulatory domains (10.9$\times$ vocabulary alignment improvement)
+        \item \textbf{Validates rigorously} with 5-model IAA ($\kappa$=0.635), intra-annotator $\kappa$=0.891, bootstrap CIs, and 100\% output stability on the frozen snapshot
+    \end{itemize}
+    
+    \vspace{0.5cm}
+    \centering
+    \Large \textbf{Thank You.} \\
+    \normalsize \textit{Questions?}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════
+% BACKUP SLIDES — for committee Q&A
+% ═══════════════════════════════════════════════════════════════════════
+\appendix
+
+\begin{frame}{Backup: Output Stability Explained}
+    \textbf{Q: ``Show me the 100\% reproducibility.''}
+
+    \vspace{0.2cm}
+    \textbf{What M5 measures:}
+    \begin{itemize}
+        \item SHA-256 hash of \texttt{shapes\_generated.ttl} across 10 pipeline runs
+        \item Fixed seed (\texttt{OLLAMA\_SEED=42}), \texttt{temperature=0.1}, versioned LLM cache
+        \item All 10 runs produce hash \texttt{520a0fa9} $\rightarrow$ \textbf{100\% hash-equality}
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{What M5 does NOT measure:}
+    \begin{itemize}
+        \item \textit{Semantic correctness} --- that is M4 (F1 = 0.866)
+        \item \textit{Cross-environment} reproducibility --- cache invalidation may yield different outputs
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \begin{alertblock}{Design Decision}
+        We deliberately separate \textit{output stability} (M5: procedural) from \textit{correctness} (M4: semantic). LLM-based pipelines can meet stability standards with proper seeding; correctness must be argued independently through TDD validation.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Backup: How the Corpus Adapter Works}
+    \textbf{Q: ``How does vocabulary injection work?''}
+
+    \vspace{0.2cm}
+    \begin{columns}
+        \column{0.48\textwidth}
+        \textbf{Without Adapter}
+        \begin{itemize}
+            \item LLM invents properties freely
+            \item \texttt{ait:payFee} vs gold \texttt{ait:payfee}
+            \item \texttt{ait:cookInDorm} vs gold \texttt{ait:cookInUnit}
+            \item 7/317 paths overlap (2.2\%)
+            \item \textbf{M4 = F1 0.000}
+        \end{itemize}
+
+        \column{0.04\textwidth}
+        \centering \Huge$\rightarrow$
+
+        \column{0.48\textwidth}
+        \textbf{With Adapter}
+        \begin{itemize}
+            \item YAML config: \texttt{config/ait.yaml}
+            \item 259 AIT properties injected into prompt
+            \item LLM constrained to known ontology
+            \item Fuzzy matching + keyword alignment
+            \item \textbf{M4 = F1 0.866}
+        \end{itemize}
+    \end{columns}
+
+    \vspace{0.4cm}
+    \textbf{Portability recipe:} New corpus = \texttt{config/<name>.yaml} + \texttt{property\_list.txt} + \texttt{ontology.ttl}
+
+    \vspace{0.1cm}
+    \textit{Zero code changes required --- only configuration files.}
+\end{frame}
+
+\begin{frame}{Backup: Single Annotator Mitigation}
+    \textbf{Q: ``Your gold standard was created by one person. How do we trust it?''}
+
+    \vspace{0.3cm}
+    \textbf{Two independent mitigation strategies:}
+
+    \vspace{0.2cm}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{1. Intra-Annotator Reliability}
+        \begin{itemize}
+            \item 50 randomly sampled rules
+            \item Re-annotated after 3-week gap
+            \item 48/50 identical labels
+            \item Cohen's $\kappa$ = \textbf{0.891}
+            \item ``Almost perfect agreement''
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \textbf{2. Multi-LLM Agreement}
+        \begin{itemize}
+            \item 5 LLMs from 5 organizations
+            \item + 1 human annotator = 6 raters
+            \item Fleiss' $\kappa$ = \textbf{0.635}
+            \item ``Substantial agreement''
+            \item Prohibition is the hardest class
+        \end{itemize}
+    \end{columns}
+
+    \vspace{0.4cm}
+    \begin{exampleblock}{Interpretation}
+        The human annotator's labels are consistent over time ($\kappa$=0.891) and agree with independent LLM annotators ($\kappa$=0.635). Both exceed the ``moderate agreement'' threshold ($\kappa > 0.41$).
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Backup: M4 Inverted Cases --- Root Cause}
+    \textbf{Q: ``Why are 8 shapes inverted?''}
+
+    \vspace{0.2cm}
+    \begin{itemize}
+        \item 8 out of 69 evaluated shapes have the \textbf{wrong constraint type}
+        \item Example: a prohibition rule encoded as an obligation ($\texttt{sh:minCount 1}$ instead of $\texttt{sh:maxCount 0}$)
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Root cause trace:}
+    \begin{enumerate}
+        \item The FOL$\rightarrow$SHACL translation is \textbf{deterministic}: $O(\phi) \rightarrow \texttt{minCount 1}$, $F(\phi) \rightarrow \texttt{maxCount 0}$
+        \item All 8 inversions trace to \textbf{upstream misclassification}: the LLM labeled a prohibition as an obligation (or vice versa) at Stage 3
+        \item The SHACL generator faithfully translates the \textit{wrong} deontic type
+        \item This is confirmed by the multi-LLM study: prohibition is the hardest class (Llama 3.1 gets only 40\% on prohibitions)
+    \end{enumerate}
+
+    \vspace{0.2cm}
+    \begin{alertblock}{Key Insight}
+        The pipeline's translation logic is correct --- the bottleneck is classification accuracy on prohibition-type rules, not the FOL$\rightarrow$SHACL step.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Backup: Cross-Domain Generalizability}
+    \textbf{Q: ``Does this work outside AIT policies?''}
+
+    \vspace{0.2cm}
+    \textbf{Experiment 1: GDPR (same pipeline, different domain)}
+    \begin{itemize}
+        \item 15 GDPR rules processed with \textbf{zero code changes}
+        \item Corpus Adapter: exact property match 6.7\% $\rightarrow$ \textbf{73.3\%} (10.9$\times$)
+        \item Deontic classification: 93--100\% (domain-independent)
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Experiment 2: LexDeMod lease contracts (external benchmark)}
+    \begin{itemize}
+        \item N = 200 sentences from commercial lease contracts
+        \item Macro F1 = \textbf{0.370} (without any domain adaptation)
+        \item Obligation detection: F1 = 0.569 (transfers well)
+        \item Permission detection: F1 = 0.038 (``shall be entitled'' not recognized)
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \begin{exampleblock}{Takeaway}
+        Deontic classification is domain-independent. Vocabulary alignment requires the Corpus Adapter. Permission signals are domain-specific and remain an open challenge.
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Backup: Baseline Classifier Comparison}
+    \textbf{Q: ``How does the LLM compare to simpler approaches?''}
+
+    \vspace{0.3cm}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{lcccc}
+            \toprule
+            \textbf{Classifier} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+            \midrule
+            Random & 28.9\% & 32.1\% & 42.8\% & 28.6\% \\
+            Majority Class & 48.5\% & 18.9\% & 33.3\% & 24.1\% \\
+            Rule-Based (Regex) & 82.5\% & 85.6\% & 97.3\% & 89.8\% \\
+            \midrule
+            \textbf{Mistral 7B} & \textbf{93.81\%} & \textbf{97.53\%} & \textbf{95.18\%} & \textbf{96.34\%} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \vspace{0.3cm}
+    \textbf{Key points:}
+    \begin{itemize}
+        \item Regex captures most rules via deontic markers (82.5\%) but fails on implicit obligations and ``may'' ambiguity
+        \item LLM adds +11.3pp accuracy through semantic understanding of context
+        \item \textbf{Surprising}: Mistral 7B outperforms Llama 3.1 70B (92.8\%)---instruction-tuning efficiency matters more than parameter count
+    \end{itemize}
+\end{frame}
+
+\end{document}
