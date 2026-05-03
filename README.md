@@ -43,13 +43,13 @@ Running the pipeline on the Asian Institute of Technology policy corpus
 | Sentences extracted | 1,663 |
 | Candidates after prefilter | 461 |
 | Rules classified (confident) | 443 |
-| FOL formulas generated | 352 (79.5% parse success) |
-| FOL formulas failed | 91 (routed to NL fallback) |
-| SHACL shapes produced | 443 (394 syntactically valid, 88.9%) |
-| — FOL-mediated | 352 |
-| — Direct NL fallback | 91 |
+| FOL formulas generated | 353 (79.7% parse success) |
+| FOL formulas failed | 90 (routed to NL fallback) |
+| SHACL shapes produced | 443 (401 syntactically valid, 90.5%) |
+| — FOL-mediated | 353 |
+| — Direct NL fallback | 90 |
 | Rule-type distribution | 326 obligations · 66 prohibitions · 50 permissions · 1 exemption |
-| Validation violations | 10,734 |
+| Validation violations | 11,522 |
 | Pipeline errors | 12 (all override-relation warnings) |
 
 ## 📈 Evaluation
@@ -64,7 +64,7 @@ test entities.
 |---|---|---:|
 | **M1** Extraction coverage | Gold rules with aligned pipeline rule (cosine ≥ 0.65) | **85.4%** (82/96), 95% CI [78.1%, 91.7%] |
 | **M2** Classification accuracy | Aligned rules with correct deontic type | **85.4%** (70/82), 95% CI [76.8%, 92.7%] |
-| **M3** FOL quality | FOL formulas with semantic predicates | **100%** (352/352), 95% CI [100%, 100%] |
+| **M3** FOL quality | FOL formulas with semantic predicates | **100%** (353/353), 95% CI [100%, 100%] |
 | **M4** Shape correctness (F1) | Per-rule precision/recall against Pos/Neg test entities | **F1 = 0.866** (P = 0.977, R = 0.778), 95% CI [0.791, 0.932] |
 | **M5** Output stability | Identical SHACL output across clean-cache runs with fixed seed | **100%** on the frozen 10-run snapshot (hash `520a0fa9`) |
 
@@ -72,7 +72,7 @@ test entities.
 > **M4 analysis:** Of 69 evaluated shapes, 42 are correct, 1 is `too_strict`, 12 are `too_permissive`, 8 are `inverted` (deontic-type mismatch), and 6 are skipped. Precision is 0.977 (when the pipeline flags a violation, it is right 97.7% of the time); recall is 0.778. The 8 inverted cases trace to upstream prohibition misclassification rather than vocabulary issues. The Corpus Adapter pattern (configuration-driven vocabulary injection) was the key intervention that moved M4 from F1 = 0.000 to F1 = 0.866.
 
 > [!NOTE]
-> **M3 analysis:** The 100% rate reflects the post-fix pipeline with retry-and-backfill of FOL `predicates.action` from the `deontic_formula` field. Earlier versions reported 29.8% (initial measurement bug, treating the empty `predicates.action` field as the only signal) and 68.7% (after the measurement fix). The current 100% is on the 352 FOL formulas that parsed successfully; the 91 formulas that failed parse are handled by the direct NL → SHACL fallback path and are not counted in M3.
+> **M3 analysis:** The 100% rate reflects the post-fix pipeline with retry-and-backfill of FOL `predicates.action` from the `deontic_formula` field. Earlier versions reported 29.8% (initial measurement bug, treating the empty `predicates.action` field as the only signal) and 68.7% (after the measurement fix). The current 100% is on the 353 FOL formulas that parsed successfully; the 90 formulas that failed parse are handled by the direct NL → SHACL fallback path and are not counted in M3.
 >
 > **M5 framing:** M5 measures *output stability* on a fixed-seed, clean-cache snapshot — i.e., whether the pipeline produces hash-identical SHACL shapes when re-run with the same seed and prompt version. This is distinct from *semantic correctness* (which is measured by M4). The current `evaluation/report.py` flag `m5_reproducible` may report `false` when the LLM cache is invalidated between runs; the 100% figure applies to the snapshot run reported in §5.1 of the thesis.
 >
@@ -210,7 +210,7 @@ OLLAMA_HOST=http://localhost:11434
 OLLAMA_MODEL=mistral
 OLLAMA_SECOND_MODEL=mistral          # override with a different model for second-opinion
 OLLAMA_SEED=42                       # required for reproducibility
-PIPELINE_VERSION=2.1-hints           # bumped on any behavior-affecting change
+PIPELINE_VERSION=2.1-final-defense    # bumped on any behavior-affecting change
 ```
 
 ### 3. Run the pipeline
