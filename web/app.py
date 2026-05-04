@@ -272,7 +272,7 @@ async def validate_data(request: Request):
         raise HTTPException(status_code=400, detail="No RDF data provided")
 
     try:
-        from rdflib import Graph
+        from rdflib import Graph, Namespace, URIRef
         from pyshacl import validate
 
         data_graph = Graph()
@@ -309,6 +309,62 @@ async def validate_data(request: Request):
                 shapes_graph.parse(data=turtle_block, format="turtle")
             except Exception:
                 skipped += 1
+
+        # ── Filter to curated shapes only ──
+        # Instead of validating against all 443 auto-generated shapes
+        # (many of which share paths with wrong semantics), we use a
+        # hand-picked set — one per DB property, correct target class.
+        AIT = Namespace("http://example.org/ait-policy#")
+        SH = Namespace("http://www.w3.org/ns/shacl#")
+        RDF_TYPE = URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+        XSD = Namespace("http://www.w3.org/2001/XMLSchema#")
+
+        _CURATED_SHAPES = {
+            # Student fee obligations (minCount 1 + xsd:decimal)
+            AIT.AIT_0007Shape,  # payFirstSemesterFee (Student, min1)
+            AIT.AIT_0096Shape,  # payRentForStayOnCampus (Student, min1, NO datatype)
+            AIT.AIT_0219Shape,  # feesPaid — best fee message (Student, min1)
+            # Accommodation obligations
+            AIT.AIT_0068Shape,  # confirmOfferMove (Student, min1)
+            AIT.AIT_0056Shape,  # vacateRoom - vacate after graduation (Student, min1)
+            AIT.AIT_0070Shape,  # maintainCleanlinessOfBedroomAndFacilities (Student, min1)
+            AIT.AIT_0072Shape,  # maintainCleanlinessOfCommonAreaAndLandscape (Student, min1)
+            # Conduct obligations
+            AIT.AIT_0041Shape,  # bringConcernsToAttention (Student, min1)
+            AIT.AIT_0150Shape,  # meetHighestStandardsOfPersonalEthicalAndMoralConduct (Student, min1)
+            # Conduct prohibitions
+            AIT.AIT_0086Shape,  # cookInProhibitedDormitory (Student, max0)
+            AIT.AIT_0089Shape,  # petInStudentAccommodation (Student, max0)
+            AIT.AIT_0079Shape,  # noisyGroupStudyOrPartyInStudentAccommodation (Student, max0)
+            AIT.AIT_0077Shape,  # disturbingpeace (Student, max0)
+            # Faculty obligations
+            AIT.AIT_0005Shape,  # followProceduresForDisciplinaryActions (Faculty, min1)
+            AIT.AIT_0142Shape,  # makeKnownCriteriaForGrading (Faculty, min1)
+            AIT.AIT_0101Shape,  # disclose conflicts (Employee, min1)
+            AIT.AIT_0100Shape,  # usesAuthorityEthically (Employee, min1)
+            # Staff
+            AIT.AIT_0029Shape,  # settled (Employee, min1)
+        }
+
+        # Remove all NodeShapes NOT in the curated set
+        all_node_shapes = set(shapes_graph.subjects(RDF_TYPE, SH.NodeShape))
+        to_remove = all_node_shapes - _CURATED_SHAPES
+        for ns in to_remove:
+            for prop_shape in shapes_graph.objects(ns, SH.property):
+                for p2, o2 in list(shapes_graph.predicate_objects(prop_shape)):
+                    shapes_graph.remove((prop_shape, p2, o2))
+            for p2, o2 in list(shapes_graph.predicate_objects(ns)):
+                shapes_graph.remove((ns, p2, o2))
+
+        # Strip sh:datatype and sh:pattern from curated shapes to avoid
+        # false positives (we use presence/absence for compliance checking,
+        # not typed value validation)
+        for ns in _CURATED_SHAPES:
+            for prop_shape in shapes_graph.objects(ns, SH.property):
+                for dt_val in list(shapes_graph.objects(prop_shape, SH.datatype)):
+                    shapes_graph.remove((prop_shape, SH.datatype, dt_val))
+                for pat_val in list(shapes_graph.objects(prop_shape, SH.pattern)):
+                    shapes_graph.remove((prop_shape, SH.pattern, pat_val))
 
         conforms, results_graph, results_text = validate(
             data_graph,
