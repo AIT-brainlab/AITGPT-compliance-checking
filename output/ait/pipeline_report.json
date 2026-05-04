@@ -1,37 +1,38 @@
 {
-  "timestamp": "2026-05-03T17:09:02.293622",
+  "timestamp": "2026-05-04T12:37:04.459568",
   "source": "ait",
   "pipeline_version": "2.1-final-defense",
   "environment": {
-    "python": "3.11.15",
-    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+    "python": "3.10.10",
+    "platform": "Windows-10-10.0.26200-SP0",
     "ollama_model": "mistral",
     "ollama_second_model": "mistral",
     "seed": "42",
     "pipeline_version": "2.1-final-defense",
     "extract_spacy": "0",
-    "git_sha": "unknown"
+    "ollama_model_digest": "6577803aa9a0",
+    "git_sha": "546dee6f"
   },
   "summary": {
     "sentences_extracted": 1663,
     "candidates_prefiltered": 461,
     "rules_classified": 443,
-    "fol_formulas_ok": 353,
-    "fol_formulas_failed": 90,
+    "fol_formulas_ok": 351,
+    "fol_formulas_failed": 92,
     "shacl_shapes_total": 443,
     "shacl_shapes_valid": 401,
-    "shacl_shapes_fol_mediated": 353,
-    "shacl_shapes_direct_nl": 90,
+    "shacl_shapes_fol_mediated": 351,
+    "shacl_shapes_direct_nl": 92,
     "shacl_shapes_fol_fallback": 0,
     "validation_conforms": false,
-    "violations": 11522,
+    "violations": 11456,
     "likely_false_positives": 0,
-    "actionable_violations": 11522,
-    "total_errors": 104
+    "actionable_violations": 11456,
+    "total_errors": 14
   },
   "violation_triage": {
     "by_severity": {
-      "Violation": 11192,
+      "Violation": 11126,
       "Info": 330
     },
     "by_source_shape": [
@@ -41,7 +42,7 @@
         "distinct_entities": 140,
         "pct_entities": 77.8,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:interviewedby"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:interviewedby"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0202Shape",
@@ -49,15 +50,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:hasAdditionalPayment"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0398Shape",
-        "count": 264,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:compliesWithImmigrationProvision"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:hasAdditionalPayment"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0331Shape",
@@ -65,15 +58,15 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:hasStudentID"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:hasStudentID"
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0235Shape",
-        "count": 198,
+        "shape": "http://example.org/ait-policy#AIT_0398Shape",
+        "count": 264,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:hasMedicalInsurance"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:compliesWithImmigrationProvision"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0008Shape",
@@ -81,7 +74,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:hasID"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:hasID"
       },
       {
         "shape": "http://example.org/ait-policy#Gs087Shape",
@@ -89,7 +82,15 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:enrolment"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:enrolment"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0235Shape",
+        "count": 198,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:hasMedicalInsurance"
       },
       {
         "shape": "http://example.org/ait-policy#Gs066Shape",
@@ -97,7 +98,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:moveswithspouse"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:moveswithspouse"
       },
       {
         "shape": "http://example.org/ait-policy#Gs014Shape",
@@ -105,7 +106,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:putnameonwaitinglist"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:putnameonwaitinglist"
       },
       {
         "shape": "http://example.org/ait-policy#Gs097Shape",
@@ -113,15 +114,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:takes"
-      },
-      {
-        "shape": "http://example.org/ait-policy#Gs044Shape",
-        "count": 192,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:sra_completed"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:takes"
       },
       {
         "shape": "http://example.org/ait-policy#Gs056Shape",
@@ -129,7 +122,15 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:submit"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:submit"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs044Shape",
+        "count": 192,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:sra_completed"
       },
       {
         "shape": "http://example.org/ait-policy#Gs075Shape",
@@ -137,7 +138,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:payfee"
+        "sample_message": "Less than 1 values on ait:Pos_GS064->ait:payfee"
       },
       {
         "shape": "http://example.org/ait-policy#Gs011Shape",
@@ -145,23 +146,7 @@
         "distinct_entities": 65,
         "pct_entities": 36.1,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:semester"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0030Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:hasParent"
-      },
-      {
-        "shape": "http://example.org/ait-policy#AIT_0205Shape",
-        "count": 132,
-        "distinct_entities": 66,
-        "pct_entities": 36.7,
-        "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:hasRegistrationFeePayment"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:semester"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0333Shape",
@@ -169,7 +154,23 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:arrivalDate"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:arrivalDate"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0030Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:hasParent"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0205Shape",
+        "count": 132,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:hasRegistrationFeePayment"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0445Shape",
@@ -177,7 +178,7 @@
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Less than 1 values on ait:Neg_GS064->ait:goesToAITClinic"
+        "sample_message": "Less than 1 values on ait:Pos_GS047->ait:goesToAITClinic"
       },
       {
         "shape": "http://example.org/ait-policy#AIT_0212Shape_prop1",
@@ -188,16 +189,16 @@
         "sample_message": "Otherwise, concerned students have to vacate the room within two weeks after the given deadline to pay."
       },
       {
-        "shape": "http://example.org/ait-policy#AIT_0072Shape_prop1",
+        "shape": "http://example.org/ait-policy#AIT_0032Shape_prop1",
         "count": 66,
         "distinct_entities": 66,
         "pct_entities": 36.7,
         "likely_false_positive": false,
-        "sample_message": "Students have to upkeep the cleanliness of the common area and landscape around the building."
+        "sample_message": "With regard to other students, fees shall be paid in full within 30 days from the first day of the semester."
       }
     ],
     "likely_false_positive_count": 0,
-    "actionable_violation_count": 11522
+    "actionable_violation_count": 11456
   },
   "rule_type_distribution": {
     "obligation": 326,
@@ -206,96 +207,6 @@
     "exemption": 1
   },
   "errors": [
-    "fol[AIT-0003]: [Errno 111] Connection refused",
-    "fol[AIT-0006]: [Errno 111] Connection refused",
-    "fol[AIT-0008]: [Errno 111] Connection refused",
-    "fol[AIT-0009]: [Errno 111] Connection refused",
-    "fol[AIT-0010]: [Errno 111] Connection refused",
-    "fol[AIT-0011]: [Errno 111] Connection refused",
-    "fol[AIT-0014]: [Errno 111] Connection refused",
-    "fol[AIT-0016]: [Errno 111] Connection refused",
-    "fol[AIT-0017]: [Errno 111] Connection refused",
-    "fol[AIT-0018]: [Errno 111] Connection refused",
-    "fol[AIT-0019]: [Errno 111] Connection refused",
-    "fol[AIT-0020]: [Errno 111] Connection refused",
-    "fol[AIT-0021]: [Errno 111] Connection refused",
-    "fol[AIT-0022]: [Errno 111] Connection refused",
-    "fol[AIT-0024]: [Errno 111] Connection refused",
-    "fol[AIT-0025]: [Errno 111] Connection refused",
-    "fol[AIT-0026]: [Errno 111] Connection refused",
-    "fol[AIT-0030]: [Errno 111] Connection refused",
-    "fol[AIT-0031]: [Errno 111] Connection refused",
-    "fol[AIT-0036]: [Errno 111] Connection refused",
-    "fol[AIT-0057]: [Errno 111] Connection refused",
-    "fol[AIT-0059]: [Errno 111] Connection refused",
-    "fol[AIT-0061]: [Errno 111] Connection refused",
-    "fol[AIT-0062]: [Errno 111] Connection refused",
-    "fol[AIT-0063]: [Errno 111] Connection refused",
-    "fol[AIT-0064]: [Errno 111] Connection refused",
-    "fol[AIT-0067]: [Errno 111] Connection refused",
-    "fol[AIT-0071]: [Errno 111] Connection refused",
-    "fol[AIT-0073]: [Errno 111] Connection refused",
-    "fol[AIT-0076]: [Errno 111] Connection refused",
-    "fol[AIT-0085]: [Errno 111] Connection refused",
-    "fol[AIT-0093]: [Errno 111] Connection refused",
-    "fol[AIT-0094]: [Errno 111] Connection refused",
-    "fol[AIT-0113]: [Errno 111] Connection refused",
-    "fol[AIT-0115]: [Errno 111] Connection refused",
-    "fol[AIT-0152]: [Errno 111] Connection refused",
-    "fol[AIT-0156]: [Errno 111] Connection refused",
-    "fol[AIT-0161]: [Errno 111] Connection refused",
-    "fol[AIT-0167]: [Errno 111] Connection refused",
-    "fol[AIT-0178]: [Errno 111] Connection refused",
-    "fol[AIT-0181]: [Errno 111] Connection refused",
-    "fol[AIT-0186]: [Errno 111] Connection refused",
-    "fol[AIT-0195]: [Errno 111] Connection refused",
-    "fol[AIT-0197]: [Errno 111] Connection refused",
-    "fol[AIT-0202]: [Errno 111] Connection refused",
-    "fol[AIT-0204]: [Errno 111] Connection refused",
-    "fol[AIT-0205]: [Errno 111] Connection refused",
-    "fol[AIT-0206]: [Errno 111] Connection refused",
-    "fol[AIT-0207]: [Errno 111] Connection refused",
-    "fol[AIT-0208]: [Errno 111] Connection refused",
-    "fol[AIT-0209]: [Errno 111] Connection refused",
-    "fol[AIT-0211]: [Errno 111] Connection refused",
-    "fol[AIT-0213]: [Errno 111] Connection refused",
-    "fol[AIT-0214]: [Errno 111] Connection refused",
-    "fol[AIT-0216]: [Errno 111] Connection refused",
-    "fol[AIT-0217]: [Errno 111] Connection refused",
-    "fol[AIT-0218]: [Errno 111] Connection refused",
-    "fol[AIT-0223]: [Errno 111] Connection refused",
-    "fol[AIT-0232]: [Errno 111] Connection refused",
-    "fol[AIT-0235]: [Errno 111] Connection refused",
-    "fol[AIT-0237]: [Errno 111] Connection refused",
-    "fol[AIT-0305]: [Errno 111] Connection refused",
-    "fol[AIT-0323]: [Errno 111] Connection refused",
-    "fol[AIT-0326]: [Errno 111] Connection refused",
-    "fol[AIT-0329]: [Errno 111] Connection refused",
-    "fol[AIT-0331]: [Errno 111] Connection refused",
-    "fol[AIT-0333]: [Errno 111] Connection refused",
-    "fol[AIT-0334]: [Errno 111] Connection refused",
-    "fol[AIT-0335]: [Errno 111] Connection refused",
-    "fol[AIT-0336]: [Errno 111] Connection refused",
-    "fol[AIT-0339]: [Errno 111] Connection refused",
-    "fol[AIT-0343]: [Errno 111] Connection refused",
-    "fol[AIT-0345]: [Errno 111] Connection refused",
-    "fol[AIT-0349]: [Errno 111] Connection refused",
-    "fol[AIT-0357]: [Errno 111] Connection refused",
-    "fol[AIT-0365]: [Errno 111] Connection refused",
-    "fol[AIT-0366]: [Errno 111] Connection refused",
-    "fol[AIT-0385]: [Errno 111] Connection refused",
-    "fol[AIT-0393]: [Errno 111] Connection refused",
-    "fol[AIT-0398]: [Errno 111] Connection refused",
-    "fol[AIT-0412]: [Errno 111] Connection refused",
-    "fol[AIT-0433]: [Errno 111] Connection refused",
-    "fol[AIT-0435]: [Errno 111] Connection refused",
-    "fol[AIT-0436]: [Errno 111] Connection refused",
-    "fol[AIT-0438]: [Errno 111] Connection refused",
-    "fol[AIT-0444]: [Errno 111] Connection refused",
-    "fol[AIT-0445]: [Errno 111] Connection refused",
-    "fol[AIT-0446]: [Errno 111] Connection refused",
-    "fol[AIT-0448]: [Errno 111] Connection refused",
-    "fol[AIT-0450]: [Errno 111] Connection refused",
     "shacl[override]: ait:AIT_0054Shape deontic:overrides ait:AIT_0332Shape",
     "shacl[override]: ait:AIT_0055Shape deontic:overrides ait:AIT_0246Shape",
     "shacl[override]: ait:AIT_0133Shape deontic:overrides ait:AIT_0132Shape",

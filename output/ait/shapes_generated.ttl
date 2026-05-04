@@ -65,18 +65,6 @@ ait:AIT_0005Shape_prop1 a sh:PropertyShape ;
     sh:minCount 1; sh:datatype xsd:string ;
     sh:message "The procedures for disciplinary actions shall be according to the Institute Policy and Procedures on Employment of Faculty and of Staff:" .
 
-# Rule: AIT-0007 | OBLIGATION
-# FOL: O(paysFirstSemesterFee(student))
-ait:AIT_0007Shape a sh:NodeShape ;
-    sh:targetClass ait:Student ;
-    sh:severity sh:Violation ;
-    sh:property ait:AIT_0007Shape_prop1 .
-
-ait:AIT_0007Shape_prop1 a sh:PropertyShape ;
-    sh:path ait:payFirstSemesterFee ;
-    sh:minCount 1; sh:datatype xsd:decimal ;
-    sh:message "For self-support students and holders of externally-managed scholarships (externally-supported/sponsored students who have their own funds): (1) With regard to self-paying students and students with e" .
-
 # Rule: AIT-0012 | PROHIBITION
 # FOL: F(enrolls_course_during_suspended_period(student))
 ait:AIT_0012Shape a sh:NodeShape ;
@@ -3892,18 +3880,6 @@ ait:AIT_0420Shape_prop1 a sh:PropertyShape ;
     sh:path ait:uses ;
     sh:maxCount 0 ;
     sh:message "Persons suffering from contagious diseases or those with open wounds are strictly prohibited from using the pool." .
-
-# Rule: AIT-0421 | PROHIBITION
-# FOL: F(runningAroundPool(agent))
-ait:AIT_0421Shape a sh:NodeShape ;
-    sh:targetSubjectsOf ait:runningaroundpool ;
-    sh:severity sh:Violation ;
-    sh:property ait:AIT_0421Shape_prop1 .
-
-ait:AIT_0421Shape_prop1 a sh:PropertyShape ;
-    sh:path ait:runningaroundpool ;
-    sh:maxCount 0 ;
-    sh:message "Running and playing around the edge of the pool are not allowed as these may result in injury due to falling in the water or falling in the concrete." .
 
 # Rule: AIT-0422 | OBLIGATION
 # FOL: O(usesAuthorityEthicallyWithRespectAndSensitivityAndInAccordanceWithInstitutesPolicies(agent))

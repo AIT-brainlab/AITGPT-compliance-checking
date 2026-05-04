@@ -163,9 +163,9 @@
         \node[draw, rounded corners, fill=blue!10, text width=12cm, align=center] (s1) at (0,4.5) {\textbf{1,663} sentences extracted from 5 AIT P\&P PDFs};
         \node[draw, rounded corners, fill=blue!20, text width=10cm, align=center] (s2) at (0,3.3) {\textbf{461} candidates after heuristic pre-filter (27.7\%)};
         \node[draw, rounded corners, fill=blue!30, text width=8.5cm, align=center] (s3) at (0,2.1) {\textbf{443} rules classified by LLM};
-        \node[draw, rounded corners, fill=green!25, text width=5cm, align=center] (s4a) at (-2.5,0.8) {\textbf{353} FOL-mediated\\shapes (79.7\%)};
-        \node[draw, rounded corners, fill=orange!20, text width=4cm, align=center] (s4b) at (2.5,0.8) {\textbf{90} direct NL\\shapes (20.3\%)};
-        \node[draw, rounded corners, fill=yellow!20, text width=7cm, align=center] (s5) at (0,-0.5) {\textbf{401} valid SHACL shapes $\rightarrow$ \textbf{11,522} violations};
+        \node[draw, rounded corners, fill=green!25, text width=5cm, align=center] (s4a) at (-2.5,0.8) {\textbf{351} FOL-mediated\\shapes (79.2\%)};
+        \node[draw, rounded corners, fill=orange!20, text width=4cm, align=center] (s4b) at (2.5,0.8) {\textbf{92} direct NL\\shapes (20.8\%)};
+        \node[draw, rounded corners, fill=yellow!20, text width=7cm, align=center] (s5) at (0,-0.5) {\textbf{401} valid SHACL shapes $\rightarrow$ \textbf{11,456} violations};
 
         \draw[->, thick] (s1) -- (s2);
         \draw[->, thick] (s2) -- (s3);
@@ -514,7 +514,7 @@
     \begin{itemize}
         \item SHA-256 hash of \texttt{shapes\_generated.ttl} across 10 pipeline runs
         \item Fixed seed (\texttt{OLLAMA\_SEED=42}), \texttt{temperature=0.1}, versioned LLM cache
-        \item All 10 runs produce hash \texttt{520a0fa9} $\rightarrow$ \textbf{100\% hash-equality}
+        \item All 10 runs produce hash \texttt{5e659a0f} $\rightarrow$ \textbf{100\% hash-equality}
     \end{itemize}
 
     \vspace{0.3cm}

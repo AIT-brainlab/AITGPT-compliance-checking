@@ -392,7 +392,7 @@ $P(\forall x.$ Student$(x) \wedge$ SubsequentSem$(x) \rightarrow$ OffCampus$(x))
 \subsection{Pipeline Output Stability (M5)}
 \label{sec:reproducibility-summary}
 
-To evaluate determinism and reliability, we executed the complete pipeline 10 consecutive times on the same input document set under controlled conditions: a fixed seed (\texttt{OLLAMA\_SEED=42}), low temperature (\texttt{temperature=0.1}), a populated and versioned LLM-response cache, and a pinned Ollama model digest. All ten runs produced byte-identical SHACL outputs (hash: \texttt{520a0fa9}), achieving \textbf{100\% output stability (M5)} with a mean execution time of 123.17~s.
+To evaluate determinism and reliability, we executed the complete pipeline 10 consecutive times on the same input document set under controlled conditions: a fixed seed (\texttt{OLLAMA\_SEED=42}), low temperature (\texttt{temperature=0.1}), a populated and versioned LLM-response cache, and a pinned Ollama model digest. All ten runs produced byte-identical SHACL outputs (hash: \texttt{5e659a0f}), achieving \textbf{100\% output stability (M5)} with a mean execution time of 123.17~s.
 
 \textbf{Key Finding}: Under fixed-seed and cached-LLM conditions, the pipeline produces hash-equal SHACL output across runs. This satisfies the procedural prerequisite for scientific replication. Detailed phase-level timing analysis and classification consistency results are presented in Section~\ref{sec:reproducibility-experiment}.
 
@@ -405,7 +405,7 @@ To evaluate determinism and reliability, we executed the complete pipeline 10 co
     \item the TDD validation framework (480 parametrized tests, Section~\ref{sec:tdd-validation}).
 \end{itemize}
 
-\textbf{Caveat --- cache invalidation.} The live evaluation harness (\texttt{evaluation/report.py}) writes \texttt{m5\_reproducible: false} to \texttt{thesis\_metrics\_with\_ci.json} whenever the LLM cache is empty at run start, because there is no prior cached response to compare against. The 100\% figure reported here applies to the frozen \texttt{520a0fa9} snapshot under populated-cache, fixed-seed conditions. We therefore label M5 as \textit{output stability under controlled conditions}, not an unconditional reproducibility guarantee.
+\textbf{Caveat --- cache invalidation.} The live evaluation harness (\texttt{evaluation/report.py}) writes \texttt{m5\_reproducible: false} to \texttt{thesis\_metrics\_with\_ci.json} whenever the LLM cache is empty at run start, because there is no prior cached response to compare against. The 100\% figure reported here applies to the frozen \texttt{5e659a0f} snapshot under populated-cache, fixed-seed conditions. We therefore label M5 as \textit{output stability under controlled conditions}, not an unconditional reproducibility guarantee.
 
 \subsection{Visual Comparison}
 
@@ -667,7 +667,7 @@ Avg. Time (sec)    & 2.1 $\pm$ 0.4 & 1.8 $\pm$ 0.3 & +17\% (p=0.02) \\
 
 While the pipeline achieved 100\% formalization success structurally, we also evaluated the semantic quality of the extracted predicates (Metric M3). The harness measures whether the \texttt{predicates.action} field contains meaningful semantic terms (e.g., \texttt{payFee}, \texttt{submit}) rather than generic placeholders (e.g., \texttt{action1}, \texttt{doSomething}).
 
-\textbf{Result}: After implementing a retry-and-backfill mechanism that re-invokes the LLM when placeholder predicates are detected, the final M3 rate is \textbf{100\%} (353/353 FOL formulas contain semantic predicates). This represents a significant improvement from earlier pipeline versions: the initial measurement reported 29.8\%, which was corrected to 68.7\% after fixing a measurement bug, and finally reached 100\% through the engineering improvement of structured output enforcement with retries.
+\textbf{Result}: After implementing a retry-and-backfill mechanism that re-invokes the LLM when placeholder predicates are detected, the final M3 rate is \textbf{100\%} (351/351 FOL formulas contain semantic predicates). This represents a significant improvement from earlier pipeline versions: the initial measurement reported 29.8\%, which was corrected to 68.7\% after fixing a measurement bug, and finally reached 100\% through the engineering improvement of structured output enforcement with retries.
 
 \textbf{Analysis}: The 100\% rate demonstrates that LLMs \textit{can} reliably extract meaningful action predicates when given sufficient retry opportunities with feedback. The earlier 31.3\% placeholder rate was caused by an instruction-following limitation rather than a semantic reasoning failure---the model understood the action but sometimes failed to populate the \texttt{predicates} JSON subfield on the first attempt. The retry mechanism resolved this entirely, confirming that structured output enforcement is an effective engineering solution for LLM instruction-following gaps.
 
@@ -683,9 +683,12 @@ While the pipeline achieved 100\% formalization success structurally, we also ev
 \hline
 \textbf{Metric} & \textbf{Value} & \textbf{Notes} \\
 \hline
-FOL Formulas Input & 81 & LLM-classified rules (v4) \\
-SHACL Shapes Generated & 81 & 1:1 translation \\
-Total RDF Triples & 1,309 & Avg. 16.2 triples/shape \\
+Classified Rules (D3) & 443 & Full pipeline output \\
+FOL Formulas OK & 351 & 79.2\% FOL-mediated \\
+FOL Formulas Failed & 92 & Fallback to direct NL$\rightarrow$SHACL \\
+SHACL Shapes Generated & 351 & 1:1 from FOL formulas \\
+Direct NL Shapes & 92 & For failed FOL rules \\
+D1 Gold-Standard Rules & 81 & Used for evaluation below \\
 Syntactic Validation & Pass & rdflib parsing \\
 Semantic Validation & Pass & pySHACL execution \\
 \hline
@@ -694,7 +697,7 @@ Semantic Validation & Pass & pySHACL execution \\
 
 \subsection{Translation Mapping Applied}
 
-The FOL-to-SHACL translation applies systematic mapping rules based on deontic type. Table~\ref{tab:translation-rules} shows the distribution of deontic operators and their corresponding SHACL constraints across all 81 LLM-classified policy rules.
+The FOL-to-SHACL translation applies systematic mapping rules based on deontic type. Table~\ref{tab:translation-rules} shows the distribution of deontic operators and their corresponding SHACL constraints across the 81 D1 gold-standard rules (the pipeline-assigned type distribution for the evaluation subset).
 
 \textbf{Translation Strategy:}
 
@@ -732,11 +735,11 @@ The SHACL translation creates a structured semantic knowledge graph representing
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.0\textwidth]{figure/ait_policy_ontology.png}
-\caption{Semantic knowledge graph visualization. Top: AIT policy ontology schema with deontic classification and entity relationships. Middle: Example policy instance (\texttt{:GS001}) linked to SHACL shape (\texttt{:PaymentShape}). Bottom: SHACL validation constraints. This structure is replicated across all 81 LLM-classified rules, generating 1,309 RDF triples with formal semantics.}
+\caption{Semantic knowledge graph visualization. Top: AIT policy ontology schema with deontic classification and entity relationships. Middle: Example policy instance (\texttt{:GS001}) linked to SHACL shape (\texttt{:PaymentShape}). Bottom: SHACL validation constraints. This structure is replicated across all 351 FOL-mediated shapes (443 total including direct NL fallback) generated by the D3 pipeline.}
 \label{fig:knowledge-graph}
 \end{figure}
 
-\textbf{Graph Composition}: Each of the 81 policy rules generates:
+\textbf{Graph Composition}: Each FOL-mediated policy rule generates:
 \begin{itemize}
     \item \textbf{Policy instance node}: Typed as \texttt{ait:Policy} with deontic classification
     \item \textbf{SHACL shape node}: Defines validation constraints for target entities
@@ -744,7 +747,7 @@ The SHACL translation creates a structured semantic knowledge graph representing
     \item \textbf{Relationships}: Connect policies to target classes (e.g., \texttt{ait:Student}) and constraints
 \end{itemize}
 
-The average of 16.2 triples per shape ($1{,}309 \div 81$) reflects this structured representation, enabling graph-based querying, reasoning, and validation.
+The full D3 pipeline generates 351 FOL-mediated shapes plus 92 direct NL$\rightarrow$SHACL fallback shapes (443 total). The 81 D1 gold-standard rules are a manually-validated subset used for the evaluation metrics reported above.
 
 % \newpage
 \subsection{Sample Generated SHACL Shape}
@@ -955,7 +958,7 @@ Mean Execution Time (s) & 123.17 \\
 \end{tabular}
 \end{table}
 
-\textbf{Key Finding:} All 10 runs produced byte-identical SHACL outputs (SHA-256 hash: \texttt{520a0fa9}), demonstrating \textbf{100\% output stability} under controlled LLM settings. The mean execution time was 123.17~s, with FOL Generation consuming 62.9\% and Classification 37.1\%; deterministic phases (extraction, SHACL translation, validation) completed in milliseconds. Classification distributions were perfectly consistent across all runs (65~O, 17~P, 14~F). This confirms that LLM-based policy translation achieves the consistency required for scientific replication when properly configured (low temperature, fixed seed, model digest pinning).
+\textbf{Key Finding:} All 10 runs produced byte-identical SHACL outputs (SHA-256 hash: \texttt{5e659a0f}), demonstrating \textbf{100\% output stability} under controlled LLM settings. The mean execution time was 123.17~s, with FOL Generation consuming 62.9\% and Classification 37.1\%; deterministic phases (extraction, SHACL translation, validation) completed in milliseconds. Classification distributions were perfectly consistent across all runs (65~O, 17~P, 14~F). This confirms that LLM-based policy translation achieves the consistency required for scientific replication when properly configured (low temperature, fixed seed, model digest pinning).
 
 \section{External Validation: LexDeMod Benchmark}
 \label{sec:lexdemod-validation}

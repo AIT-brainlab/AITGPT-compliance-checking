@@ -65,19 +65,6 @@
     }
   },
   {
-    "rule_id": "AIT-0007",
-    "text": "For self-support students and holders of externally-managed scholarships (externally-supported/sponsored students who have their own funds): (1) With regard to self-paying students and students with external sponsors, first semester/term fees must be paid in advance and/or fully paid upon enrolment, otherwise they will not be allowed to register.",
-    "deontic_type": "obligation",
-    "deontic_formula": "O(paysFirstSemesterFee(student))",
-    "fol_expansion": "∀x (Student(x) → O(paysFirstSemesterFee(x)))",
-    "parse_success": true,
-    "predicates": {
-      "subject": "student",
-      "action": "paysFirstSemesterFee",
-      "condition": ""
-    }
-  },
-  {
     "rule_id": "AIT-0012",
     "text": "Thus, they cannot enroll in any course, nor can they avail of student privileges and benefits during the suspended period such as use of an AIT ID card, access to SIS and registration records, staying in AIT accommodation, use of Library and School facilities, discount of children in the AIT International School (AITIS), etc.",
     "deontic_type": "prohibition",
@@ -4249,19 +4236,6 @@
       "subject": "person",
       "action": "uses",
       "condition": "usesAITLibraryAndEducationalResourcesResponsibly"
-    }
-  },
-  {
-    "rule_id": "AIT-0421",
-    "text": "Running and playing around the edge of the pool are not allowed as these may result in injury due to falling in the water or falling in the concrete.",
-    "deontic_type": "prohibition",
-    "deontic_formula": "F(runningAroundPool(agent))",
-    "fol_expansion": "∀x (Agent(x) → F(runningAroundPool(x)))",
-    "parse_success": true,
-    "predicates": {
-      "subject": "agent",
-      "action": "runningAroundPool",
-      "condition": ""
     }
   },
   {

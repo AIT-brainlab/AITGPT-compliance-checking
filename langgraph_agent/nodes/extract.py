@@ -93,28 +93,48 @@ def _is_noise(text: str) -> bool:
 
 
 def extract_node(state: PipelineState) -> PipelineState:
-    pdf_dir = Path(state["pdf_dir"])
-    pdf_files = sorted(pdf_dir.glob("*.pdf"))
-
+    source = state.get("source", "ait")
+    project_root = Path(__file__).parent.parent.parent
+    json_path = project_root / "output" / source / "extracted_sentences.json"
+    
     sentences: List[SentenceItem] = []
     errors: List[str] = []
 
-    for pdf_path in pdf_files:
+    if json_path.exists():
+        import json
         try:
-            with pdfplumber.open(pdf_path) as pdf:
-                for page_num, page in enumerate(pdf.pages, start=1):
-                    raw_text = page.extract_text() or ""
-                    for sent in _split_sentences(raw_text):
-                        if not _is_noise(sent):
-                            sentences.append(
-                                SentenceItem(
-                                    text=sent,
-                                    page=page_num,
-                                    source=pdf_path.name,
-                                )
-                            )
+            with open(json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                for item in data:
+                    sentences.append(
+                        SentenceItem(
+                            text=item.get("text", ""),
+                            page=item.get("page", 0),
+                            source=item.get("source", "")
+                        )
+                    )
         except Exception as exc:
-            errors.append(f"extract: failed to read {pdf_path.name}: {exc}")
+            errors.append(f"extract: failed to read {json_path.name}: {exc}")
+    else:
+        pdf_dir = Path(state["pdf_dir"])
+        pdf_files = sorted(pdf_dir.glob("*.pdf"))
+
+        for pdf_path in pdf_files:
+            try:
+                with pdfplumber.open(pdf_path) as pdf:
+                    for page_num, page in enumerate(pdf.pages, start=1):
+                        raw_text = page.extract_text() or ""
+                        for sent in _split_sentences(raw_text):
+                            if not _is_noise(sent):
+                                sentences.append(
+                                    SentenceItem(
+                                        text=sent,
+                                        page=page_num,
+                                        source=pdf_path.name,
+                                    )
+                                )
+            except Exception as exc:
+                errors.append(f"extract: failed to read {pdf_path.name}: {exc}")
 
     return {
         "extracted_sentences": sentences,
