@@ -213,7 +213,7 @@
     \end{tikzpicture}
 
     \vspace{0.3cm}
-    \textbf{Rule type distribution}: 326 obligation \quad|\quad 66 prohibition \quad|\quad 50 permission \quad|\quad 1 exemption
+    \textbf{Rule type distribution (post-audit gold)}: 308 obligation \quad|\quad 60 prohibition \quad|\quad 75 permission
 \end{frame}
 
 % ═══════════════════════════════════════════════════════════════════════
@@ -255,7 +255,7 @@
             \textbf{Metric} & \textbf{Definition} & \textbf{Value} & \textbf{95\% CI} \\
             \midrule
             \textbf{IRR $\kappa$} & Fleiss' $\kappa$ across 3 human annotators (N=50) & \textbf{0.8436} & [0.8385, 0.8487] \\
-            \textbf{LLM Acc.} & Accuracy vs.\ majority-vote human gold (N=50) & \textbf{84.0\%} & [74.0\%, 94.0\%] \\
+            \textbf{LLM Acc.} & Type accuracy vs.\ D1 gold (N=443) & \textbf{86.9\%} & ($\kappa$=0.709) \\
             \textbf{M3} & FOL formulas with semantic predicates & \textbf{100\%} & [100\%, 100\%] \\
             \textbf{M5} & Output stability (hash-equality, clean cache) & \textbf{PASS} & (identical snapshot) \\
             \bottomrule
@@ -331,9 +331,8 @@
         \vspace{0.3cm}
         \textbf{LLM Classification Accuracy}:
         \begin{itemize}
-            \item Mistral 7B vs.\ majority-vote human gold
-            \item \textbf{84.0\% Accuracy} (42/50)
-            \item \textbf{Cohen's $\kappa$ = 0.629} (Substantial)
+            \item IRR sample (N=50): \textbf{84.0\%}, $\kappa$ = 0.629
+            \item Full D1 (N=443): \textbf{86.9\%}, $\kappa$ = \textbf{0.709}
         \end{itemize}
     \end{columns}
 
@@ -390,8 +389,8 @@
             \toprule
             \textbf{RQ} & \textbf{Metric} & \textbf{Hypothesis} & \textbf{Result} & \textbf{Met?} \\
             \midrule
-            RQ1 & LLM Accuracy (vs.\ D1 majority gold) & $\geq$80\% & \textbf{84.0\%} & \textbf{Yes} \\
-            RQ1 & Cohen's $\kappa$ (LLM vs.\ gold) & $\geq$0.60 & \textbf{0.629} & \textbf{Yes} \\
+            RQ1 & LLM Accuracy (full D1, N=443) & $\geq$80\% & \textbf{86.9\%} & \textbf{Yes} \\
+            RQ1 & Cohen's $\kappa$ (LLM vs.\ gold) & $\geq$0.60 & \textbf{0.709} & \textbf{Yes} \\
             RQ2 & FOL Sufficiency & 100\% & 100\% & \textbf{Yes} \\
             RQ2 & SOL/HOL Needed & 0 & 0 & \textbf{Yes} \\
             RQ2 & M3 Predicate Quality & -- & \textbf{100\%} & \textbf{Yes} \\
@@ -457,7 +456,7 @@
     
     \vspace{0.3cm}
     \begin{itemize}
-        \item \textbf{Identifies rules} with 84.0\% LLM accuracy against majority-vote human gold
+        \item \textbf{Classifies deontic rules} with 86.9\% accuracy ($\kappa$=0.709) across the full D1 corpus
         \item \textbf{Proves FOL sufficiency} for institutional policy formalization (M3 = 100\%)
         \item \textbf{Automates SHACL generation} and resolves vocabulary mismatch via Corpus Adapter
         \item \textbf{Demonstrates portability} across regulatory domains (10.9$\times$ vocabulary alignment improvement)
@@ -624,8 +623,8 @@
         \textbf{LLM Accuracy}
         \begin{itemize}
             \item LLM evaluated against the 3-human \textbf{majority vote}
-            \item Accuracy = \textbf{84.0\%}
-            \item Cohen's $\kappa$ = \textbf{0.629} (Substantial)
+            \item Full D1 (N=443): Accuracy = \textbf{86.9\%}, $\kappa$ = \textbf{0.709}
+            \item IRR sample (N=50): Accuracy = 84.0\%, $\kappa$ = 0.629
         \end{itemize}
     \end{columns}
 

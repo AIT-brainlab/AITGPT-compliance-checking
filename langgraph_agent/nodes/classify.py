@@ -132,7 +132,10 @@ def classify_node(state: PipelineState) -> PipelineState:
             continue
 
         # Sanitise inconsistent LLM output: is_rule=True but rule_type missing
-        if result.get("rule_type") in ("none", None, ""):
+        # or rule_type is an invalid/hallucinated category (e.g. "exemption")
+        _VALID_RULE_TYPES = {"obligation", "permission", "prohibition"}
+        raw_type = result.get("rule_type", "")
+        if raw_type in ("none", None, "") or raw_type not in _VALID_RULE_TYPES:
             result["rule_type"] = "obligation"  # conservative default
             result["confidence"] = max(float(result.get("confidence", 0.5)) - 0.1, 0.4)
 

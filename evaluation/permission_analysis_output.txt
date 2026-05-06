@@ -1,0 +1,31 @@
+﻿Total permission rules: 87
+Correctly classified: 49
+Misclassified: 38
+
+Misclassification breakdown:
+  -> obligation: 32
+  -> prohibition: 6
+
+================================================================================
+MISCLASSIFIED PERMISSIONS (38)
+================================================================================
+
+--- AIT-0004 (LLM: obligation) ---
+  DISCIPLINARY ACTION Any member of the AIT community who is aware of academic misconduct in research or publication may report the incident or practice to the School Dean or directly to the Vice President for Academic Affairs.
+
+--- AIT-0048 (LLM: prohibition) ---
+  Exceptions to this may only be given to those whose exchange program is less than two months.
+
+--- AIT-0060 (LLM: obligation) ---
+python : Traceback (most recent call last):
+At line:1 char:1
++ python evaluation/analyze_permissions.py 2>&1 | Out-File -Encoding ut ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "D:\Automatate_Compliance_Checking-v2\evaluation\analyze_permissions.py", line 36, in <module>
+    print(f"  {p['text'][:300]}")
+  File "C:\Users\Asus\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25cf' in position 36: character maps to <undefined>
