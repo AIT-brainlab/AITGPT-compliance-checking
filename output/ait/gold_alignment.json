@@ -1,0 +1,866 @@
+[
+  {
+    "gs_id": "GS-001",
+    "ait_id": "AIT-0001",
+    "pipeline_text": "Contracted research may\nentail confidentiality and restriction on publication.",
+    "embedding_score": 1.0,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-002",
+    "ait_id": "AIT-0016",
+    "pipeline_text": "Their educational visas may also be\ncancelled.",
+    "embedding_score": 0.9999998807907104,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-003",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.6282230615615845,
+    "tfidf_score": 0.3225173690371148,
+    "fuzz_score": 0.984771573604061,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-004",
+    "ait_id": "AIT-0026",
+    "pipeline_text": "Writing-off of doubtful accounts will be requested by OFIN and have to be\napproved by the President, or their VP designate.",
+    "embedding_score": 0.9573200941085815,
+    "tfidf_score": 0.8468812800091238,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-005",
+    "ait_id": "AIT-0024",
+    "pipeline_text": "Sponsors must be invoiced for outstanding\ndues and requested to send AIT a promissory note detailing when and\nhow payment will be made.",
+    "embedding_score": 0.9665470123291016,
+    "tfidf_score": 0.9540527270831849,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-006",
+    "ait_id": "AIT-0041",
+    "pipeline_text": "Overdue accounts\nshall be reviewed periodically and follow-up on collections shall be initiated.",
+    "embedding_score": 0.9548879861831665,
+    "tfidf_score": 0.9302432159007494,
+    "fuzz_score": 0.96045197740113,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-007",
+    "ait_id": "AIT-0224",
+    "pipeline_text": "Additional payments for audited and\nrepeated courses, as well as beyond the minimum 3 credits for part-\ntime students, registered for the semester must be fully paid one\nweek before mid-semester examination period starts.\n(viii) If additional payments for audited and repeated courses\nremain unpaid a week prior to the mid-semester examination period,\nstudents with outstanding fees will be removed from the roster, and\nthey will not be allowed to sit in examinations.\n(ix) If additional payments for audited and repeated courses remain\nunpaid a week prior to the mid-semester examination period,\nstudents with outstanding fees will be removed from the roster, and\nthey will not be allowed to sit in examinations.\n(x) If fees remain unpaid after the deadline for adding/dropping of\ncourses of the semester in which a student was ‘suspended due to\nfinancial inability’, the student shall be recommended for dismissal.",
+    "embedding_score": 0.6767699718475342,
+    "tfidf_score": 0.4549760498907321,
+    "fuzz_score": 0.9625668449197861,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-008",
+    "ait_id": "AIT-0030",
+    "pipeline_text": "FB-6-1-1: CREDIT POLICY\nnotice from the Accommodation Unit, and the tenant is required to\nvacate the housing unit within two weeks.",
+    "embedding_score": 0.9064663648605347,
+    "tfidf_score": 0.8346115179900716,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-009",
+    "ait_id": "AIT-0084",
+    "pipeline_text": "Students shall not disturb fellow students in the residential areas.",
+    "embedding_score": 1.0,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-010",
+    "ait_id": "AIT-0052",
+    "pipeline_text": "Exceptions to this may only be\ngiven to those whose exchange program is less than two months.\n7.",
+    "embedding_score": 0.9679685831069946,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-011",
+    "ait_id": "AIT-0045",
+    "pipeline_text": "For subsequent semesters, these\nstudents may opt to reside off-campus.",
+    "embedding_score": 1.0000001192092896,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-012",
+    "ait_id": "AIT-0091",
+    "pipeline_text": "Graduating students residing beyond the five day limit (including weekends)\nafter graduation, without prior approval from the OFAM Director may have\ntheir accommodation unit sealed by the Accommodation Unit.\n2.",
+    "embedding_score": 0.6973655223846436,
+    "tfidf_score": 0.6089127646009378,
+    "fuzz_score": 0.9637305699481865,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-013",
+    "ait_id": "AIT-0063",
+    "pipeline_text": "It is recommended that new students be\non campus during the arrival period specified in the admission offer letter.\n● New students are served in a queue based on a ‘take a number’ system drawn\nby lot (i.e., students stand in line and in this order select a random number\nfrom the box; this number becomes the queuing number and, in this\nsequence, students wait their turn to select an accommodation unit).\n● New students may choose from all the available units when their queuing\nnumber is called.\n2.",
+    "embedding_score": 0.7976177334785461,
+    "tfidf_score": 0.5420637541920947,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-014",
+    "ait_id": "AIT-0060",
+    "pipeline_text": "Students may put their names\non the waiting list and live in employee accommodation subject to availability.",
+    "embedding_score": 0.9766658544540405,
+    "tfidf_score": 0.8430866738473011,
+    "fuzz_score": 0.9690721649484536,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-015",
+    "ait_id": "AIT-0059",
+    "pipeline_text": "Visas, residence permits, etc. shall be the responsibility of the\nguests.",
+    "embedding_score": 0.6899138689041138,
+    "tfidf_score": 0.6026923914769724,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-016",
+    "ait_id": "AIT-0053",
+    "pipeline_text": "A student dormitory may be allocated for a\nmaximum period of one month, in case of availability to:\na.",
+    "embedding_score": 0.9951612949371338,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-017",
+    "ait_id": "AIT-0102",
+    "pipeline_text": "Sub-letting rooms may result\nin eviction from student accommodation.\n9.",
+    "embedding_score": 0.9815597534179688,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-018",
+    "ait_id": "AIT-0051",
+    "pipeline_text": "Students, who will study in\nanother country as part of the Exchange/Dual Degree program, are required to\nvacate their rooms while they study abroad.",
+    "embedding_score": 0.680083155632019,
+    "tfidf_score": 0.6894367319365196,
+    "fuzz_score": 0.9583333333333333,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-019",
+    "ait_id": "AIT-0087",
+    "pipeline_text": "Alternative rooms designated for such purpose must be used.\n16.",
+    "embedding_score": 0.8365889191627502,
+    "tfidf_score": 0.8912790010295237,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-020",
+    "ait_id": "AIT-0388",
+    "pipeline_text": "Students found guilty may face a fine of\nBaht 2,000 or the actual costs of the damage caused by smoking or burning.\n6.",
+    "embedding_score": 0.8263458609580994,
+    "tfidf_score": 0.8118166752473864,
+    "fuzz_score": 0.937142857142857,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-021",
+    "ait_id": "AIT-0147",
+    "pipeline_text": "The Grievance Tribunal must seek to ascertain, to the best of its\nability, the facts of the case.\nc.",
+    "embedding_score": 0.9647854566574097,
+    "tfidf_score": 1.0000000000000004,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-022",
+    "ait_id": "AIT-0113",
+    "pipeline_text": "Acceptance by an employee of a gift valued at THB 3,000 or more must\nbe reported by the employee to their Unit Head within 15 days of\nacceptance, giving details as to the description of the item, sources and\ncircumstance leading to the acceptance.\n7.",
+    "embedding_score": 0.8251562118530273,
+    "tfidf_score": 0.6288697685852163,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-023",
+    "ait_id": "AIT-0107",
+    "pipeline_text": "The accomplishments, activities and individual differences of other\npeople must be respected.",
+    "embedding_score": 1.0,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-024",
+    "ait_id": "AIT-0123",
+    "pipeline_text": "They must\ninform the President of all settlements made during the grievance\nprocess.",
+    "embedding_score": 1.000000238418579,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-025",
+    "ait_id": "AIT-0121",
+    "pipeline_text": "In performing their duties, they\nmust protect the interests of all members of the AIT community.\nc.",
+    "embedding_score": 0.9728235006332397,
+    "tfidf_score": 0.9999999999999998,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-026",
+    "ait_id": "AIT-0120",
+    "pipeline_text": "The Grievance Committee must be prepared to identify\nbreaches of the Institute P&Ps, etc.",
+    "embedding_score": 0.9999999403953552,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-027",
+    "ait_id": "AIT-0114",
+    "pipeline_text": "Items valued at less than THB 3,000 may be accepted without reporting.",
+    "embedding_score": 1.0,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-028",
+    "ait_id": "AIT-0112",
+    "pipeline_text": "When expressing personal opinions outside the Institute, AIT employees\nand students are required to note explicitly that the opinions expressed\nare personal and do not necessarily represent the position of the Institute.\n4.",
+    "embedding_score": 0.9305022954940796,
+    "tfidf_score": 0.6871789364376885,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-029",
+    "ait_id": "AIT-0141",
+    "pipeline_text": "Having gathered the relevant\nfacts, the Grievance Committee should proceed to analyze\nthe grievance.",
+    "embedding_score": 1.000000238418579,
+    "tfidf_score": 1.0000000000000004,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-030",
+    "ait_id": "AIT-0485",
+    "pipeline_text": "When returning late from Bangkok\n(i.e., after 10:00 p.m.), you may take the No. 39 up to Rangsit and from there\nmay ride a pick-up, popularly known as \"Luth\".",
+    "embedding_score": 0.6996732354164124,
+    "tfidf_score": 0.7435301422225722,
+    "fuzz_score": 0.9459459459459459,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-031",
+    "ait_id": "AIT-0222",
+    "pipeline_text": "Thus, they cannot enroll in any course nor\ncan they avail of student privileges and benefits during the\nsuspended period such as use of AIT ID card, access to SIS and\nregistration record, staying in AIT accommodation, use of Library\nand School facilities, discount of children in AITIS, etc.",
+    "embedding_score": 0.7630113363265991,
+    "tfidf_score": 0.439624420768932,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-032",
+    "ait_id": "AIT-0172",
+    "pipeline_text": "The instructor/invigilator should seek an explanation from\nthe student at the end of the examination or when the assignment or project\nwas submitted, and submit an incident report to the Department Head, who\nshould then notify the School Dean.\n3.",
+    "embedding_score": 0.7757469415664673,
+    "tfidf_score": 0.5947334989404975,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-033",
+    "ait_id": "AIT-0300",
+    "pipeline_text": "The Institute will\nestablish and arrange special training for a set of individuals available for this\nform of consultation, to include the Deans, Director- OSA, Coordinator, Student\nWelfare Unit and other designated individuals, who will be able to provide in\nconfidence.\n2.4 Direct communication refers to the action of an individual who chooses to act\non perceived harassment, abuse or discrimination by addressing the other party\nor parties directly, or writing a statement to the individual(s) concerned,\ndescribing the unwelcome behavior and its effect and stating that the behavior\nmust cease.\n2.5 Direct communication may sometimes follow consultation, the complainant\nseeking the advice of one of the advisors listed in Section C-2.3 above, on what\nto say or write.",
+    "embedding_score": 0.7081433534622192,
+    "tfidf_score": 0.39037147418589485,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-034",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.34152752161026,
+    "tfidf_score": 0.0,
+    "fuzz_score": 0.4382470119521912,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-035",
+    "ait_id": "AIT-0278",
+    "pipeline_text": "If two or more students compete for a position and they are equally qualified to undertake\nthe work, preference should be given to the student who is self paying or partially-funded\nover one who receives a full scholarship.\n3.",
+    "embedding_score": 0.6839209794998169,
+    "tfidf_score": 0.6294786676845401,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-036",
+    "ait_id": "AIT-0234",
+    "pipeline_text": "Writing-off of outstanding bills including interest due will be requested by Head-\nOFAM and have to be approved by the AIT Management and forwarded to\nFinance for action.",
+    "embedding_score": 0.9125000238418579,
+    "tfidf_score": 0.7036349532755637,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-037",
+    "ait_id": "AIT-0219",
+    "pipeline_text": "For self-paying\nstudents, the proof can be in the form of bank statement, cash, etc.\nand for external/sponsored students, authorized documentary proof\nof sponsorship must be submitted.\n2.",
+    "embedding_score": 0.8787630200386047,
+    "tfidf_score": 0.7124841054053671,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-038",
+    "ait_id": "AIT-0437",
+    "pipeline_text": "Sports facilities cannot be used for other sporting events aside from the\nintended use of the court/field.\n8.",
+    "embedding_score": 0.9239819645881653,
+    "tfidf_score": 0.94275219097232,
+    "fuzz_score": 0.9621621621621621,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-039",
+    "ait_id": "AIT-0210",
+    "pipeline_text": "Baht 1,250 is the initial premium for new students of August\nIntake, to be renewed in January semester of the following\nMedical year; for students studying in January and August semesters,\nInsurance the annual premium is Baht 2,500; for students graduating in\nMay or during the inter-semester, the final premium is Baht\n1,250 for standard insurance plan.",
+    "embedding_score": 0.8097326755523682,
+    "tfidf_score": 0.5896092961538374,
+    "fuzz_score": 0.9637305699481865,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-040",
+    "ait_id": "AIT-0462",
+    "pipeline_text": "Finally, they must submit the title\npage signed by their advisor and by LC to the AIT Registry.",
+    "embedding_score": 0.9999998807907104,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-041",
+    "ait_id": "AIT-0079",
+    "pipeline_text": "This linen set and\npillow may be kept when leaving AIT.",
+    "embedding_score": 1.000000238418579,
+    "tfidf_score": 1.0000000000000004,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-042",
+    "ait_id": "AIT-0176",
+    "pipeline_text": "Upon receipt of the retake, the School Dean may decide\nto:\n● Downgrade by 1 step the grade the student will receive upon repetition\nof the exam or resubmission of the assignment/project;\n● Give a score of ‘zero’ for the specific exam, project or assignment; or\n● Give a failing grade or “F” for the course; or\n● Recommend the student for suspension or dismissal.",
+    "embedding_score": 0.8641685247421265,
+    "tfidf_score": 0.47053919150433043,
+    "fuzz_score": 0.9647058823529412,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-043",
+    "ait_id": "AIT-0175",
+    "pipeline_text": "However, if cheating was proven, the\nDepartment Head and the instructor/invigilator may recommend to the\nSchool Dean to disregard the original examination score and require the\nstudent to submit an equivalent piece of work or retake a different version\nof the examination.",
+    "embedding_score": 0.7232712507247925,
+    "tfidf_score": 0.49838546012340945,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-044",
+    "ait_id": "AIT-0213",
+    "pipeline_text": "Complete the Student Research Expense - Advance (SRA) form which\nmust be approved by the School and submit to Finance for payment\nto student.\n2.",
+    "embedding_score": 0.943131685256958,
+    "tfidf_score": 0.820213432862592,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-045",
+    "ait_id": "AIT-0274",
+    "pipeline_text": "An Assistant’s contract shall be terminated if, during the period of\nappointment, they are (a) not achieving good academic standing after one semester; or (b)\non probationary status.",
+    "embedding_score": 0.854901909828186,
+    "tfidf_score": 0.6338912532035571,
+    "fuzz_score": 0.98989898989899,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-046",
+    "ait_id": "AIT-0283",
+    "pipeline_text": "No member of the AIT community, trustee, faculty, staff, or student, including\noutreach program participants, should act deliberately or thoughtlessly to interfere\nwith the study, work or home environment of other members of the community.\n4.",
+    "embedding_score": 0.7557933330535889,
+    "tfidf_score": 0.6262191341697089,
+    "fuzz_score": 0.9743589743589743,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-047",
+    "ait_id": "AIT-0415",
+    "pipeline_text": "Thai VISA Extension Fees\nAll Non-Thai students are required to pay Baht 1,900 fee for a VISA extension.",
+    "embedding_score": 0.9713992476463318,
+    "tfidf_score": 0.9161539292370581,
+    "fuzz_score": 0.9844559585492227,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-048",
+    "ait_id": "AIT-0470",
+    "pipeline_text": "In emergency cases or if any medical emergency\nassistance is required, the nurse on duty can be contacted at 02-524-5555.",
+    "embedding_score": 0.6700101494789124,
+    "tfidf_score": 0.7537710229313428,
+    "fuzz_score": 0.9714285714285714,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-049",
+    "ait_id": "AIT-0173",
+    "pipeline_text": "Notes of the interview will be recorded and\nshould be agreed upon by all parties.\n4.",
+    "embedding_score": 0.9525918960571289,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-050",
+    "ait_id": "AIT-0445",
+    "pipeline_text": "Proper swim wear is required.",
+    "embedding_score": 1.000000238418579,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-051",
+    "ait_id": "AIT-0262",
+    "pipeline_text": "All dependents have to complete the health declaration form and get approval\nfrom Generali before the effective date.\n2.",
+    "embedding_score": 0.9344453811645508,
+    "tfidf_score": 0.8083756353983452,
+    "fuzz_score": 0.984771573604061,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-052",
+    "ait_id": "AIT-0490",
+    "pipeline_text": "When getting off at the Don Muang (Bangkok International Airport), you may\ntake local buses no. 29 or 39 and tell the conductor you are getting off at AIT\n(say it with “beside Thammasat Rangsit University”).",
+    "embedding_score": 0.7853865623474121,
+    "tfidf_score": 0.6580991879438204,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-053",
+    "ait_id": "AIT-0368",
+    "pipeline_text": "OFAM is authorized to undertake random inspections and may lay\nsanctions if the unit is found to be dirty and unhygienic.\n7.",
+    "embedding_score": 0.8728748559951782,
+    "tfidf_score": 0.8670917279973062,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-054",
+    "ait_id": "AIT-0276",
+    "pipeline_text": "A special student who is a master or doctoral student studying at another institution and\nenrolled at AIT under a Memorandum of Understanding, for a purpose other than obtaining\na regular degree, may be appointed as an assistant subject to the approval of the Dean.\n4.",
+    "embedding_score": 0.6895042657852173,
+    "tfidf_score": 0.5854587968804885,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-055",
+    "ait_id": "AIT-0092",
+    "pipeline_text": "Furniture and appliances should not be removed from the accommodation unit.",
+    "embedding_score": 1.000000238418579,
+    "tfidf_score": 1.0000000000000004,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-056",
+    "ait_id": "AIT-0461",
+    "pipeline_text": "Before Graduation: All students must have their advisor approve and sign the\ntitle page of their research report, thesis or dissertation, and then submit the\nsigned title page to the LC for title-checking.",
+    "embedding_score": 0.8326650857925415,
+    "tfidf_score": 0.616589660442109,
+    "fuzz_score": 0.9782608695652173,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-057",
+    "ait_id": "AIT-0302",
+    "pipeline_text": "Formal procedures\n3.1 A complainant may, with or without previous recourse to informal channels,\ndecide to seek redress through formal grievance procedures.",
+    "embedding_score": 0.8349713683128357,
+    "tfidf_score": 0.6758957026922777,
+    "fuzz_score": 0.9795918367346939,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-058",
+    "ait_id": "AIT-0159",
+    "pipeline_text": "At the beginning of the course, the instructor should make known\nthe criteria that will be considered in determining the grade such as class\nattendance, class participation, papers, examinations, projects and\npresentations.\n9.",
+    "embedding_score": 0.8194184303283691,
+    "tfidf_score": 0.47353260529664076,
+    "fuzz_score": 0.9397590361445783,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-059",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.6230786442756653,
+    "tfidf_score": 0.41294377914881697,
+    "fuzz_score": 1.0,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-060",
+    "ait_id": "AIT-0327",
+    "pipeline_text": "Responsibility centers are required to produce internal systems and\ndocumentation for implementing this policy locally.\n4.",
+    "embedding_score": 0.7899258136749268,
+    "tfidf_score": 0.8830258749227468,
+    "fuzz_score": 0.98989898989899,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-061",
+    "ait_id": "AIT-0037",
+    "pipeline_text": "Lessees are required to pay a three-month advance deposit to take on the lease\nof premises.",
+    "embedding_score": 0.9985968470573425,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-062",
+    "ait_id": "AIT-0273",
+    "pipeline_text": "Student Assistants shall be students in good standing on the effective dates of their\nappointment.",
+    "embedding_score": 0.9999998807907104,
+    "tfidf_score": 1.0000000000000007,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-063",
+    "ait_id": "AIT-0325",
+    "pipeline_text": "Expulsion shall be imposed for drug abuse.",
+    "embedding_score": 1.0000001192092896,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-064",
+    "ait_id": "AIT-0062",
+    "pipeline_text": "Students are required to vacate their rooms\nwithin five days (including weekends) after their graduation/completion of\nstudies.",
+    "embedding_score": 0.9295946359634399,
+    "tfidf_score": 0.6656984817823267,
+    "fuzz_score": 0.9613259668508287,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-065",
+    "ait_id": "AIT-0215",
+    "pipeline_text": "The settlement should be supported by collated receipts issued under\nthe name of Asian Institute of Technology.",
+    "embedding_score": 0.9424985647201538,
+    "tfidf_score": 0.9300484151473234,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-066",
+    "ait_id": "AIT-0050",
+    "pipeline_text": "Students should move with the spouse when staff accommodation becomes\navailable.",
+    "embedding_score": 1.0,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-067",
+    "ait_id": "AIT-0329",
+    "pipeline_text": "In discharging his/her responsibility to implement this Policy, the President may\nbe assisted by the Campus Environment and Development Committee.\n6.",
+    "embedding_score": 0.7314068078994751,
+    "tfidf_score": 0.7531043931633347,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-069",
+    "ait_id": "AIT-0297",
+    "pipeline_text": "The main channels for\ninformal remedial action may be through consultation, direct confrontation or\nthird-party intervention.\n2.2 Consultation refers, in this context, to discussion of problems or potential\nproblems before recourse to remedial action, informal or formal, but not to\ncompletely informal conversations about problems with seniors, colleagues, line\nmanagers, partners, friends or relatives, although these may, of course, solve\nmore straightforward problems.\n2.3 Preliminary consultation should be available to any member of the Institute\ncommunity who wishes to discuss issues related to problem areas.",
+    "embedding_score": 0.6926240921020508,
+    "tfidf_score": 0.429152183920975,
+    "fuzz_score": 0.9775280898876404,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-070",
+    "ait_id": "AIT-0182",
+    "pipeline_text": "The appeal should be\naddressed to the Vice President for Academic Affairs.\n9.",
+    "embedding_score": 0.9583415985107422,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-071",
+    "ait_id": "AIT-0099",
+    "pipeline_text": "Students disturbing the peace of their surroundings shall receive a formal\nreprimand as a first warning.",
+    "embedding_score": 0.9745032787322998,
+    "tfidf_score": 0.8417614897891886,
+    "fuzz_score": 0.98,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-072",
+    "ait_id": "AIT-0432",
+    "pipeline_text": "Proper sports attire is required for each sports facility.",
+    "embedding_score": 1.000000238418579,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-073",
+    "ait_id": "AIT-0041",
+    "pipeline_text": "Overdue accounts\nshall be reviewed periodically and follow-up on collections shall be initiated.",
+    "embedding_score": 0.9412416815757751,
+    "tfidf_score": 0.7880965868839493,
+    "fuzz_score": 0.9550561797752809,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-074",
+    "ait_id": "AIT-0349",
+    "pipeline_text": "Students may put their names\nin the waiting list and live in staff housing depending on availability.",
+    "embedding_score": 0.9926470518112183,
+    "tfidf_score": 1.0,
+    "fuzz_score": 0.9948717948717949,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-075",
+    "ait_id": "AIT-0204",
+    "pipeline_text": "Students within the normal study period must pay the semester fee of Baht 188,000\nfor 12 credits Tuition Fee and Registration Fee in advance and/or fully paid up upon\nenrolment but not later than the deadline for adding/dropping of courses, otherwise\nthey will not be allowed to register.",
+    "embedding_score": 0.8826378583908081,
+    "tfidf_score": 0.620852344849549,
+    "fuzz_score": 0.9787234042553191,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-076",
+    "ait_id": "AIT-0440",
+    "pipeline_text": "Last players of the evening must turn off the lights and other electrical\nequipment of the court.\n10.",
+    "embedding_score": 0.9799356460571289,
+    "tfidf_score": 0.9306950413036982,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-077",
+    "ait_id": "AIT-0305",
+    "pipeline_text": "Hearings should normally be held\nwithin ten working days of the notice.\n3.7 The written notification of the hearing should give: the time and place of the\nhearing; the name(s) of the complainant(s); a general description of the\nconduct complained of and the policies allegedly infringed; and the name of the\nInstitute office where any additional information may be obtained.\n3.8 All investigations will be conducted so that the privacy of all concerned is\nrespected to the fullest extent possible.",
+    "embedding_score": 0.8273918032646179,
+    "tfidf_score": 0.38908672234766734,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-078",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.5964012145996094,
+    "tfidf_score": 0.2296150382245191,
+    "fuzz_score": 1.0,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-079",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.5821793675422668,
+    "tfidf_score": 0.6158587846194243,
+    "fuzz_score": 1.0,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-080",
+    "ait_id": "AIT-0341",
+    "pipeline_text": "Exceptions may only be given\nto those whose exchange program is less than two months.\n7.",
+    "embedding_score": 0.9710869789123535,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-081",
+    "ait_id": "AIT-0454",
+    "pipeline_text": "For training sessions, prior permission has to be taken from OFAM and\ntrainer might need to pay for using the facilities.\n18.",
+    "embedding_score": 0.9542943239212036,
+    "tfidf_score": 0.8465385279887991,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-082",
+    "ait_id": "AIT-0259",
+    "pipeline_text": "Questions about the plan, enrollment, claim should be directed to\nGenerali Life Assurance (Thailand) Co., Ltd.\n● Call Center 02-612-9888 (Monday to Friday at 8.30 to 17.00)\n● LINE @Generali365 (Another channel for more convenience Monday to\nFriday 8.30 to 17.00)\n● https://generali.co.th/\n● https://www.facebook.com/generalith/",
+    "embedding_score": 0.9042955636978149,
+    "tfidf_score": 0.4313200682900605,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-083",
+    "ait_id": "AIT-0197",
+    "pipeline_text": "All\nnew students are required to attend the orientation seminar.",
+    "embedding_score": 1.0,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-084",
+    "ait_id": "AIT-0183",
+    "pipeline_text": "A student found guilty of grave cheating by the School\nDean, the Vice President for Academic Affairs and the Academic Senate may\nbe dismissed.",
+    "embedding_score": 0.9028319716453552,
+    "tfidf_score": 0.8552470219912012,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-085",
+    "ait_id": "AIT-0280",
+    "pipeline_text": "A student work time report should be completed for each student employee at the end\nof each month.",
+    "embedding_score": 0.9999998807907104,
+    "tfidf_score": 0.9999999999999994,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-086",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.6494998931884766,
+    "tfidf_score": 0.36338777581318793,
+    "fuzz_score": 1.0,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-087",
+    "ait_id": "AIT-0218",
+    "pipeline_text": "Before a student is accepted for enrolment, the Admissions and\nScholarships Unit (ASU) is required to ensure that there is proof of\nfinancial support for the student’s full study program.",
+    "embedding_score": 0.8794971108436584,
+    "tfidf_score": 0.7096958958008467,
+    "fuzz_score": 0.9895833333333333,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-088",
+    "ait_id": "AIT-0387",
+    "pipeline_text": "accommodation units dormitories not designed for such facilities, will be fined\nBaht 2,000 and charged for the services related to the removal of the\nappliances.\n5.",
+    "embedding_score": 0.8287960290908813,
+    "tfidf_score": 0.6710428457476361,
+    "fuzz_score": 0.9690721649484536,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-089",
+    "ait_id": "AIT-0484",
+    "pipeline_text": "In all such\ncases, the reservation of the vehicle must be made by a member of the faculty\nor a senior administrative staff member in the School or by the Student Union\nPresident to the Motor Pool.",
+    "embedding_score": 0.8586556315422058,
+    "tfidf_score": 0.5100423462585006,
+    "fuzz_score": 0.9642857142857143,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-090",
+    "ait_id": "AIT-0342",
+    "pipeline_text": "Student dormitories may be provided for a\nmaximum period of one month, in case of availability to:\na.",
+    "embedding_score": 0.9953177571296692,
+    "tfidf_score": 1.0000000000000002,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-091",
+    "ait_id": "AIT-0040",
+    "pipeline_text": "Invoices are required to be settled by the indicated due date.",
+    "embedding_score": 1.0000001192092896,
+    "tfidf_score": 1.0,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-092",
+    "ait_id": "AIT-0345",
+    "pipeline_text": "In case of over staying guests, special prior permission must be obtained from\nthe Director, Office of Facilities and Asset Management (OFAM) and a daily rent\nwill be charged for the room.",
+    "embedding_score": 0.7527672648429871,
+    "tfidf_score": 0.6732442473621373,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-093",
+    "ait_id": "AIT-0048",
+    "pipeline_text": "Families of non-resident students may not reside on campus if the non-resident\nstudent is off-campus.\n5.",
+    "embedding_score": 0.9560678005218506,
+    "tfidf_score": 1.0,
+    "fuzz_score": 0.9775280898876404,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-094",
+    "ait_id": "AIT-0270",
+    "pipeline_text": "The duties of non-\ninstructional teaching assistants may include assisting faculty in preparing materials for\nlectures, grading assignments and quizzes, projects, preparing laboratory set-ups, or\nposting web-based materials.",
+    "embedding_score": 0.7139490246772766,
+    "tfidf_score": 0.5506409660435087,
+    "fuzz_score": 0.9743589743589743,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-095",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.5497896075248718,
+    "tfidf_score": 0.3389853867151131,
+    "fuzz_score": 1.0,
+    "aligned": false
+  },
+  {
+    "gs_id": "GS-096",
+    "ait_id": "AIT-0489",
+    "pipeline_text": "Students may wait for the vans at the Thammasat Road near AIT Gate No.\n2 or at the bus stop near the AIT Front Gate No. 1.",
+    "embedding_score": 0.9788274168968201,
+    "tfidf_score": 0.8510951556513907,
+    "fuzz_score": 1.0,
+    "aligned": true
+  },
+  {
+    "gs_id": "GS-097",
+    "ait_id": null,
+    "pipeline_text": null,
+    "embedding_score": 0.6351861953735352,
+    "tfidf_score": 0.6637239739919436,
+    "fuzz_score": 0.9795918367346939,
+    "aligned": false
+  }
+]

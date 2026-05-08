@@ -1,0 +1,197 @@
+{
+  "timestamp": "2026-04-19T12:42:10.209205",
+  "source": "ait",
+  "pipeline_version": "2.0-langgraph",
+  "summary": {
+    "sentences_extracted": 1531,
+    "candidates_prefiltered": 493,
+    "rules_classified": 484,
+    "fol_formulas_ok": 467,
+    "fol_formulas_failed": 17,
+    "shacl_shapes_total": 484,
+    "shacl_shapes_valid": 473,
+    "shacl_shapes_fol_mediated": 467,
+    "shacl_shapes_direct_nl": 17,
+    "shacl_shapes_fol_fallback": 0,
+    "validation_conforms": false,
+    "violations": 27045,
+    "likely_false_positives": 0,
+    "actionable_violations": 27045,
+    "total_errors": 0
+  },
+  "violation_triage": {
+    "by_severity": {
+      "Violation": 27045
+    },
+    "by_source_shape": [
+      {
+        "shape": "http://example.org/ait-policy#Gs049Shape",
+        "count": 420,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Neg_GS041->ait:interviewedby"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs087Shape",
+        "count": 198,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:enrolment"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs066Shape",
+        "count": 196,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:moveswithspouse"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs014Shape",
+        "count": 196,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:putnameonwaitinglist"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs097Shape",
+        "count": 194,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:takes"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs044Shape",
+        "count": 192,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:sra_completed"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs056Shape",
+        "count": 192,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:submit"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs075Shape",
+        "count": 182,
+        "distinct_entities": 66,
+        "pct_entities": 36.7,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:payfee"
+      },
+      {
+        "shape": "http://example.org/ait-policy#Gs011Shape",
+        "count": 145,
+        "distinct_entities": 65,
+        "pct_entities": 36.1,
+        "likely_false_positive": false,
+        "sample_message": "Less than 1 values on ait:Pos_GS031->ait:semester"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0125Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "The main exception to the provisions above is when it is suspected that a serious crime has been committed, or may be committed unless preventive meas"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0368Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "OFAM is authorized to undertake random inspections and may lay sanctions if the unit is found to be dirty and unhygienic. 7."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0364Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Infringement of the above rules may mean sanctions to parties involved."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0294Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "False accusations or false evidence offered in the remedial process may themselves be considered grounds for disciplinary action."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0208Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Payments may be made by bank transfer, cash or bank draft payable to ASIAN INSTITUTE OF TECHNOLOGY."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0187Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "However, when a case does arise, it is helpful to know what procedures should be followed and the penalties applied."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0143Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "The written notification of the hearing should give: the time and place of the hearing; ● the name(s) of the complainant(s); ● Page 8/11"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0365Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Sanctions may include withdrawal of names from waiting lists, community service, formal reprimand, fine, suspension or ban from campus accommodation."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0440Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Last players of the evening must turn off the lights and other electrical equipment of the court. 10."
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0193Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "Otherwise, he/she may face: ● suspension for a stated period;"
+      },
+      {
+        "shape": "http://example.org/ait-policy#AIT_0163Shape",
+        "count": 140,
+        "distinct_entities": 140,
+        "pct_entities": 77.8,
+        "likely_false_positive": false,
+        "sample_message": "They are expected to arrive by the beginning of the class, and remain for the class period."
+      }
+    ],
+    "likely_false_positive_count": 0,
+    "actionable_violation_count": 27045
+  },
+  "rule_type_distribution": {
+    "permission": 45,
+    "obligation": 385,
+    "prohibition": 54
+  },
+  "errors": []
+}

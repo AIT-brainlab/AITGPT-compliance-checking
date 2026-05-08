@@ -1,0 +1,4442 @@
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ait:    <http://example.org/ait-policy#> .
+@prefix deontic: <http://example.org/deontic#> .
+
+# Rule: AIT-0000 | OBLIGATION
+# FOL: O(responsibleForWriting(author))
+ait:AIT_0000Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:responsibleForWriting ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0000Shape_prop1 .
+
+ait:AIT_0000Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:responsibleForWriting ;
+    sh:minCount 1 ;
+    sh:message "Authors must be responsible for what has been written in return for the credit and recognition that authorship brings." .
+
+# Rule: AIT-0001 | OBLIGATION
+# FOL: O(multiAuthoredArticleWrittenByStudentShouldBeFirstAuthorUnlessJournalRequiresDifferentOrder)
+ait:AIT_0001Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0001Shape_prop1 .
+
+ait:AIT_0001Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:multiAuthoredArticleWrittenByStudentShouldBeFirstAuthorUnlessJournalRequiresDifferentOrder ;
+    sh:minCount 1 ;
+    sh:message "For any multi-authored article based on a student thesis, research study or dissertation, the student should normally be the first author, unless there is documented evidence that the journal required" .
+
+# Rule: AIT-0002 | OBLIGATION
+# FOL: O(serveAsCorrespondingAuthor)
+ait:AIT_0002Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0002Shape_prop1 .
+
+ait:AIT_0002Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:serveAsCorrespondingAuthor ;
+    sh:minCount 1 ;
+    sh:message "However, the Chair of the student’s Program Committee should serve as the corresponding author with any journal." .
+
+# Rule: AIT-0003 | OBLIGATION
+# FOL: O(complyWithPolicyProcedures_inResearch(subject))
+ait:AIT_0003Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:complyWithPolicyProcedures_inResearch ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0003Shape_prop1 .
+
+ait:AIT_0003Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:complyWithPolicyProcedures_inResearch ;
+    sh:minCount 1 ;
+    sh:message "ACADEMIC MISCONDUCT All members of the AIT community are expected to comply with the relevant Institute policy and procedures in the conduct of research and to observe high standards of academic integ" .
+
+# Rule: AIT-0004 | OBLIGATION
+# FOL: O(reportIncidentOrPractice)
+ait:AIT_0004Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0004Shape_prop1 .
+
+ait:AIT_0004Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reportIncidentOrPractice ;
+    sh:minCount 1 ;
+    sh:message "DISCIPLINARY ACTION Any member of the AIT community who is aware of academic misconduct in research or publication may report the incident or practice to the School Dean or directly to the Vice Presid" .
+
+# Rule: AIT-0005 | OBLIGATION
+# FOL: O(followProceduresForDisciplinaryActions)
+ait:AIT_0005Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0005Shape_prop1 .
+
+ait:AIT_0005Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:followProceduresForDisciplinaryActions ;
+    sh:minCount 1 ;
+    sh:message "The procedures for disciplinary actions shall be according to the Institute Policy and Procedures on Employment of Faculty and of Staff: General Work Regulations and Student Handbook (section on Stude" .
+
+# Rule: AIT-0006 | OBLIGATION
+# FOL: O(correspondAsAuthorWithJournal(student))
+ait:AIT_0006Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0006Shape_prop1 .
+
+ait:AIT_0006Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:correspondAsAuthorWithJournal ;
+    sh:minCount 1 ;
+    sh:message "Student Handbook (section on Student Code of Conduct) Keywords Rationale for Revisions: • (18 Mar 2022) Administrative restructuring and minor edits • (7 Feb 2011) For articles where the student is th" .
+
+# Rule: AIT-0007 | OBLIGATION
+# FOL: O(payFirstSemesterFee(student))
+ait:AIT_0007Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0007Shape_prop1 .
+
+ait:AIT_0007Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFirstSemesterFee ;
+    sh:minCount 1 ;
+    sh:message "For self-support students and holders of externally-managed scholarships (externally-supported/sponsored students who have their own funds): (1) With regard to self-paying students and students with e" .
+
+# Rule: AIT-0008 | OBLIGATION
+# FOL: O(StudentID_and_InternetEmailAccess_not_released_by_Registry if_fees_are_not_paid)
+ait:AIT_0008Shape a sh:NodeShape ;
+    sh:targetClass ait:PostgraduateStudent ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0008Shape_prop1 .
+
+ait:AIT_0008Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:studentID_and_InternetEmailAccess_not_released_by_Registry ;
+    sh:minCount 1 ;
+    sh:message "Consequently, the student ID and Internet/e-mail access will not be released by Registry if fees are not paid. (2) Continuing full-time postgraduate (PG) students (Master, Doctor and Diploma), i.e., t" .
+
+# Rule: AIT-0010 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0010Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0010Shape_prop1 .
+
+ait:AIT_0010Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:paidinadvanceorfully ;
+    sh:minCount 1 ;
+    sh:message "The invoice must be paid in advance and/or fully paid up before each semester/term starts, otherwise they will not be allowed to register. (5) Continuing part-time, including flexible program, student" .
+
+# Rule: AIT-0011 | OBLIGATION
+# FOL: O(payFees(student))
+ait:AIT_0011Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0011Shape_prop1 .
+
+ait:AIT_0011Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFees ;
+    sh:minCount 1 ;
+    sh:message "Employee-students follow the stipulations on Payment of Fees in the P&P on Employee- Students on Part-Time Status (AA-8-8-2 IV.) (6) Registrations for each semester/term can only be activated upon ful" .
+
+# Rule: AIT-0012 | PROHIBITION
+# FOL: F(enroll_in_course(x) v use_AIT_ID_card(x) v access_SIS_and_registration_records(x) v stay_in_AIT_accommodation(x) v use_Library_and_School_facilities(x) v discount_AITIS(x))
+ait:AIT_0012Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0012Shape_prop1 .
+
+ait:AIT_0012Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:enroll_in_course ;
+    sh:maxCount 0 ;
+    sh:message "Thus, they cannot enroll in any course, nor can they avail of student privileges and benefits during the suspended period such as use of an AIT ID card, access to SIS and registration records, staying" .
+
+# Rule: AIT-0013 | PROHIBITION
+# FOL: F(cancelEducationalVisaFor)(student)
+ait:AIT_0013Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0013Shape_prop1 .
+
+ait:AIT_0013Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cancelEducationalVisaFor ;
+    sh:maxCount 0 ;
+    sh:message "Their educational visas may also be cancelled." .
+
+# Rule: AIT-0014 | OBLIGATION
+# FOL: O(FullPayment(s, outstandingFees, applicableInterestCharges, deadlineForAddDropCourses) ∧ !LatePayment(s) ∧ !OnlineRegistrationAfterDeadline(s) ∧ (AuditedRepeatedCoursePayments(s) ∨ RepeatedCoursesBeyondMinimumCredits(s)) → O(FullPaymentBeforeExamPeriod(s, AuditedRepeatedCoursePayments(s))) ∧ (UnpaidAuditedRepeatedCourseFees(s) → F(AllowedToTakeExaminations(s)))
+ait:AIT_0014Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0014Shape_prop1 .
+
+ait:AIT_0014Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:fullPayment ;
+    sh:minCount 1 ;
+    sh:message "Suspension status can only be lifted upon full payment of the outstanding fees and applicable interest charges before the deadline for adding/dropping of courses. (8) Late payments, i.e., made after t" .
+
+# Rule: AIT-0015 | OBLIGATION
+# FOL: O(student(x)) 
+ IF 
+ NOT paidFee(x) 
+ AFTER deadlineForAddDropCoursesOfSemesterOrTerm(x) 
+ AND financialInabilitySuspension(x),
+ait:AIT_0015Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0015Shape_prop1 .
+
+ait:AIT_0015Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "FB-6-1-1: CREDIT POLICY (12) If fees remain unpaid after the deadline for adding/dropping of courses of the semester/term in which a student was ‘suspended due to financial inability’, the student sha" .
+
+# Rule: AIT-0018 | PROHIBITION
+# FOL: F(reinstateAndTransferCourse)
+ait:AIT_0018Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0018Shape_prop1 .
+
+ait:AIT_0018Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reinstateAndTransferCourse ;
+    sh:maxCount 0 ;
+    sh:message "Upon readmission, the possibility to transfer all courses taken before will be governed by the policy of having taken the courses not more than five (5) years ago. (16) The student cannot avail of the" .
+
+# Rule: AIT-0019 | PROHIBITION
+# FOL: F(Action(x))
+ait:AIT_0019Shape a sh:NodeShape ;
+    sh:targetClass ait:Graduate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0019Shape_prop1 .
+
+ait:AIT_0019Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:actionxGraduationdefense ;
+    sh:maxCount 0 ;
+    sh:message "Permanent dismissal will be applied to those who will be dismissed again due to non-payment of fees on time. (17) Graduating students without financial clearance will not be allowed to take the final " .
+
+# Rule: AIT-0022 | OBLIGATION
+# FOL: O(Registry provides Transcript_or_Degree_Certificate to concerned Office and Office_of_Student_Affairs regularly follows up with external donor partners to ensure payments are disbursed)
+ait:AIT_0022Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0022Shape_prop1 .
+
+ait:AIT_0022Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registry ;
+    sh:minCount 1 ;
+    sh:message "The Registry will provide the Transcript or Degree Certificate to the concerned Office to be forwarded to the external donor. (6) The Office of Student Affairs (OSA) shall regularly follow up with ext" .
+
+# Rule: AIT-0023 | OBLIGATION
+# FOL: O(requestDoubtfulAccountsApproval(x))
+ait:AIT_0023Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0023Shape_prop1 .
+
+ait:AIT_0023Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:requestDoubtfulAccountsApproval ;
+    sh:minCount 1 ;
+    sh:message "Writing-off of doubtful accounts will be requested by OFIN and have to be approved by the President, or their VP designate." .
+
+# Rule: AIT-0025 | OBLIGATION
+# FOL: O(Student(x) ∧ OverdueFees(x) → VacateRoom(x))
+ait:AIT_0025Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0025Shape_prop1 .
+
+ait:AIT_0025Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "Otherwise, concerned students have to vacate the room within two weeks after the given deadline to pay. (6) If accommodation and other fees remain unpaid beyond two months, a student’s status shall be" .
+
+# Rule: AIT-0026 | OBLIGATION
+# FOL: O(payTwoMonthDeposit(x) ∧ monthlyPaymentDeduction(x) ∧ (sufficientFundsForDeduction(x) → paymentMadeThroughPayroll(x)) ∧ (insufficientFundsForDeduction(x) → interestPenalty(x)) ∧ (!defaultOnPayment(x) → !terminateLeaseAgreement(x)))
+ait:AIT_0026Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0026Shape_prop1 .
+
+ait:AIT_0026Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payTwoMonthDeposit ;
+    sh:minCount 1 ;
+    sh:message "Employee Accommodation Rental (1) Employees are required to pay a two-month deposit, which is collected in advance. (2) Invoices will be billed monthly and payment will be made through deduction from " .
+
+# Rule: AIT-0027 | OBLIGATION
+# FOL: O(Tenant_vacates_unit)
+ait:AIT_0027Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0027Shape_prop1 .
+
+ait:AIT_0027Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:tenant_vacates_unit ;
+    sh:minCount 1 ;
+    sh:message "FB-6-1-1: CREDIT POLICY notice from the Accommodation Unit, and the tenant is required to vacate the housing unit within two weeks." .
+
+# Rule: AIT-0028 | OBLIGATION
+# FOL: O(Request_and_Approve_and_Forward(x))
+ait:AIT_0028Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0028Shape_prop1 .
+
+ait:AIT_0028Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:request_and_Approve_and_Forward ;
+    sh:minCount 1 ;
+    sh:message "Writing-off of outstanding invoices, including interest due, will be requested by the OFAM Director and have to be approved by the President, or their VP designate, and forwarded to OFIN for action." .
+
+# Rule: AIT-0029 | OBLIGATION
+# FOL: O(settled(s, a, d))
+ait:AIT_0029Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0029Shape_prop1 .
+
+ait:AIT_0029Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:settled ;
+    sh:minCount 1 ;
+    sh:message "All Requests for Travel Authorization (RTA) and Promissory Note (PN) by employees are required to be settled by the indicated due dates." .
+
+# Rule: AIT-0030 | PROHIBITION
+# FOL: F(not_entitled_to_discount_for_children_fee)(parent)
+ait:AIT_0030Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0030Shape_prop1 .
+
+ait:AIT_0030Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:not_entitled_to_discount_for_children_fee ;
+    sh:maxCount 0 ;
+    sh:message "FB-6-1-1: CREDIT POLICY AIT students of part-time degree programs and on extension are not entitled to discounts on AITIS fees for their children. (3) Where both parents are entitled to receive assist" .
+
+# Rule: AIT-0031 | OBLIGATION
+# FOL: O(FeesPaid(s, c1) ∧ Days30FromFirstDayOfSemester(t) → O(FeesPaid(s, c1)))
+ait:AIT_0031Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0031Shape_prop1 .
+
+ait:AIT_0031Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:feesPaid ;
+    sh:minCount 1 ;
+    sh:message "With regard to parents (AIT students and employees) with more than one child: (1) Fees for the first child shall be paid in full within 30 days from the first day of the semester. (1) Fees for the res" .
+
+# Rule: AIT-0032 | OBLIGATION
+# FOL: O(payFee(student))
+ait:AIT_0032Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0032Shape_prop1 .
+
+ait:AIT_0032Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFee ;
+    sh:minCount 1 ;
+    sh:message "With regard to other students, fees shall be paid in full within 30 days from the first day of the semester." .
+
+# Rule: AIT-0033 | PROHIBITION
+# FOL: F(latePaymentByAITISStudent)
+ait:AIT_0033Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0033Shape_prop1 .
+
+ait:AIT_0033Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:latePaymentByAITISStudent ;
+    sh:maxCount 0 ;
+    sh:message "If the payment is not received within the periods stipulated, the AITIS students concerned shall be removed from the rolls of the school and shall not be allowed to attend classes." .
+
+# Rule: AIT-0034 | OBLIGATION
+# FOL: O(payThreeMonthAdvanceDeposit(lessee))
+ait:AIT_0034Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:payThreeMonthAdvanceDeposit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0034Shape_prop1 .
+
+ait:AIT_0034Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payThreeMonthAdvanceDeposit ;
+    sh:minCount 1 ;
+    sh:message "Lessees are required to pay a three-month advance deposit to take on the lease of premises." .
+
+# Rule: AIT-0035 | OBLIGATION
+# FOL: O(settleMeal(x))
+ait:AIT_0035Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:settleMeal ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0035Shape_prop1 .
+
+ait:AIT_0035Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:settleMeal ;
+    sh:minCount 1 ;
+    sh:message "Dining (1) Personal meals are required to be settled." .
+
+# Rule: AIT-0037 | OBLIGATION
+# FOL: O(settleInvoice(subject))
+ait:AIT_0037Shape a sh:NodeShape ;
+    sh:targetClass ait:Invoice ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0037Shape_prop1 .
+
+ait:AIT_0037Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:settleInvoice ;
+    sh:minCount 1 ;
+    sh:message "Invoices are required to be settled by the indicated due date." .
+
+# Rule: AIT-0038 | OBLIGATION
+# FOL: O(ReviewOverdueAccountsPeriodicallyAndInitiateFollowUpOnCollections)
+ait:AIT_0038Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:reviewOverdueAccountsPeriodicallyAndInitiateFollowUpOnCollections ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0038Shape_prop1 .
+
+ait:AIT_0038Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reviewOverdueAccountsPeriodicallyAndInitiateFollowUpOnCollections ;
+    sh:minCount 1 ;
+    sh:message "Overdue accounts shall be reviewed periodically and follow-up on collections shall be initiated." .
+
+# Rule: AIT-0041 | OBLIGATION
+# FOL: O(bringConcernsToAttention)
+ait:AIT_0041Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0041Shape_prop1 .
+
+ait:AIT_0041Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:bringConcernsToAttention ;
+    sh:minCount 1 ;
+    sh:message "Any concerns involving student welfare that is related to accommodation should be brought to the attention of the Director of Student Affairs." .
+
+# Rule: AIT-0042 | PERMISSION
+# FOL: P(optToResideOffCampus)(student)
+ait:AIT_0042Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0042Shape_prop1 .
+
+ait:AIT_0042Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:optToResideOffCampus ;
+    sh:minCount 0 ;
+    sh:message "For subsequent semesters, these students may opt to reside off-campus." .
+
+# Rule: AIT-0043 | PERMISSION
+# FOL: P(marriedStudent_bringFamily)
+ait:AIT_0043Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0043Shape_prop1 .
+
+ait:AIT_0043Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:marriedStudent_bringFamily ;
+    sh:minCount 0 ;
+    sh:message "Married Students are permitted to bring their immediate families (spouse and children) to join them during their studies." .
+
+# Rule: AIT-0044 | PROHIBITION
+# FOL: F(ResideOnCampus(s, f))
+ait:AIT_0044Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0044Shape_prop1 .
+
+ait:AIT_0044Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:resideOnCampus ;
+    sh:maxCount 0 ;
+    sh:message "Families of non-resident students may not reside on campus if the non-resident student is off-campus." .
+
+# Rule: AIT-0045 | OBLIGATION
+# FOL: O(registers_for_staff_accommodation(x))
+ait:AIT_0045Shape a sh:NodeShape ;
+    sh:targetClass ait:PostgraduateStudent ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0045Shape_prop1 .
+
+ait:AIT_0045Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registers_for_staff_accommodation ;
+    sh:minCount 1 ;
+    sh:message "Master’s or doctoral students with spouses who are AIT employees must register for staff accommodation." .
+
+# Rule: AIT-0046 | OBLIGATION
+# FOL: O(moveWithSpouse(student))
+ait:AIT_0046Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0046Shape_prop1 .
+
+ait:AIT_0046Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:moveWithSpouse ;
+    sh:minCount 1 ;
+    sh:message "Students should move with the spouse when staff accommodation becomes available." .
+
+# Rule: AIT-0047 | OBLIGATION
+# FOL: O(VacatesRoom(x))
+ait:AIT_0047Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0047Shape_prop1 .
+
+ait:AIT_0047Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:vacatesRoom ;
+    sh:minCount 1 ;
+    sh:message "Students, who will study in another country as part of the Exchange/Dual Degree program, are required to vacate their rooms while they study abroad." .
+
+# Rule: AIT-0048 | PROHIBITION
+# FOL: F(exceptionsGivenToExchangeProgramLessThanTwoMonths)(subject)
+ait:AIT_0048Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:exceptionsGivenToExchangeProgramLessThanTwoMonths ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0048Shape_prop1 .
+
+ait:AIT_0048Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:exceptionsGivenToExchangeProgramLessThanTwoMonths ;
+    sh:maxCount 0 ;
+    sh:message "Exceptions to this may only be given to those whose exchange program is less than two months." .
+
+# Rule: AIT-0049 | OBLIGATION
+# FOL: O(registerGuestWithAccommodationUnit(subject))
+ait:AIT_0049Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:registerGuestWithAccommodationUnit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0049Shape_prop1 .
+
+ait:AIT_0049Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registerGuestWithAccommodationUnit ;
+    sh:minCount 1 ;
+    sh:message "All guests must be registered with the Accommodation Unit three days before arrival." .
+
+# Rule: AIT-0050 | PERMISSION
+# FOL: P(stayInStudentDormitory(guest))
+ait:AIT_0050Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0050Shape_prop1 .
+
+ait:AIT_0050Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:stayInStudentDormitory ;
+    sh:minCount 0 ;
+    sh:message "With prior approval of the Accommodation Unit, guests may stay in student dormitories for a maximum period of one week per semester." .
+
+# Rule: AIT-0052 | PROHIBITION
+# FOL: F(instituteIsNotResponsibleForLegalStatusOfGuest)
+ait:AIT_0052Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:instituteIsNotResponsibleForLegalStatusOfGuest ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0052Shape_prop1 .
+
+ait:AIT_0052Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:instituteIsNotResponsibleForLegalStatusOfGuest ;
+    sh:maxCount 0 ;
+    sh:message "The Institute shall in no way be held responsible for the legal status of guests." .
+
+# Rule: AIT-0053 | OBLIGATION
+# FOL: O(responsibleForVisaPermit)
+ait:AIT_0053Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:responsibleForVisaPermit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0053Shape_prop1 .
+
+ait:AIT_0053Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:responsibleForVisaPermit ;
+    sh:minCount 1 ;
+    sh:message "Visas, residence permits, etc. shall be the responsibility of the guests." .
+
+# Rule: AIT-0054 | PERMISSION
+# FOL: P(putNameOnWaitingListAndLiveInEmployeeAccommodation)
+ait:AIT_0054Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0054Shape_prop1 .
+
+ait:AIT_0054Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:putNameOnWaitingListAndLiveInEmployeeAccommodation ;
+    sh:minCount 0 ;
+    sh:message "Students may put their names on the waiting list and live in employee accommodation subject to availability." .
+
+# Rule: AIT-0055 | PERMISSION
+# FOL: P(temporarilyStayInUnit(student))
+ait:AIT_0055Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0055Shape_prop1 .
+
+ait:AIT_0055Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:temporarilyStayInUnit ;
+    sh:minCount 0 ;
+    sh:message "Students are allowed to temporarily stay in such units until such time that they have been allocated a room in student accommodation or until advised by the Accommodation Unit." .
+
+# Rule: AIT-0056 | OBLIGATION
+# FOL: O(VacateRoom(x))
+ait:AIT_0056Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0056Shape_prop1 .
+
+ait:AIT_0056Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:vacateRoom ;
+    sh:minCount 1 ;
+    sh:message "Students are required to vacate their rooms within five days (including weekends) after their graduation/completion of studies." .
+
+# Rule: AIT-0057 | OBLIGATION
+# FOL: O(NewStudent(x) ∧ ArrivalPeriodSpecified(x) → OnCampus(x))
+ait:AIT_0057Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0057Shape_prop1 .
+
+ait:AIT_0057Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:newStudent ;
+    sh:minCount 1 ;
+    sh:message "It is recommended that new students be on campus during the arrival period specified in the admission offer letter. ● New students are served in a queue based on a ‘take a number’ system drawn by lot " .
+
+# Rule: AIT-0058 | PERMISSION
+# FOL: P(queueForRoomChange(student))
+ait:AIT_0058Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0058Shape_prop1 .
+
+ait:AIT_0058Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:queueForRoomChange ;
+    sh:minCount 0 ;
+    sh:message "New and continuing students wishing to move into another category of rooms may queue during the period designated by the Accommodation Unit." .
+
+# Rule: AIT-0059 | OBLIGATION
+# FOL: O(queuing iff studentID_presented(x) and onlyThreeCategoriesQueued(x) and notMoreThanOneCategoryQueued(x) and noRiskyAllocation(x) and canPutSpecialRequirements(x) and inPersonListingOnCampus(x))
+ait:AIT_0059Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0059Shape_prop1 .
+
+ait:AIT_0059Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:queuing ;
+    sh:minCount 1 ;
+    sh:message "Queuing requires presentation of a student ID. ● A student may queue for a maximum of three dorm categories in order of preference. ● By queuing in more than one category the student risks being alloc" .
+
+# Rule: AIT-0060 | OBLIGATION
+# FOL: O(putNameOnWaitingListForCampusAccommodation)(student)
+ait:AIT_0060Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0060Shape_prop1 .
+
+ait:AIT_0060Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:putNameOnWaitingListForCampusAccommodation ;
+    sh:minCount 1 ;
+    sh:message "FS-1-1-1: CAMPUS ACCOMMODATION FOR STUDENTS ● Only continuing students, who are off-campus on data collection or on approved leave, may put their names on the waiting list through email to accommodati" .
+
+# Rule: AIT-0061 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0061Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0061Shape_prop1 .
+
+ait:AIT_0061Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:provideapproximatedateofarrivaloncampus ;
+    sh:minCount 1 ;
+    sh:message "They must provide the approximate date of their arrival on campus. ● A student wishing to move within the same dorm category requires prior approval of the OFAM Director." .
+
+# Rule: AIT-0062 | OBLIGATION
+# FOL: O(allocateAccordingToWaitingList(subject))
+ait:AIT_0062Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:allocateAccordingToWaitingList ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0062Shape_prop1 .
+
+ait:AIT_0062Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:allocateAccordingToWaitingList ;
+    sh:minCount 1 ;
+    sh:message "Allocation According to Waiting List ● An offer for transfer/relocation from one unit to another according to the waiting list shall start during the period designated by the Accommodation Unit and is" .
+
+# Rule: AIT-0065 | PERMISSION
+# FOL: P(Application_for_Student_Village(?x))
+ait:AIT_0065Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0065Shape_prop1 .
+
+ait:AIT_0065Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:application_for_Student_Village ;
+    sh:minCount 0 ;
+    sh:message "New and continuing students may apply for student villages following the policies below: Unmarried Students in Shared Unit ● Students may apply for a shared unit provided they are able to find a group" .
+
+# Rule: AIT-0066 | PROHIBITION
+# FOL: F(Action)
+ait:AIT_0066Shape a sh:NodeShape ;
+    sh:targetClass ait:Administrator ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0066Shape_prop1 .
+
+ait:AIT_0066Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:changegroupingafterallocation ;
+    sh:maxCount 0 ;
+    sh:message "A change in the grouping after allocation is not permitted unless otherwise approved by the OFAM Director. ● If shared units become available, the first group on the waiting list will be notified." .
+
+# Rule: AIT-0067 | OBLIGATION
+# FOL: O(confirmOfferMove(student))
+ait:AIT_0067Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0067Shape_prop1 .
+
+ait:AIT_0067Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:confirmOfferMove ;
+    sh:minCount 1 ;
+    sh:message "The students concerned will be given five working days to confirm the offer to move; otherwise, the group may lose the offer." .
+
+# Rule: AIT-0068 | OBLIGATION
+# FOL: O(reportMaintenanceQuery)
+ait:AIT_0068Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:reportMaintenanceQuery ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0068Shape_prop1 .
+
+ait:AIT_0068Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reportMaintenanceQuery ;
+    sh:minCount 1 ;
+    sh:message "All maintenance queries must be reported to the Call Center on 02 524 5800 between 0800 and 1700 hours, Monday to Saturday." .
+
+# Rule: AIT-0069 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0069Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0069Shape_prop1 .
+
+ait:AIT_0069Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:regularcleaningandhygieneoftheunit ;
+    sh:minCount 1 ;
+    sh:message "Regular cleaning and hygiene of the unit has to be maintained by the student." .
+
+# Rule: AIT-0071 | OBLIGATION
+# FOL: O(maintainCleanlinessOfCommonAreaAndLandscape)
+ait:AIT_0071Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0071Shape_prop1 .
+
+ait:AIT_0071Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maintainCleanlinessOfCommonAreaAndLandscape ;
+    sh:minCount 1 ;
+    sh:message "Students have to upkeep the cleanliness of the common area and landscape around the building." .
+
+# Rule: AIT-0072 | PROHIBITION
+# FOL: F(cookInUnit)
+ait:AIT_0072Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:cookInUnit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0072Shape_prop1 .
+
+ait:AIT_0072Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cookInUnit ;
+    sh:maxCount 0 ;
+    sh:message "Cooking is not permitted, except in accommodation units where cooking facilities or shared cooking facilities are provided." .
+
+# Rule: AIT-0073 | PERMISSION
+# FOL: P(installOutdoorAntennaOrCableTV)
+ait:AIT_0073Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0073Shape_prop1 .
+
+ait:AIT_0073Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:installOutdoorAntennaOrCableTV ;
+    sh:minCount 0 ;
+    sh:message "Students are allowed to install outdoor antennas or cable TV, only with the prior agreement of the Accommodation Unit." .
+
+# Rule: AIT-0074 | PROHIBITION
+# FOL: F(installHeavyApplianceInUnsuitableAccommodation)
+ait:AIT_0074Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0074Shape_prop1 .
+
+ait:AIT_0074Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:installHeavyApplianceInUnsuitableAccommodation ;
+    sh:maxCount 0 ;
+    sh:message "Students are not allowed to install heavy appliances, such as air-conditioners, in accommodation units that are not designed for such facilities, i.e. in Student Villages and Category 1 dorms." .
+
+# Rule: AIT-0075 | OBLIGATION
+# FOL: O(clean(unit(x)) ∧ empty(unit(x)) ∧ same_condition(unit(x)))
+ait:AIT_0075Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0075Shape_prop1 .
+
+ait:AIT_0075Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:clean ;
+    sh:minCount 1 ;
+    sh:message "Upon leaving the accommodation unit, students are required to leave their units clean, remove all possessions, and to leave the unit and its furniture and equipment in the same condition as when the t" .
+
+# Rule: AIT-0076 | PROHIBITION
+# FOL: F(disturbFellowStudentsInResidentialAreas)(student)
+ait:AIT_0076Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0076Shape_prop1 .
+
+ait:AIT_0076Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:disturbFellowStudentsInResidentialAreas ;
+    sh:maxCount 0 ;
+    sh:message "Students shall not disturb fellow students in the residential areas." .
+
+# Rule: AIT-0077 | OBLIGATION
+# FOL: O(ceaseGameOrActivity(x))
+ait:AIT_0077Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0077Shape_prop1 .
+
+ait:AIT_0077Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:ceaseGameOrActivity ;
+    sh:minCount 1 ;
+    sh:message "Games and activities shall cease at 2300 hours at all sports fields and courts in and near campus residential areas." .
+
+# Rule: AIT-0078 | PROHIBITION
+# FOL: F(noisyGroupStudyOrPartyInStudentAccommodation)(subject)
+ait:AIT_0078Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0078Shape_prop1 .
+
+ait:AIT_0078Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:noisyGroupStudyOrPartyInStudentAccommodation ;
+    sh:maxCount 0 ;
+    sh:message "Noisy group studies and parties are not allowed in student accommodation." .
+
+# Rule: AIT-0079 | OBLIGATION
+# FOL: O(useDesignatedRoom)
+ait:AIT_0079Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:useDesignatedRoom ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0079Shape_prop1 .
+
+ait:AIT_0079Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useDesignatedRoom ;
+    sh:minCount 1 ;
+    sh:message "Alternative rooms designated for such purpose must be used." .
+
+# Rule: AIT-0080 | PERMISSION
+# FOL: P(openDorm(student, accommodationUnit))
+ait:AIT_0080Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0080Shape_prop1 .
+
+ait:AIT_0080Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:openDorm ;
+    sh:minCount 0 ;
+    sh:message "Students who misplace their accommodation unit keys may ask the Accommodation Unit to open their dorms." .
+
+# Rule: AIT-0081 | OBLIGATION
+# FOL: O(Security_at_main_entrance_to_AIT(x) ∧ After_office_hours(x) → Obligation_fee(x))
+ait:AIT_0081Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:security_at_main_entrance_to_AIT ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0081Shape_prop1 .
+
+ait:AIT_0081Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:security_at_main_entrance_to_AIT ;
+    sh:minCount 1 ;
+    sh:message "If this service is required after office hours, i.e. 1630 hours onwards, a minimal fee will be required and Security at the main entrance to AIT will need to be contacted." .
+
+# Rule: AIT-0082 | PROHIBITION
+# FOL: F(removeFromAccommodationUnit(?x))
+ait:AIT_0082Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:removeFromAccommodationUnit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0082Shape_prop1 .
+
+ait:AIT_0082Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:removeFromAccommodationUnit ;
+    sh:maxCount 0 ;
+    sh:message "Furniture and appliances should not be removed from the accommodation unit." .
+
+# Rule: AIT-0083 | OBLIGATION
+# FOL: O(requestFurnitureAndApplianceRepair)
+ait:AIT_0083Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:requestFurnitureAndApplianceRepair ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0083Shape_prop1 .
+
+ait:AIT_0083Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:requestFurnitureAndApplianceRepair ;
+    sh:minCount 1 ;
+    sh:message "Repair and replacement of furniture and appliances must be requested from and Page 6/8" .
+
+# Rule: AIT-0084 | OBLIGATION
+# FOL: O(payAdditionalCharges(tenant))
+ait:AIT_0084Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0084Shape_prop1 .
+
+ait:AIT_0084Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payAdditionalCharges ;
+    sh:minCount 1 ;
+    sh:message "FS-1-1-1: CAMPUS ACCOMMODATION FOR STUDENTS approved by the Accommodation Unit, which may ask the tenant to pay additional charges, in situations where damage to furniture and appliances has resulted " .
+
+# Rule: AIT-0085 | PROHIBITION
+# FOL: F(cookInProhibitedDormitory)(student)
+ait:AIT_0085Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0085Shape_prop1 .
+
+ait:AIT_0085Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cookInProhibitedDormitory ;
+    sh:maxCount 0 ;
+    sh:message "Students who cook in dormitories where cooking is prohibited may face a minimum fine of Baht 2,000, or the actual costs of the damage caused by cooking." .
+
+# Rule: AIT-0086 | OBLIGATION
+# FOL: O(installHeavyApplianceInUnsuitableAccommodation(x))
+ait:AIT_0086Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0086Shape_prop1 .
+
+ait:AIT_0086Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:installHeavyApplianceInUnsuitableAccommodation ;
+    sh:minCount 1 ;
+    sh:message "Students who install heavy appliances, such as air-conditioners, in accommodation units not designed for such facilities, will be fined Baht 2,000 and charged for the services related to the removal o" .
+
+# Rule: AIT-0088 | PROHIBITION
+# FOL: F(petInStudentAccommodation)
+ait:AIT_0088Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0088Shape_prop1 .
+
+ait:AIT_0088Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:petInStudentAccommodation ;
+    sh:maxCount 0 ;
+    sh:message "Pets are not allowed in student accommodation." .
+
+# Rule: AIT-0089 | OBLIGATION
+# FOL: O(disturbPeaceOfSurroundings(student))
+ait:AIT_0089Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0089Shape_prop1 .
+
+ait:AIT_0089Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:disturbPeaceOfSurroundings ;
+    sh:minCount 1 ;
+    sh:message "Students disturbing the peace of their surroundings shall receive a formal reprimand as a first warning." .
+
+# Rule: AIT-0090 | PROHIBITION
+# FOL: F(repeated_disturbance)
+ait:AIT_0090Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:repeated_disturbance ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0090Shape_prop1 .
+
+ait:AIT_0090Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:repeated_disturbance ;
+    sh:maxCount 0 ;
+    sh:message "Repeated disturbances may face further sanctions." .
+
+# Rule: AIT-0091 | PROHIBITION
+# FOL: F(useRoomForResidentialPurposes(Subject))
+ait:AIT_0091Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0091Shape_prop1 .
+
+ait:AIT_0091Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useRoomForResidentialPurposes ;
+    sh:maxCount 0 ;
+    sh:message "Rooms must be used for residential purposes only." .
+
+# Rule: AIT-0092 | OBLIGATION
+# FOL: O(maintainCleanlinessOfBedroomAndFacilities(student))
+ait:AIT_0092Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0092Shape_prop1 .
+
+ait:AIT_0092Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maintainCleanlinessOfBedroomAndFacilities ;
+    sh:minCount 1 ;
+    sh:message "Students who do not maintain the upkeep and cleanliness of their bedroom, bathroom, corridor, balcony, and cooking facilities, where provided, will be fined Baht 2,000 and charged for cleaning service" .
+
+# Rule: AIT-0094 | OBLIGATION
+# FOL: O(payFee(selfFundedStudent))
+ait:AIT_0094Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0094Shape_prop1 .
+
+ait:AIT_0094Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFee ;
+    sh:minCount 1 ;
+    sh:message "Self-funded students are required to pay a one-month advance deposit." .
+
+# Rule: AIT-0095 | OBLIGATION
+# FOL: O(payRentForStayOnCampus)(student)
+ait:AIT_0095Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0095Shape_prop1 .
+
+ait:AIT_0095Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payRentForStayOnCampus ;
+    sh:minCount 1 ;
+    sh:message "Special and exchange students are required to pay the rent in full for the whole duration of their stay on campus." .
+
+# Rule: AIT-0096 | OBLIGATION
+# FOL: O(respects(subject, other, accomplishments, activities, individualDifferences))
+ait:AIT_0096Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:respects ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0096Shape_prop1 .
+
+ait:AIT_0096Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:respects ;
+    sh:minCount 1 ;
+    sh:message "The accomplishments, activities and individual differences of other people must be respected." .
+
+# Rule: AIT-0097 | PROHIBITION
+# FOL: F(abuseInstituteServices)
+ait:AIT_0097Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:abuseInstituteServices ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0097Shape_prop1 .
+
+ait:AIT_0097Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:abuseInstituteServices ;
+    sh:maxCount 0 ;
+    sh:message "Members of the Institute’s community must not abuse the services, benefits, opportunities and facilities of the Institute, nor use them for their personal financial gain." .
+
+# Rule: AIT-0098 | OBLIGATION
+# FOL: O(actInInterestOfInstitute(subject) and not engageInActionsContraryToPoliciesAndInterestsOfInstitute(subject))
+ait:AIT_0098Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0098Shape_prop1 .
+
+ait:AIT_0098Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:actInInterestOfInstitute ;
+    sh:minCount 1 ;
+    sh:message "AIT employees, students and residents must act in the interests of the Institute and avoid engaging in any actions contrary to the policies and interests of the Institute." .
+
+# Rule: AIT-0099 | OBLIGATION
+# FOL: O(usesAuthorityEthicallyWithRespectAndSensitivityAndInAccordanceWithInstitutesPolicies)(employee, supervisoryPosition)
+ait:AIT_0099Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0099Shape_prop1 .
+
+ait:AIT_0099Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:usesAuthorityEthicallyWithRespectAndSensitivityAndInAccordanceWithInstitutesPolicies ;
+    sh:minCount 1 ;
+    sh:message "AIT employees in supervisory positions must at all times use their authority ethically, with respect and sensitivity, and in accordance with the Institute’s policies." .
+
+# Rule: AIT-0100 | OBLIGATION
+# FOL: O(disclose(subject, supervisor, conflictOfInterest))
+ait:AIT_0100Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0100Shape_prop1 .
+
+ait:AIT_0100Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:disclose ;
+    sh:minCount 1 ;
+    sh:message "An employee must disclose to their supervisor any actual or potential conflict of interest with the interests of the Institute, which may arise from outside activities, professional or otherwise." .
+
+# Rule: AIT-0101 | OBLIGATION
+# FOL: O(expresses_personal_opinion(x) ∧ outside_institute(x) → notes_explicitly(x))
+ait:AIT_0101Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0101Shape_prop1 .
+
+ait:AIT_0101Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:expresses_personal_opinion ;
+    sh:minCount 1 ;
+    sh:message "When expressing personal opinions outside the Institute, AIT employees and students are required to note explicitly that the opinions expressed are personal and do not necessarily represent the positi" .
+
+# Rule: AIT-0102 | OBLIGATION
+# FOL: O(reported(s, uh, d15, i, v3000, sr, sc))
+ait:AIT_0102Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0102Shape_prop1 .
+
+ait:AIT_0102Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reported ;
+    sh:minCount 1 ;
+    sh:message "Acceptance by an employee of a gift valued at THB 3,000 or more must be reported by the employee to their Unit Head within 15 days of acceptance, giving details as to the description of the item, sour" .
+
+@prefix ait: <http://example.org/ait-policy#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ait:AIT_0103Shape a sh:NodeShape ;
+    sh:targetClass ?x ;
+    sh:property [ sh:path ait:deniesOrGrantsRight ;
+                   sh:minCount 1 ;
+                   sh:severity sh:Violation ] ;
+    sh:property [ sh:path ait:basisOfDenialOrGrant ;
+                   sh:valueType sh:string ;
+                   sh:inClass sh:String ;
+                   sh:excludedValue "nationality" ;
+                   sh:excludedValue "race" ;
+                   sh:excludedValue "social background" ;
+                   sh:excludedValue "gender" ;
+                   sh:excludedValue "age" ;
+                   sh:excludedValue "marital status" ;
+                   sh:excludedValue "family status" ;
+                   sh:excludedValue "sexual orientation" ;
+                   sh:excludedValue "disability" ;
+                   sh:type sh:List ] ;
+    ^^^^;
+
+The semicolon at the end of the line defining the `sh:property` for `ait:basisOfDenialOrGrant` was added to fix the syntax error.
+# Rule: AIT-0104 | OBLIGATION
+# FOL: O(undergoDisciplinaryAction(employee or student))
+ait:AIT_0104Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0104Shape_prop1 .
+
+ait:AIT_0104Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:undergoDisciplinaryAction ;
+    sh:minCount 1 ;
+    sh:message "An employee or student adjudged to have violated the Institute’s policy on harassment, abuse or discrimination will be subject to disciplinary action." .
+
+# Rule: AIT-0106 | OBLIGATION
+# FOL: O(receive_grievance(?x))
+ait:AIT_0106Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0106Shape_prop1 .
+
+ait:AIT_0106Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:receive_grievance ;
+    sh:minCount 1 ;
+    sh:message "A Grievance Committee shall receive all grievances." .
+
+# Rule: AIT-0107 | OBLIGATION
+# FOL: O(electsChair(grievanceCommittee, chair))
+ait:AIT_0107Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0107Shape_prop1 .
+
+ait:AIT_0107Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:electsChair ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Committee shall elect a Chair from among its members, which will have a term of two years and can serve for not more than two consecutive terms." .
+
+# Rule: AIT-0108 | OBLIGATION
+# FOL: O(grievanceCommitteePerformsRole)
+ait:AIT_0108Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0108Shape_prop1 .
+
+ait:AIT_0108Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:grievanceCommitteePerformsRole ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Committee shall perform three main roles: a." .
+
+# Rule: AIT-0109 | OBLIGATION
+# FOL: O(prepared(GrievanceCommittee) and identify(GrievanceCommittee, breaches) and of(breaches, InstitutePandPs))
+ait:AIT_0109Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0109Shape_prop1 .
+
+ait:AIT_0109Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:prepared ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Committee must be prepared to identify breaches of the Institute P&Ps, etc." .
+
+# Rule: AIT-0110 | OBLIGATION
+# FOL: O(protectInterestsOfAITCommunity(agent))
+ait:AIT_0110Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:protectInterestsOfAITCommunity ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0110Shape_prop1 .
+
+ait:AIT_0110Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:protectInterestsOfAITCommunity ;
+    sh:minCount 1 ;
+    sh:message "In performing their duties, they must protect the interests of all members of the AIT community. c." .
+
+# Rule: AIT-0111 | OBLIGATION
+# FOL: O(expressesInWriting(subject, grievanceProcessing))
+ait:AIT_0111Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0111Shape_prop1 .
+
+ait:AIT_0111Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:expressesInWriting ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Committee should express in writing what came to light during the processing of grievances." .
+
+# Rule: AIT-0112 | OBLIGATION
+# FOL: O(Inform_President_of_Settlements(subject))
+ait:AIT_0112Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0112Shape_prop1 .
+
+ait:AIT_0112Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:inform_President_of_Settlements ;
+    sh:minCount 1 ;
+    sh:message "They must inform the President of all settlements made during the grievance process." .
+
+# Rule: AIT-0114 | OBLIGATION
+# FOL: O(consult_with_president_and_inform_police(subject))
+ait:AIT_0114Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0114Shape_prop1 .
+
+ait:AIT_0114Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:consult_with_president_and_inform_police ;
+    sh:minCount 1 ;
+    sh:message "When there are strong grounds to conclude that a serious crime such as rape, grievous bodily harm, assault, or theft has been committed, the Grievance Committee should consult with the President, and " .
+
+# Rule: AIT-0115 | OBLIGATION
+# FOL: O(writeStatementToIndividualConcerned_describesUnwelcomeBehaviorAndItsEffect_andStatesThatBehaviorMustCease)(subject)
+ait:AIT_0115Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:writeStatementToIndividualConcerned_describesUnwelcomeBehaviorAndItsEffect_andStatesThatBehaviorMustCease ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0115Shape_prop1 .
+
+ait:AIT_0115Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:writeStatementToIndividualConcerned_describesUnwelcomeBehaviorAndItsEffect_andStatesThatBehaviorMustCease ;
+    sh:minCount 1 ;
+    sh:message "All counseling is off the record, and in confidence. d. ‘Direct confrontation’ involves the complainant writing a statement to the individual(s) concerned, describing the unwelcome behavior and its ef" .
+
+# Rule: AIT-0116 | PERMISSION
+# FOL: P(seekAdviceFromGrievanceCommittee)(complainant)
+ait:AIT_0116Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0116Shape_prop1 .
+
+ait:AIT_0116Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:seekAdviceFromGrievanceCommittee ;
+    sh:minCount 0 ;
+    sh:message "The complainant may seek the advice of the Grievance Committee on what to say or write. f." .
+
+# Rule: AIT-0117 | PERMISSION
+# FOL: P(directConfrontationResponse(x))
+ait:AIT_0117Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:directConfrontationResponse ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0117Shape_prop1 .
+
+ait:AIT_0117Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:directConfrontationResponse ;
+    sh:minCount 0 ;
+    sh:message "The person(s) towards whom the direct confrontation is directed may likewise use consultation and direct confrontation in their response. g." .
+
+# Rule: AIT-0118 | PERMISSION
+# FOL: P(Action(x))
+ait:AIT_0118Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:monitorproceedings ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0118Shape_prop1 .
+
+ait:AIT_0118Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:monitorproceedings ;
+    sh:minCount 0 ;
+    sh:message "Both the complainant and complainee(s) are permitted to request one observer each, to monitor all proceedings. k." .
+
+# Rule: AIT-0119 | OBLIGATION
+# FOL: O(submitWrittenAgreementsToGrievanceCommittee(mediator))
+ait:AIT_0119Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0119Shape_prop1 .
+
+ait:AIT_0119Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitWrittenAgreementsToGrievanceCommittee ;
+    sh:minCount 1 ;
+    sh:message "Outcomes of the mediation shall include explicit written agreements to be submitted to the Grievance Committee. m." .
+
+# Rule: AIT-0120 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0120Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0120Shape_prop1 .
+
+ait:AIT_0120Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:lodgeformalcomplaintwithgrievancecommittee ;
+    sh:minCount 1 ;
+    sh:message "If the informal grievance process, fails to lead to a satisfactory resolution of the complaint, the complainant who has suffered from harassment, abuse or discrimination may lodge a formal complaint w" .
+
+# Rule: AIT-0121 | OBLIGATION
+# FOL: O(writeFormalComplaint(x))
+ait:AIT_0121Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:writeFormalComplaint ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0121Shape_prop1 .
+
+ait:AIT_0121Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:writeFormalComplaint ;
+    sh:minCount 1 ;
+    sh:message "The formal complaint must be in writing, and should state clearly all facts for consideration. c." .
+
+# Rule: AIT-0122 | OBLIGATION
+# FOL: O(includeGrievance)
+ait:AIT_0122Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:includeGrievance ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0122Shape_prop1 .
+
+ait:AIT_0122Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:includeGrievance ;
+    sh:minCount 1 ;
+    sh:message "The grievance must include: i. the alleged violation and/or misapplication of a stated policy or procedure; ii. a statement of the relevant facts supporting the complainant’s position, e.g., date(s), " .
+
+# Rule: AIT-0123 | OBLIGATION
+# FOL: O(confidentiality_and_due_regard(subject))
+ait:AIT_0123Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0123Shape_prop1 .
+
+ait:AIT_0123Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:confidentiality_and_due_regard ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Committee is required to address the complaint in utmost confidentiality and with due regard to the privacy of the complainant, and of the person accused (‘the defendant’). e." .
+
+# Rule: AIT-0125 | OBLIGATION
+# FOL: O(grievanceProcedureInvolvement(x) implies factGatheringImportance(x))
+ait:AIT_0125Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0125Shape_prop1 .
+
+ait:AIT_0125Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:grievanceProcedureInvolvement ;
+    sh:minCount 1 ;
+    sh:message "When the Grievance Committee is involved in a grievance procedure, they should keep in mind that facts are the substance of any grievance, and the fact-gathering process is of fundamental importance." .
+
+# Rule: AIT-0126 | OBLIGATION
+# FOL: O(writeDownGrievanceFacts)
+ait:AIT_0126Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0126Shape_prop1 .
+
+ait:AIT_0126Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:writeDownGrievanceFacts ;
+    sh:minCount 1 ;
+    sh:message "In gathering the facts, the Grievance Committee should put all points in writing even if the grievance is not presented." .
+
+# Rule: AIT-0127 | OBLIGATION
+# FOL: O(recordFacts)
+ait:AIT_0127Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0127Shape_prop1 .
+
+ait:AIT_0127Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:recordFacts ;
+    sh:minCount 1 ;
+    sh:message "In obtaining evidence, the Grievance Committee should concentrate on recording facts, not arguments." .
+
+# Rule: AIT-0128 | OBLIGATION
+# FOL: O(analyzeGrievance(grievanceCommittee))
+ait:AIT_0128Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0128Shape_prop1 .
+
+ait:AIT_0128Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:analyzeGrievance ;
+    sh:minCount 1 ;
+    sh:message "Having gathered the relevant facts, the Grievance Committee should proceed to analyze the grievance." .
+
+# Rule: AIT-0129 | OBLIGATION
+# FOL: O(appointGrievanceTribunal(x))
+ait:AIT_0129Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0129Shape_prop1 .
+
+ait:AIT_0129Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:appointGrievanceTribunal ;
+    sh:minCount 1 ;
+    sh:message "When further action is required, the President shall appoint a Grievance Tribunal. b." .
+
+# Rule: AIT-0130 | OBLIGATION
+# FOL: O(gives(subject, time_of_hearing, place_of_hearing) ∧ provides_name(subject, complainant) ∧ provides_page(subject, 8))
+ait:AIT_0130Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:gives ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0130Shape_prop1 .
+
+ait:AIT_0130Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:gives ;
+    sh:minCount 1 ;
+    sh:message "The written notification of the hearing should give: the time and place of the hearing; ● the name(s) of the complainant(s); ● Page 8/11" .
+
+# Rule: AIT-0131 | OBLIGATION
+# FOL: O(conveneGrievanceTribunal(subject))
+ait:AIT_0131Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0131Shape_prop1 .
+
+ait:AIT_0131Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:conveneGrievanceTribunal ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Tribunal shall be convened at the earliest possible date after the formal complaint." .
+
+# Rule: AIT-0132 | OBLIGATION
+# FOL: O(attendHearing(x))
+ait:AIT_0132Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0132Shape_prop1 .
+
+ait:AIT_0132Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:attendHearing ;
+    sh:minCount 1 ;
+    sh:message "Hearings shall be open only to the members of the Grievance Tribunal, the complainant(s) and the defendant, and any witnesses called. b." .
+
+# Rule: AIT-0133 | OBLIGATION
+# FOL: O(ascertainFactsOfCase(grievanceTribunal))
+ait:AIT_0133Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0133Shape_prop1 .
+
+ait:AIT_0133Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:ascertainFactsOfCase ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Tribunal must seek to ascertain, to the best of its ability, the facts of the case. c." .
+
+# Rule: AIT-0134 | PERMISSION
+# FOL: P(testifyBeforeGrievanceTribunal(?x))
+ait:AIT_0134Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0134Shape_prop1 .
+
+ait:AIT_0134Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:testifyBeforeGrievanceTribunal ;
+    sh:minCount 0 ;
+    sh:message "In ascertaining the facts of the case, the Tribunal may call witnesses to testify before the Grievance Tribunal." .
+
+# Rule: AIT-0136 | PERMISSION
+# FOL: P(delegateResponsibilities_toVicePresident)(subject)
+ait:AIT_0136Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0136Shape_prop1 .
+
+ait:AIT_0136Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:delegateResponsibilities_toVicePresident ;
+    sh:minCount 0 ;
+    sh:message "The President may delegate their responsibilities to a Vice President." .
+
+# Rule: AIT-0139 | OBLIGATION
+# FOL: O(recommend(GrievanceTribunal, placeReport))
+ait:AIT_0139Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0139Shape_prop1 .
+
+ait:AIT_0139Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:recommend ;
+    sh:minCount 1 ;
+    sh:message "The Grievance Tribunal will recommend whether a copy of the report should be placed in the defendant’s file in OHRS or OSA." .
+
+# Rule: AIT-0140 | PERMISSION
+# FOL: P(appealToBoardThroughAuditCommittee)(subject)
+ait:AIT_0140Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0140Shape_prop1 .
+
+ait:AIT_0140Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:appealToBoardThroughAuditCommittee ;
+    sh:minCount 0 ;
+    sh:message "If either the complainant or the defendant is not satisfied with the decision of the President, they may appeal to the Board, through its Audit Committee." .
+
+# Rule: AIT-0141 | OBLIGATION
+# FOL: O(∀x (ScheduledOutsideRegularHours(make-up_classes(x)) → ¬ClashWithStudentSchedule(x)))
+ait:AIT_0141Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0141Shape_prop1 .
+
+ait:AIT_0141Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:scheduledoutsideregularhoursmakeupclasses ;
+    sh:minCount 1 ;
+    sh:message "If make-up classes are scheduled out of regular class hours, the re-scheduled classes should not clash with the schedules of students in the class." .
+
+# Rule: AIT-0142 | OBLIGATION
+# FOL: O(determineGradeInCourse(student, academicAchievementConsistentWithAimsAndContentOfCourse))
+ait:AIT_0142Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0142Shape_prop1 .
+
+ait:AIT_0142Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:determineGradeInCourse ;
+    sh:minCount 1 ;
+    sh:message "Students have the right to expect that their grade in a course should be determined only by academic achievement consistent with the aims and content of that course." .
+
+# Rule: AIT-0143 | OBLIGATION
+# FOL: O(makeKnownCriteriaForGrading(instructor))
+ait:AIT_0143Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0143Shape_prop1 .
+
+ait:AIT_0143Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:makeKnownCriteriaForGrading ;
+    sh:minCount 1 ;
+    sh:message "At the beginning of the course, the instructor should make known the criteria that will be considered in determining the grade such as class attendance, class participation, papers, examinations, proj" .
+
+# Rule: AIT-0144 | PERMISSION
+# FOL: P(notifyAndAllowToAppeal)(student)
+ait:AIT_0144Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0144Shape_prop1 .
+
+ait:AIT_0144Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:notifyAndAllowToAppeal ;
+    sh:minCount 0 ;
+    sh:message "The student will be notified, and allowed to appeal." .
+
+# Rule: AIT-0145 | OBLIGATION
+# FOL: O(maintainPeacefulHealthyLearningEnvironmentForFreeDiscussion(student))
+ait:AIT_0145Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0145Shape_prop1 .
+
+ait:AIT_0145Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maintainPeacefulHealthyLearningEnvironmentForFreeDiscussion ;
+    sh:minCount 1 ;
+    sh:message "All students have the right to a peaceful, healthy learning environment in which free discussion is encouraged in the common interest of the pursuit of knowledge." .
+
+# Rule: AIT-0147 | OBLIGATION
+# FOL: O(useAITLibraryAndEducationalResourcesResponsibly)(student)
+ait:AIT_0147Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0147Shape_prop1 .
+
+ait:AIT_0147Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useAITLibraryAndEducationalResourcesResponsibly ;
+    sh:minCount 1 ;
+    sh:message "Students must use the AIT Library and all educational resources of the Institute in a responsible manner." .
+
+# Rule: AIT-0148 | PROHIBITION
+# FOL: F(defaceOrVandalizeLibraryResourceOrComputerEquipment)
+ait:AIT_0148Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0148Shape_prop1 .
+
+ait:AIT_0148Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:defaceOrVandalizeLibraryResourceOrComputerEquipment ;
+    sh:maxCount 0 ;
+    sh:message "Students may not deface or vandalize books, periodicals, and/or computer resources in the AIT Library as well as computer lab hardware, software and related equipment." .
+
+# Rule: AIT-0149 | OBLIGATION
+# FOL: O(abideByAcceptableUsePolicyForITResources)(student)
+ait:AIT_0149Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0149Shape_prop1 .
+
+ait:AIT_0149Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:abideByAcceptableUsePolicyForITResources ;
+    sh:minCount 1 ;
+    sh:message "Students must abide by the Institute’s acceptable use policy for IT resources." .
+
+# Rule: AIT-0150 | PROHIBITION
+# FOL: F(Action(x))
+ait:AIT_0150Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0150Shape_prop1 .
+
+ait:AIT_0150Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:actionx ;
+    sh:maxCount 0 ;
+    sh:message "While students have the right to freedom of expression, including the right to dissent, protest, or take reasoned exception to the information and views offered in any course, this expression must not" .
+
+# Rule: AIT-0151 | OBLIGATION
+# FOL: O(meetHighestStandardsOfPersonalEthicalAndMoralConduct)(student)
+ait:AIT_0151Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0151Shape_prop1 .
+
+ait:AIT_0151Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:meetHighestStandardsOfPersonalEthicalAndMoralConduct ;
+    sh:minCount 1 ;
+    sh:message "STUDENT CODE OF CONDUCT Students at AIT are expected to meet the highest standards of personal, ethical and moral conduct." .
+
+# Rule: AIT-0152 | OBLIGATION
+# FOL: O(suspectCheatingDuringExamOrAssignmentOrResearchProject(subject))
+ait:AIT_0152Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0152Shape_prop1 .
+
+ait:AIT_0152Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:suspectCheatingDuringExamOrAssignmentOrResearchProject ;
+    sh:minCount 1 ;
+    sh:message "If there is suspicion of cheating during an examination, in an assignment or a research project, the instructor/invigilator should immediately call the attention of the student and put a notation on s" .
+
+# Rule: AIT-0153 | OBLIGATION
+# FOL: O(seekExplanation(subject, time) ∧ submitIncidentReport(subject))
+ait:AIT_0153Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0153Shape_prop1 .
+
+ait:AIT_0153Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:seekExplanation ;
+    sh:minCount 1 ;
+    sh:message "The instructor/invigilator should seek an explanation from the student at the end of the examination or when the assignment or project was submitted, and submit an incident report to the Department He" .
+
+# Rule: AIT-0154 | OBLIGATION
+# FOL: O(recordedNotes(?x))
+ait:AIT_0154Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:recordedNotes ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0154Shape_prop1 .
+
+ait:AIT_0154Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:recordedNotes ;
+    sh:minCount 1 ;
+    sh:message "Notes of the interview will be recorded and should be agreed upon by all parties." .
+
+# Rule: AIT-0156 | OBLIGATION
+# FOL: O(recommendToSchoolDeanDisregardExamScoreAndRequireResubmissionOrRetakeExamination)(subject)
+ait:AIT_0156Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0156Shape_prop1 .
+
+ait:AIT_0156Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:recommendToSchoolDeanDisregardExamScoreAndRequireResubmissionOrRetakeExamination ;
+    sh:minCount 1 ;
+    sh:message "However, if cheating was proven, the Department Head and the instructor/invigilator may recommend to the School Dean to disregard the original examination score and require the student to submit an eq" .
+
+# Rule: AIT-0157 | PROHIBITION
+# FOL: F(downgradeGrade, giveZeroScore, giveFailingGrade, recommendSuspensionOrDismissal)(subject)
+ait:AIT_0157Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0157Shape_prop1 .
+
+ait:AIT_0157Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:downgradeGrade ;
+    sh:maxCount 0 ;
+    sh:message "Upon receipt of the retake, the School Dean may decide to: ● Downgrade by 1 step the grade the student will receive upon repetition of the exam or resubmission of the assignment/project; ● Give a scor" .
+
+# Rule: AIT-0158 | OBLIGATION
+# FOL: O(Address_appeal_to_School_Dean(subject))
+ait:AIT_0158Shape a sh:NodeShape ;
+    sh:targetClass ait:Administrator ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0158Shape_prop1 .
+
+ait:AIT_0158Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:address_appeal_to_School_Dean ;
+    sh:minCount 1 ;
+    sh:message "The appeal should be addressed to the School Dean." .
+
+# Rule: AIT-0159 | OBLIGATION
+# FOL: O(elevateMatterToVicePresidentForAcademicAffairs(subject))
+ait:AIT_0159Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0159Shape_prop1 .
+
+ait:AIT_0159Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:elevateMatterToVicePresidentForAcademicAffairs ;
+    sh:minCount 1 ;
+    sh:message "If School Dean feels that there is evidence of serious dishonesty and the recommendation of the Field of Study Coordination and instructor/invigilator was suspension or dismissal, the matter should be" .
+
+# Rule: AIT-0160 | OBLIGATION
+# FOL: O(consider_evidence(subject))
+ait:AIT_0160Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0160Shape_prop1 .
+
+ait:AIT_0160Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:consider_evidence ;
+    sh:minCount 1 ;
+    sh:message "committee consisting of members from outside the School where the student belongs. ● The investigating committee should consider all the available evidence, including that of the incident report submi" .
+
+# Rule: AIT-0161 | OBLIGATION
+# FOL: O(submitted(r) ∧ promptly(r) ∧ possible(p) ∧ allowing(p, a) ∧ requiredAction(a) ∧ before(nextSemester, a)),
+ait:AIT_0161Shape a sh:NodeShape ;
+    sh:targetClass ait:Report ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0161Shape_prop1 .
+
+ait:AIT_0161Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitted ;
+    sh:minCount 1 ;
+    sh:message "This report should be submitted promptly, if possible permitting the required action to be taken before the beginning of the next semester." .
+
+# Rule: AIT-0162 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0162Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0162Shape_prop1 .
+
+ait:AIT_0162Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:actions ;
+    sh:minCount 1 ;
+    sh:message "The Vice President for Academic Affairs may: ● No penalty; or ● Downgrade by 1 step the grade the student will receive upon repetition of the exam or resubmission of the assignment/project; ● Give a s" .
+
+# Rule: AIT-0163 | OBLIGATION
+# FOL: O(Address_appeal_to_Vice_President_for_Academic_Affairs(subject))
+ait:AIT_0163Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0163Shape_prop1 .
+
+ait:AIT_0163Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:address_appeal_to_Vice_President_for_Academic_Affairs ;
+    sh:minCount 1 ;
+    sh:message "The appeal should be addressed to the Vice President for Academic Affairs." .
+
+# Rule: AIT-0164 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0164Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:complyWithRelevant ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0164Shape_prop1 .
+
+ait:AIT_0164Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:complyWithRelevant ;
+    sh:minCount 1 ;
+    sh:message "Plagiarism and Failure to Acknowledge Sources All members of the AIT community are expected to comply with the relevant Institute policy and procedures in the conduct of research and to observe high s" .
+
+# Rule: AIT-0166 | OBLIGATION
+# FOL: O(makeComplaintAgainstStudent(x))
+ait:AIT_0166Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0166Shape_prop1 .
+
+ait:AIT_0166Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:makeComplaintAgainstStudent ;
+    sh:minCount 1 ;
+    sh:message "A complaint against a student should be made to the Director, OSA." .
+
+# Rule: AIT-0167 | OBLIGATION
+# FOL: O(confirmComplaintInWriting(subject)) under Condition(cannotSettleMatterInformally)
+ait:AIT_0167Shape a sh:NodeShape ;
+    sh:targetClass ait:Administrator ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0167Shape_prop1 .
+
+ait:AIT_0167Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:confirmComplaintInWriting ;
+    sh:minCount 1 ;
+    sh:message "If the matter cannot be settled informally the complaint must be confirmed in writing and be presented by the complainant to the Director, OSA, who will decide whether or not to proceed with an invest" .
+
+# Rule: AIT-0168 | OBLIGATION
+# FOL: O(convene_meeting(vpaa, sdc, secretary, osa, additional_members))
+ait:AIT_0168Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0168Shape_prop1 .
+
+ait:AIT_0168Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:convene_meeting ;
+    sh:minCount 1 ;
+    sh:message "If an investigation is authorized, a meeting of the Standing Disciplinary Commission will be convened thru the Vice President for Academic Affairs (who is also the Chair), which constitutes the follow" .
+
+# Rule: AIT-0169 | OBLIGATION
+# FOL: O(present(s, c))
+ait:AIT_0169Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0169Shape_prop1 .
+
+ait:AIT_0169Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:present ;
+    sh:minCount 1 ;
+    sh:message "The student against whom the complaint has been made shall have the right to be present while the Commission hears the evidence against him or her." .
+
+# Rule: AIT-0170 | PERMISSION
+# FOL: P(questionWitness(subject))
+ait:AIT_0170Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:questionWitness ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0170Shape_prop1 .
+
+ait:AIT_0170Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:questionWitness ;
+    sh:minCount 0 ;
+    sh:message "He/She may question witnesses. d." .
+
+# Rule: AIT-0171 | OBLIGATION
+# FOL: O(FacesSuspension(x))
+ait:AIT_0171Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:facesSuspension ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0171Shape_prop1 .
+
+ait:AIT_0171Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:facesSuspension ;
+    sh:minCount 1 ;
+    sh:message "Otherwise, he/she may face: ● suspension for a stated period;" .
+
+# Rule: AIT-0172 | OBLIGATION
+# FOL: O(ArrivesOnCampus(x) within 3 days BeforeFirstDayOfSemester(x))
+ait:AIT_0172Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0172Shape_prop1 .
+
+ait:AIT_0172Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:arrivesOnCampus ;
+    sh:minCount 1 ;
+    sh:message "Arrival on Campus New students are expected to arrive within a period of 3 days before the first day of the semester." .
+
+# Rule: AIT-0173 | OBLIGATION
+# FOL: O(bringPassportPhoto)
+ait:AIT_0173Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0173Shape_prop1 .
+
+ait:AIT_0173Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:bringPassportPhoto ;
+    sh:minCount 1 ;
+    sh:message "All students are required to bring one passport size photo (4 cm x 6 cm) to be attached to the registration form." .
+
+# Rule: AIT-0174 | OBLIGATION
+# FOL: O(submitPhotosToGovernmentRelationsUnit)
+ait:AIT_0174Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0174Shape_prop1 .
+
+ait:AIT_0174Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitPhotosToGovernmentRelationsUnit ;
+    sh:minCount 1 ;
+    sh:message "For non-Thai students, four additional photos must be submitted to the Government Relations Unit for visa." .
+
+# Rule: AIT-0175 | OBLIGATION
+# FOL: O(Attend(s, o))
+ait:AIT_0175Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0175Shape_prop1 .
+
+ait:AIT_0175Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:attend ;
+    sh:minCount 1 ;
+    sh:message "All new students are required to attend the orientation seminar." .
+
+# Rule: AIT-0176 | OBLIGATION
+# FOL: O(takeAITWritingTestForRegistrationEnrolment(student))
+ait:AIT_0176Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0176Shape_prop1 .
+
+ait:AIT_0176Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:takeAITWritingTestForRegistrationEnrolment ;
+    sh:minCount 1 ;
+    sh:message "Writing Placement Test for Registration/Enrolment All degree program students (including CAS and Certificate leading to Master) must take the AIT Writing Test (AIT-WT) upon arrival on campus." .
+
+# Rule: AIT-0177 | OBLIGATION
+# FOL: O(enrollForCourse(student) if hasTakenAITWT(student))
+ait:AIT_0177Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0177Shape_prop1 .
+
+ait:AIT_0177Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:enrollForCourse ;
+    sh:minCount 1 ;
+    sh:message "Students will only be allowed to enroll for courses after they have taken the AIT-WT." .
+
+# Rule: AIT-0178 | OBLIGATION
+# FOL: O(supplementAllowanceFromOwnFunds)(agent)
+ait:AIT_0178Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:supplementAllowanceFromOwnFunds ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0178Shape_prop1 .
+
+ait:AIT_0178Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:supplementAllowanceFromOwnFunds ;
+    sh:minCount 1 ;
+    sh:message "You may find it necessary to supplement this allowance from your own funds." .
+
+# Rule: AIT-0180 | OBLIGATION
+# FOL: O(student_on_external_or_self_support_or_ait_fellowship(x) implies understood_stipulations_in_offer(x))
+ait:AIT_0180Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0180Shape_prop1 .
+
+ait:AIT_0180Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student_on_external_or_self_support_or_ait_fellowship ;
+    sh:minCount 1 ;
+    sh:message "Students on External / Self-Support or AIT Fellowships As you have agreed to the conditions of the offer of admission, you are expected to have understood the stipulations in the offer as Self-Support" .
+
+# Rule: AIT-0181 | PROHIBITION
+# FOL: F(changeConditionAfterEnrollment)
+ait:AIT_0181Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:changeConditionAfterEnrollment ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0181Shape_prop1 .
+
+ait:AIT_0181Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:changeConditionAfterEnrollment ;
+    sh:maxCount 0 ;
+    sh:message "These conditions are not negotiable and cannot be changed after enrollment." .
+
+# Rule: AIT-0182 | OBLIGATION
+# FOL: O(paySemesterFee(student))
+ait:AIT_0182Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0182Shape_prop1 .
+
+ait:AIT_0182Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:paySemesterFee ;
+    sh:minCount 1 ;
+    sh:message "Students within the normal study period must pay the semester fee of Baht 188,000 for 12 credits Tuition Fee and Registration Fee in advance and/or fully paid up upon enrolment but not later than the " .
+
+# Rule: AIT-0183 | OBLIGATION
+# FOL: O(payLateFee(x))
+ait:AIT_0183Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:payLateFee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0183Shape_prop1 .
+
+ait:AIT_0183Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payLateFee ;
+    sh:minCount 1 ;
+    sh:message "Late payments, i.e., made after the start of the semester, but before the deadline for adding/dropping of courses, will be subject to an interest penalty of 1.5% per month." .
+
+# Rule: AIT-0184 | OBLIGATION
+# FOL: O(payFeeBeforeMidSemesterExamination)
+ait:AIT_0184Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0184Shape_prop1 .
+
+ait:AIT_0184Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFeeBeforeMidSemesterExamination ;
+    sh:minCount 1 ;
+    sh:message "This has to be fully paid one week before mid-semester examination period starts." .
+
+# Rule: AIT-0185 | PROHIBITION
+# FOL: F(removeFromRosterAndNotAllowedInExaminations)(student)
+ait:AIT_0185Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0185Shape_prop1 .
+
+ait:AIT_0185Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:removeFromRosterAndNotAllowedInExaminations ;
+    sh:maxCount 0 ;
+    sh:message "Otherwise, student will be removed from the roster and will not be allowed to sit in examinations." .
+
+# Rule: AIT-0186 | OBLIGATION
+# FOL: O(submitLeaveForm(student))
+ait:AIT_0186Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0186Shape_prop1 .
+
+ait:AIT_0186Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitLeaveForm ;
+    sh:minCount 1 ;
+    sh:message "Students must submit a leave form if they are travelling out of the country." .
+
+# Rule: AIT-0187 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0187Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0187Shape_prop1 .
+
+ait:AIT_0187Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:baht1250IsThe ;
+    sh:minCount 1 ;
+    sh:message "Baht 1,250 is the initial premium for new students of August Intake, to be renewed in January semester of the following Medical year; for students studying in January and August semesters, Insurance t" .
+
+# Rule: AIT-0188 | OBLIGATION
+# FOL: O(approved(a, pc, dh))
+ait:AIT_0188Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0188Shape_prop1 .
+
+ait:AIT_0188Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:approved ;
+    sh:minCount 1 ;
+    sh:message "This would have to be approved by the Program Committee Chair and the Department Head." .
+
+# Rule: AIT-0189 | OBLIGATION
+# FOL: O(supportSettlementWithReceipts)
+ait:AIT_0189Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:supportSettlementWithReceipts ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0189Shape_prop1 .
+
+ait:AIT_0189Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:supportSettlementWithReceipts ;
+    sh:minCount 1 ;
+    sh:message "The settlement should be supported by collated appropriate receipts containing the name 'Asian Institute of Technology'." .
+
+# Rule: AIT-0191 | OBLIGATION
+# FOL: O(AccountedFor(s, 'Final Research Expenses', 'Student Research Expenses'))
+ait:AIT_0191Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0191Shape_prop1 .
+
+ait:AIT_0191Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:accountedFor ;
+    sh:minCount 1 ;
+    sh:message "Final research expenses must be accounted for in the Student Research Expenses" .
+
+# Rule: AIT-0192 | OBLIGATION
+# FOL: O(supportSettlementUnderAITName(subject))
+ait:AIT_0192Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:supportSettlementUnderAITName ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0192Shape_prop1 .
+
+ait:AIT_0192Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:supportSettlementUnderAITName ;
+    sh:minCount 1 ;
+    sh:message "The settlement should be supported by collated receipts issued under the name of Asian Institute of Technology." .
+
+# Rule: AIT-0194 | PERMISSION
+# FOL: P(extendStudyPeriodBeyondNormal)(student)
+ait:AIT_0194Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0194Shape_prop1 .
+
+ait:AIT_0194Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:extendStudyPeriodBeyondNormal ;
+    sh:minCount 0 ;
+    sh:message "Students who are allowed to extend beyond the normal study period have the following privileges:" .
+
+# Rule: AIT-0195 | OBLIGATION
+# FOL: O(Ensure(ASU, proofOfFinancialSupport, studentStudyProgram))
+ait:AIT_0195Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0195Shape_prop1 .
+
+ait:AIT_0195Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:ensure ;
+    sh:minCount 1 ;
+    sh:message "Before a student is accepted for enrolment, the Admissions and Scholarships Unit (ASU) is required to ensure that there is proof of financial support for the student’s full study program." .
+
+# Rule: AIT-0196 | OBLIGATION
+# FOL: O(submitProof(x))
+ait:AIT_0196Shape a sh:NodeShape ;
+    sh:targetClass ait:Sponsor ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0196Shape_prop1 .
+
+ait:AIT_0196Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitProof ;
+    sh:minCount 1 ;
+    sh:message "For self-paying students, the proof can be in the form of bank statement, cash, etc. and for external/sponsored students, authorized documentary proof of sponsorship must be submitted." .
+
+# Rule: AIT-0197 | OBLIGATION
+# FOL: O(paid(s, f, e))
+ait:AIT_0197Shape a sh:NodeShape ;
+    sh:targetClass ait:Sponsor ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0197Shape_prop1 .
+
+ait:AIT_0197Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:paid ;
+    sh:minCount 1 ;
+    sh:message "With regard to self-paying students and students with external sponsors, first semester fees must be paid in advance and/or fully paid up upon enrolment, otherwise they will not be allowed to register" .
+
+# Rule: AIT-0198 | OBLIGATION
+# FOL: O(RegistrarReleasesIDandInternetAccess(x) → ¬PaidFees(x))
+ait:AIT_0198Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0198Shape_prop1 .
+
+ait:AIT_0198Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registrarReleasesIDandInternetAccess ;
+    sh:minCount 1 ;
+    sh:message "Consequently, the student ID and Internet/e-mail access will not be released by Registry if fees are not paid. (ii) Continuing full-time students, i.e. those who completed at least one semester, will " .
+
+# Rule: AIT-0199 | OBLIGATION
+# FOL: O(unpaidFeesByStartOfSemester(student))
+ait:AIT_0199Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0199Shape_prop1 .
+
+ait:AIT_0199Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:unpaidFeesByStartOfSemester ;
+    sh:minCount 1 ;
+    sh:message "If fees remain unpaid by the start of a semester, a student’s status shall be ‘suspended due to financial inability’." .
+
+# Rule: AIT-0200 | PROHIBITION
+# FOL: F(enroll_in_course(x) v use_AIT_ID_card(x) v access_SIS(x) v registration_record_access(x) v stay_in_AIT_accommodation(x) v library_use(x) v school_facility_use(x) v discount_for_children_in_AITIS(x))
+ait:AIT_0200Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0200Shape_prop1 .
+
+ait:AIT_0200Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:enroll_in_course ;
+    sh:maxCount 0 ;
+    sh:message "Thus, they cannot enroll in any course nor can they avail of student privileges and benefits during the suspended period such as use of AIT ID card, access to SIS and registration record, staying in A" .
+
+# Rule: AIT-0201 | PROHIBITION
+# FOL: F(cancelEducationalVisaFor)(student)
+ait:AIT_0201Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0201Shape_prop1 .
+
+ait:AIT_0201Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cancelEducationalVisaFor ;
+    sh:maxCount 0 ;
+    sh:message "Their educational visas may also be cancelled." .
+
+# Rule: AIT-0202 | OBLIGATION
+# FOL: O(Paid(s, a, r, m) → O/F(AllowedExam(s)))
+ait:AIT_0202Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0202Shape_prop1 .
+
+ait:AIT_0202Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:paid ;
+    sh:minCount 1 ;
+    sh:message "Additional payments for audited and repeated courses, as well as beyond the minimum 3 credits for part- time students, registered for the semester must be fully paid one week before mid-semester exami" .
+
+# Rule: AIT-0203 | OBLIGATION
+# FOL: O(RecommendedForDismissal(x))
+ait:AIT_0203Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0203Shape_prop1 .
+
+ait:AIT_0203Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:recommendedForDismissal ;
+    sh:minCount 1 ;
+    sh:message "If fees remain unpaid after the deadline for adding/dropping of courses of the semester in which a student was ‘suspended due to financial inability’, the student shall be recommended for dismissal." .
+
+# Rule: AIT-0205 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0205Shape a sh:NodeShape ;
+    sh:targetClass ait:Graduate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0205Shape_prop1 .
+
+ait:AIT_0205Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:studentstatusreinstated ;
+    sh:minCount 1 ;
+    sh:message "Their student status can only be reinstated upon full payment of the registration fee and 12-credits for the following semester, which must be paid in advance and/or fully paid up before the semester " .
+
+# Rule: AIT-0209 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0209Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:providetranscriptordegreecertificate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0209Shape_prop1 .
+
+ait:AIT_0209Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:providetranscriptordegreecertificate ;
+    sh:minCount 1 ;
+    sh:message "The Registry will provide the Transcript or Degree Certificate to ERCO for sending to the external donor. (vi) The ASU shall regularly follow up with the external donor partners to ensure that payment" .
+
+# Rule: AIT-0210 | OBLIGATION
+# FOL: O(requestWriteOffStudentBills)
+ait:AIT_0210Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0210Shape_prop1 .
+
+ait:AIT_0210Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:requestWriteOffStudentBills ;
+    sh:minCount 1 ;
+    sh:message "Writing-off of outstanding student bills including interest due will be requested by the concerned Dean and have to be approved by the AIT Management and forwarded to Finance for action." .
+
+# Rule: AIT-0212 | OBLIGATION
+# FOL: O(VacateRoom(x))
+ait:AIT_0212Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0212Shape_prop1 .
+
+ait:AIT_0212Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:vacateRoom ;
+    sh:minCount 1 ;
+    sh:message "Otherwise, concerned students have to vacate the room within two weeks after the given deadline to pay." .
+
+# Rule: AIT-0213 | OBLIGATION
+# FOL: O(pay_deposit(x) ∧ pay_monthly(x) ∧ pay_through_payroll(x) ∨ impose_penalty(x) ∨ terminate_lease_agreement(x) ∨ vacate_housing_unit(x))
+ait:AIT_0213Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0213Shape_prop1 .
+
+ait:AIT_0213Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:pay_deposit ;
+    sh:minCount 1 ;
+    sh:message "Faculty/Staff are required to pay two months deposit, which is collected in advance. (ii) Invoices will be billed monthly and payment will be made through deduction from monthly payroll account. (iii)" .
+
+# Rule: AIT-0215 | OBLIGATION
+# FOL: O(settled(r, d) where r is RTA or PN and subject is faculty/staff)
+ait:AIT_0215Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0215Shape_prop1 .
+
+ait:AIT_0215Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:settled ;
+    sh:minCount 1 ;
+    sh:message "All Request for Travel Authorization (RTA) and Promissory Note (PN) to faculty/staff are required to be settled by the indicated due dates." .
+
+# Rule: AIT-0216 | PROHIBITION
+# FOL: F(payFeesForDiscountOnAITIS)(child, parent_aitis_part_time_student_or_on_extension)
+ait:AIT_0216Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0216Shape_prop1 .
+
+ait:AIT_0216Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFeesForDiscountOnAITIS ;
+    sh:maxCount 0 ;
+    sh:message "For example, AIT students of part-time degree programs and on extension are not entitled to discounts on AITIS fees for their children. (iii) Where both parents are entitled to receive assistance (dis" .
+
+# Rule: AIT-0218 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0218Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0218Shape_prop1 .
+
+ait:AIT_0218Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:paysfees ;
+    sh:minCount 1 ;
+    sh:message "Fees for the first two children shall be paid up in full within 30 days from the first day of the semester. (ii) Fees for the rest of the children shall be paid up in full by the end of the second mon" .
+
+# Rule: AIT-0219 | OBLIGATION
+# FOL: O(payFee(student))
+ait:AIT_0219Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0219Shape_prop1 .
+
+ait:AIT_0219Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFee ;
+    sh:minCount 1 ;
+    sh:message "With regard to other students, fees shall be paid up in full within 30 days from the first day of the semester." .
+
+# Rule: AIT-0220 | PROHIBITION
+# FOL: F(latePaymentByStudent)
+ait:AIT_0220Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0220Shape_prop1 .
+
+ait:AIT_0220Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:latePaymentByStudent ;
+    sh:maxCount 0 ;
+    sh:message "If the payment is not received within the periods stipulated, the students concerned shall be removed from the rolls of the school and shall not be allowed to attend classes." .
+
+# Rule: AIT-0221 | OBLIGATION
+# FOL: O(payThreeMonthAdvanceDeposit(lessee))
+ait:AIT_0221Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:payThreeMonthAdvanceDeposit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0221Shape_prop1 .
+
+ait:AIT_0221Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payThreeMonthAdvanceDeposit ;
+    sh:minCount 1 ;
+    sh:message "Lessees are required to pay three-month advance deposit to take on the lease of premises." .
+
+# Rule: AIT-0222 | OBLIGATION
+# FOL: O(settleMeal(x))
+ait:AIT_0222Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:settleMeal ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0222Shape_prop1 .
+
+ait:AIT_0222Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:settleMeal ;
+    sh:minCount 1 ;
+    sh:message "Personal meals are required to be settled." .
+
+# Rule: AIT-0224 | OBLIGATION
+# FOL: O(settleInvoice(subject))
+ait:AIT_0224Shape a sh:NodeShape ;
+    sh:targetClass ait:Invoice ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0224Shape_prop1 .
+
+ait:AIT_0224Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:settleInvoice ;
+    sh:minCount 1 ;
+    sh:message "Invoices are required to be settled by the indicated due date." .
+
+# Rule: AIT-0225 | OBLIGATION
+# FOL: O(ReviewOverdueAccountsPeriodicallyAndInitiateFollowUpOnCollections)
+ait:AIT_0225Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:reviewOverdueAccountsPeriodicallyAndInitiateFollowUpOnCollections ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0225Shape_prop1 .
+
+ait:AIT_0225Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reviewOverdueAccountsPeriodicallyAndInitiateFollowUpOnCollections ;
+    sh:minCount 1 ;
+    sh:message "Overdue accounts shall be reviewed periodically and follow-up on collections shall be initiated." .
+
+# Rule: AIT-0226 | OBLIGATION
+# FOL: O(monitorOutstandingBills(s))
+ait:AIT_0226Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0226Shape_prop1 .
+
+ait:AIT_0226Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:monitorOutstandingBills ;
+    sh:minCount 1 ;
+    sh:message "The Sponsored & Contracted Projects Unit will monitor outstanding bills. (Approved by: President’s Executive Council – 24 May 2005; 7th Revision on 30 June 2016;" .
+
+# Rule: AIT-0227 | OBLIGATION
+# FOL: O(student, payOnlineFee)
+ait:AIT_0227Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0227Shape_prop1 .
+
+ait:AIT_0227Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "Rationale for Revisions on 30 June 2016: (i) Reinstated semester-based invoicing of tuition fees to ensure payments prior to the start of each semester. (ii) Administrative restructuring; to reduce ar" .
+
+# Rule: AIT-0228 | OBLIGATION
+# FOL: O(loginToSIS_SOMSIS_and_clickInvoiceMenu(student))
+ait:AIT_0228Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0228Shape_prop1 .
+
+ait:AIT_0228Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:loginToSIS_SOMSIS_and_clickInvoiceMenu ;
+    sh:minCount 1 ;
+    sh:message "In order to make use of this feature, students must login to SIS/SOMSIS, and click the menu Invoice." .
+
+# Rule: AIT-0230 | OBLIGATION
+# FOL: O(hasThaiBankAccountAndMobileAppInstalled(student))
+ait:AIT_0230Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0230Shape_prop1 .
+
+ait:AIT_0230Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:hasThaiBankAccountAndMobileAppInstalled ;
+    sh:minCount 1 ;
+    sh:message "Thai QR code: Students must have an account at any Thai bank and its mobile app installed in their phone." .
+
+# Rule: AIT-0231 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0231Shape a sh:NodeShape ;
+    sh:targetClass ait:PostgraduateStudent ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0231Shape_prop1 .
+
+ait:AIT_0231Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:creditCardVisamasterjcbStudents ;
+    sh:minCount 1 ;
+    sh:message "Credit card (Visa/Master/JCB) Students must have a valid Visa/Master/JCB card." .
+
+# Rule: AIT-0232 | OBLIGATION
+# FOL: O(Student(x) ∧ HasValidWeChatAlipayWallet(x) ∧ InstalledWeChatAlipayAppOnPhone(x))
+ait:AIT_0232Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0232Shape_prop1 .
+
+ait:AIT_0232Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "WeChat/Alipay Students must have a valid WeChat/Alipay wallet and its app must be installed on the phone." .
+
+# Rule: AIT-0234 | PERMISSION
+# FOL: P(Action)
+ait:AIT_0234Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0234Shape_prop1 .
+
+ait:AIT_0234Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:mayperform ;
+    sh:minCount 0 ;
+    sh:message "Student Welfare Matters ● Gender related matters ● Personal Counseling/Wellness Counseling by a professional psychologist ● Dispute Mediation ● Any other problem that a student may wish to seek advise" .
+
+# Rule: AIT-0235 | OBLIGATION
+# FOL: O(enrollInMedicalInsurancePlan(student))
+ait:AIT_0235Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0235Shape_prop1 .
+
+ait:AIT_0235Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:enrollInMedicalInsurancePlan ;
+    sh:minCount 1 ;
+    sh:message "Medical Insurance/AIT Student Health Benefits Program All new AIT degree program students (except those under EMBA-BKK and Special Program students) are required to take compulsory standard medical in" .
+
+# Rule: AIT-0236 | PERMISSION
+# FOL: P(check_status(s, 'member', 'claim', 'benefits', 'contact'))
+ait:AIT_0236Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:check_status ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0236Shape_prop1 .
+
+ait:AIT_0236Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:check_status ;
+    sh:minCount 0 ;
+    sh:message "Please be informed that due to the COVID-19 pandemic, you may check your member status, claim status, benefits and channels to contact the Generali Insurance Call Center via mobile application (E card" .
+
+# Rule: AIT-0237 | OBLIGATION
+# FOL: O(fillUpGeneraliApplicationForm(student))
+ait:AIT_0237Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0237Shape_prop1 .
+
+ait:AIT_0237Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:fillUpGeneraliApplicationForm ;
+    sh:minCount 1 ;
+    sh:message "If you have not yet filled up the Generali application form (in attachment), please kindly complete it and return the form to Email : student-welfare@ait.ac.th Any student who may want upgraded health" .
+
+# Rule: AIT-0238 | PERMISSION
+# FOL: P(consultAdmissionsAndScholarshipsUnit_by_donor_and_externallyFundedStudents)
+ait:AIT_0238Shape a sh:NodeShape ;
+    sh:targetClass ait:Sponsor ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0238Shape_prop1 .
+
+ait:AIT_0238Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:consultAdmissionsAndScholarshipsUnit_by_donor_and_externallyFundedStudents ;
+    sh:minCount 0 ;
+    sh:message "Donor and externally-funded students may consult the Admissions and Scholarships Unit if their sponsors have provisions for such." .
+
+# Rule: AIT-0240 | OBLIGATION
+# FOL: O(requireHealthDeclarationOfEligibleMember)
+ait:AIT_0240Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:requireHealthDeclarationOfEligibleMember ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0240Shape_prop1 .
+
+ait:AIT_0240Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:requireHealthDeclarationOfEligibleMember ;
+    sh:minCount 1 ;
+    sh:message "Health Declaration (Insured’s Application Form) of each eligible member will be required and has to be approved by the insurer prior to the effective date of insurance." .
+
+# Rule: AIT-0241 | PROHIBITION
+# FOL: F(noBenefitPayableUnderOccurrence)
+ait:AIT_0241Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:noBenefitPayableUnderOccurrence ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0241Shape_prop1 .
+
+ait:AIT_0241Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:noBenefitPayableUnderOccurrence ;
+    sh:maxCount 0 ;
+    sh:message "Exclusions of Generali Health Insurance Benefit No benefit shall be payable under any of the following occurrences:" .
+
+# Rule: AIT-0242 | OBLIGATION
+# FOL: O(completeHealthDeclarationFormApproval(dependent))
+ait:AIT_0242Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:completeHealthDeclarationFormApproval ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0242Shape_prop1 .
+
+ait:AIT_0242Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:completeHealthDeclarationFormApproval ;
+    sh:minCount 1 ;
+    sh:message "All dependents have to complete the health declaration form and get approval from Generali before the effective date." .
+
+# Rule: AIT-0243 | PROHIBITION
+# FOL: F(addDependentDuringValidInsurancePeriod)(insured)
+ait:AIT_0243Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:addDependentDuringValidInsurancePeriod ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0243Shape_prop1 .
+
+ait:AIT_0243Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:addDependentDuringValidInsurancePeriod ;
+    sh:maxCount 0 ;
+    sh:message "Addition of dependents within the valid period of insurance is not allowed by Generali." .
+
+# Rule: AIT-0244 | OBLIGATION
+# FOL: O(useAppropriateStudentAssistantshipForm(student))
+ait:AIT_0244Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0244Shape_prop1 .
+
+ait:AIT_0244Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useAppropriateStudentAssistantshipForm ;
+    sh:minCount 1 ;
+    sh:message "Depending on the funding, the appropriate Student Assistantship Form should be used." .
+
+# Rule: AIT-0245 | PERMISSION
+# FOL: P(workAfterFirstSemester(student))
+ait:AIT_0245Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0245Shape_prop1 .
+
+ait:AIT_0245Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:workAfterFirstSemester ;
+    sh:minCount 0 ;
+    sh:message "usually allowed to work only after the successful completion of the first semester of study, except for eligible Student Assistants who may work from their first semester (see III.4. below);" .
+
+# Rule: AIT-0246 | OBLIGATION
+# FOL: O(maxHoursAppointmentDuringSemester(subject))
+ait:AIT_0246Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0246Shape_prop1 .
+
+ait:AIT_0246Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maxHoursAppointmentDuringSemester ;
+    sh:minCount 1 ;
+    sh:message "2. allowed to a maximum of 40 hours of appointment per month during the semester (except for eligible Student Assistants under III.4 below);" .
+
+# Rule: AIT-0247 | OBLIGATION
+# FOL: O(maximumAppointmentHours(subject))
+ait:AIT_0247Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0247Shape_prop1 .
+
+ait:AIT_0247Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maximumAppointmentHours ;
+    sh:minCount 1 ;
+    sh:message "allowed to a maximum of 60 hours of appointment per month during breaks (except for eligible Student Assistants under III.4 below);" .
+
+# Rule: AIT-0248 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0248Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:allowedToAMaximum ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0248Shape_prop1 .
+
+ait:AIT_0248Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:allowedToAMaximum ;
+    sh:minCount 1 ;
+    sh:message "allowed to a maximum of 80 hours of appointment per month if registered beyond the normal period of study;" .
+
+# Rule: AIT-0249 | OBLIGATION
+# FOL: O(attendAppointment(x) if Student(x) and Hours(x, appointment) <= 60 and Semester(x))
+ait:AIT_0249Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0249Shape_prop1 .
+
+ait:AIT_0249Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:attendAppointment ;
+    sh:minCount 1 ;
+    sh:message "allowed to a maximum of 60 hours of appointment per month during the semester;" .
+
+# Rule: AIT-0250 | OBLIGATION
+# FOL: O(maxAppointmentHours(subject))
+ait:AIT_0250Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0250Shape_prop1 .
+
+ait:AIT_0250Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maxAppointmentHours ;
+    sh:minCount 1 ;
+    sh:message "allowed to a maximum of 80 hours of appointment per month during breaks;" .
+
+# Rule: AIT-0251 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0251Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:allowedToAMaximum ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0251Shape_prop1 .
+
+ait:AIT_0251Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:allowedToAMaximum ;
+    sh:minCount 1 ;
+    sh:message "allowed to a maximum of 80 hours of appointment per month if registered beyond the normal period of study;" .
+
+# Rule: AIT-0253 | PERMISSION
+# FOL: P(conductTutorialOrDiscussionSectionOrBridgingCourse)(Student_Master)
+ait:AIT_0253Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0253Shape_prop1 .
+
+ait:AIT_0253Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:conductTutorialOrDiscussionSectionOrBridgingCourse ;
+    sh:minCount 0 ;
+    sh:message "Master students may conduct tutorials and discussion sections including bridging courses." .
+
+# Rule: AIT-0255 | OBLIGATION
+# FOL: O(maxWorkHoursForNonThesisRelatedWork(student))
+ait:AIT_0255Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0255Shape_prop1 .
+
+ait:AIT_0255Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maxWorkHoursForNonThesisRelatedWork ;
+    sh:minCount 1 ;
+    sh:message "For a student whose work is not directly related to their own thesis or dissertation, the maximum number of work hours as prescribed in this P&P shall be followed." .
+
+# Rule: AIT-0256 | OBLIGATION
+# FOL: O(StudentInGoodStanding(s) ∧ EffectiveDateOfAppointment(s) → MaintainGoodStandingAsStudentAssistant(s))
+ait:AIT_0256Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0256Shape_prop1 .
+
+ait:AIT_0256Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:studentInGoodStanding ;
+    sh:minCount 1 ;
+    sh:message "Student Assistants shall be students in good standing on the effective dates of their appointment." .
+
+# Rule: AIT-0257 | OBLIGATION
+# FOL: O(Terminated(x) if (NotAchievingGoodAcademicStanding(x) after OneSemester(x)) or OnProbationaryStatus(x))
+ait:AIT_0257Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:terminated ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0257Shape_prop1 .
+
+ait:AIT_0257Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:terminated ;
+    sh:minCount 1 ;
+    sh:message "An Assistant’s contract shall be terminated if, during the period of appointment, they are (a) not achieving good academic standing after one semester; or (b) on probationary status." .
+
+# Rule: AIT-0259 | OBLIGATION
+# FOL: O(requiresPartTimeStudentAppointment(centralAdministration)) -> (fundingSource(subject) = 'Central Funds' V fundingSource(subject) = 'Restricted Funds' AND operationalPurpose(subject))
+ait:AIT_0259Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0259Shape_prop1 .
+
+ait:AIT_0259Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:requiresPartTimeStudentAppointment ;
+    sh:minCount 1 ;
+    sh:message "Funding may only come from Central Funds or from Restricted Funds used for normal operational purposes, if part-time appointments of students as assistants is required by central administration/manage" .
+
+# Rule: AIT-0260 | OBLIGATION
+# FOL: O(preference_given_to(agent) | competing_for_position(agent) & equally_qualified(agent) & (not full_scholarship(agent) | partially_funded(agent) | self_paying(agent)))
+ait:AIT_0260Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0260Shape_prop1 .
+
+ait:AIT_0260Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:preference_given_to ;
+    sh:minCount 1 ;
+    sh:message "If two or more students compete for a position and they are equally qualified to undertake the work, preference should be given to the student who is self paying or partially-funded over one who recei" .
+
+# Rule: AIT-0261 | OBLIGATION
+# FOL: O(processPaymentAndAppointment(OFIN, requestForStudentAssistantshipForm))
+ait:AIT_0261Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0261Shape_prop1 .
+
+ait:AIT_0261Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:processPaymentAndAppointment ;
+    sh:minCount 1 ;
+    sh:message "The Office of Finance (OFIN) will process the appointment and payment, which must be executed through the OSA Director who should countersign/approve the Request for Student Assistantship Form." .
+
+# Rule: AIT-0262 | OBLIGATION
+# FOL: O(completeStudentWorkTimeReport(employee))
+ait:AIT_0262Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0262Shape_prop1 .
+
+ait:AIT_0262Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:completeStudentWorkTimeReport ;
+    sh:minCount 1 ;
+    sh:message "A student work time report should be completed for each student employee at the end of each month." .
+
+# Rule: AIT-0263 | OBLIGATION
+# FOL: O(approved(s, a) ∧ sent_to_ofin(s, w, a))
+ait:AIT_0263Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0263Shape_prop1 .
+
+ait:AIT_0263Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:approved ;
+    sh:minCount 1 ;
+    sh:message "It must be approved by the student advisor and the work supervisor, who will send the form to OFIN." .
+
+# Rule: AIT-0264 | OBLIGATION
+# FOL: O(F(interfere(x, y)))
+ait:AIT_0264Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0264Shape_prop1 .
+
+ait:AIT_0264Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:interferexY ;
+    sh:minCount 1 ;
+    sh:message "No member of the AIT community, trustee, faculty, staff, or student, including outreach program participants, should act deliberately or thoughtlessly to interfere with the study, work or home environ" .
+
+# Rule: AIT-0265 | OBLIGATION
+# FOL: O(usesAuthorityWithRespect(x))
+ait:AIT_0265Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0265Shape_prop1 .
+
+ait:AIT_0265Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:usesAuthorityWithRespect ;
+    sh:minCount 1 ;
+    sh:message "Those with academic or administrative supervisory authority, permanent or temporary, over faculty, staff or students, should use such authority with respect," .
+
+# Rule: AIT-0266 | OBLIGATION
+# FOL: O(compatible_with_purposes(ait) ∧ open_to_everyone(ait))
+ait:AIT_0266Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:compatible_with_purposes ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0266Shape_prop1 .
+
+ait:AIT_0266Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:compatible_with_purposes ;
+    sh:minCount 1 ;
+    sh:message "The opportunities, services, facilities and support offered by AIT should be compatible with the purposes of the Institute, and be open impartially to everyone in the community according to qualificat" .
+
+# Rule: AIT-0267 | PROHIBITION
+# FOL: F(discriminate)
+ait:AIT_0267Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:discriminate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0267Shape_prop1 .
+
+ait:AIT_0267Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:discriminate ;
+    sh:maxCount 0 ;
+    sh:message "There should be no denial or granting of rights or privileges wholly or partly, on irrelevant grounds such as race, nationality, gender, creed, age, marital status, handicap, or physical characteristi" .
+
+# Rule: AIT-0268 | OBLIGATION
+# FOL: O(develop_special_awareness_and_sensitivity)
+ait:AIT_0268Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:develop_special_awareness_and_sensitivity ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0268Shape_prop1 .
+
+ait:AIT_0268Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:develop_special_awareness_and_sensitivity ;
+    sh:minCount 1 ;
+    sh:message "Sexual harassment 1.1 Given the unique diversity of the Institute community, AIT must develop special awareness and sensitivity to deter or respond to the problem of sexual harassment." .
+
+# Rule: AIT-0269 | PROHIBITION
+# FOL: F(declareConflictOfInterestAndRemoveSelfFromSituation)(employee)
+ait:AIT_0269Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0269Shape_prop1 .
+
+ait:AIT_0269Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:declareConflictOfInterestAndRemoveSelfFromSituation ;
+    sh:maxCount 0 ;
+    sh:message "supervisor:employee) may not constitute sexual harassment, individuals must declare such a conflict of interest and remove themselves from the situation." .
+
+# Rule: AIT-0273 | OBLIGATION
+# FOL: O(FalselyAccusing(x) v FalselyEvidencing(x))
+ait:AIT_0273Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:falselyAccusing ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0273Shape_prop1 .
+
+ait:AIT_0273Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:falselyAccusing ;
+    sh:minCount 1 ;
+    sh:message "False accusations or false evidence offered in the remedial process may themselves be considered grounds for disciplinary action." .
+
+# Rule: AIT-0276 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0276Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0276Shape_prop1 .
+
+ait:AIT_0276Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:directcommunication ;
+    sh:minCount 1 ;
+    sh:message "The Institute will establish and arrange special training for a set of individuals available for this form of consultation, to include the Deans, Director- OSA, Coordinator, Student Welfare Unit and o" .
+
+# Rule: AIT-0277 | PERMISSION
+# FOL: P(respondUsingConsultationAndDirectCommunication(subject))
+ait:AIT_0277Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:respondUsingConsultationAndDirectCommunication ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0277Shape_prop1 .
+
+ait:AIT_0277Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:respondUsingConsultationAndDirectCommunication ;
+    sh:minCount 0 ;
+    sh:message "The person(s) to whom the direct communication is made may likewise use consultation and direct communication in their response." .
+
+# Rule: AIT-0278 | PERMISSION
+# FOL: P(seekRedressThroughFormalGrievanceProcedures)(complainant)
+ait:AIT_0278Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:seekRedressThroughFormalGrievanceProcedures ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0278Shape_prop1 .
+
+ait:AIT_0278Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:seekRedressThroughFormalGrievanceProcedures ;
+    sh:minCount 0 ;
+    sh:message "Formal procedures 3.1 A complainant may, with or without previous recourse to informal channels, decide to seek redress through formal grievance procedures." .
+
+# Rule: AIT-0279 | OBLIGATION
+# FOL: O(initiateInvestigation)
+ait:AIT_0279Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0279Shape_prop1 .
+
+ait:AIT_0279Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:initiateInvestigation ;
+    sh:minCount 1 ;
+    sh:message "Such an investigation may only be initiated on the instructions of the President or his designee, and after the complainee(s) has (have) received a written general description of the perceived conduct" .
+
+# Rule: AIT-0280 | OBLIGATION
+# FOL: O(reported_to_complainee(s, e) ∧ challenged_or_defense_presented(c, s, e) ∧ preliminary_matters_decided_and_noticed(s, h, c, gc, t) ∧ time_between(t, five_working_days, gc_informed, hearing))
+ait:AIT_0280Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0280Shape_prop1 .
+
+ait:AIT_0280Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reported_to_complainee ;
+    sh:minCount 1 ;
+    sh:message "Any evidence to be considered in the investigation should be reported to the complainee, who should have opportunity to challenge it and/or to present evidence in defense. 3.6 Matters preliminary to a" .
+
+# Rule: AIT-0281 | PROHIBITION
+# FOL: F(makePublicConfidentialFindingsRecommendations)
+ait:AIT_0281Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:makePublicConfidentialFindingsRecommendations ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0281Shape_prop1 .
+
+ait:AIT_0281Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:makePublicConfidentialFindingsRecommendations ;
+    sh:maxCount 0 ;
+    sh:message "Findings and recommendations are confidential and shall not be made public by the Institute or by any participant in a hearing, including the" .
+
+# Rule: AIT-0282 | PROHIBITION
+# FOL: F(Action)
+ait:AIT_0282Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:drawsguiltinference ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0282Shape_prop1 .
+
+ait:AIT_0282Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:drawsguiltinference ;
+    sh:maxCount 0 ;
+    sh:message "The separation of one or more cases from a group of cases previously set for a consolidation hearing should not, however, be considered to affect the remaining cases in the group. 3.10 No individual(s" .
+
+# Rule: AIT-0285 | OBLIGATION
+# FOL: O(φ)
+ait:AIT_0285Shape a sh:NodeShape ;
+    sh:targetClass ait:Committee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0285Shape_prop1 .
+
+ait:AIT_0285Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:notconsiderevidencexZY ;
+    sh:minCount 1 ;
+    sh:message "No evidence, other than that discussed at the hearing, should be considered by a grievance committee. 3.12 It is the responsibility of a grievance committee chair to maintain an orderly hearing, and n" .
+
+# Rule: AIT-0287 | OBLIGATION
+# FOL: O(summarize_facts_and_determine(grievance_committee) ∧ make_decision_on_disciplinary_action(president))
+ait:AIT_0287Shape a sh:NodeShape ;
+    sh:targetClass ait:Grievance ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0287Shape_prop1 .
+
+ait:AIT_0287Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:summarize_facts_and_determine ;
+    sh:minCount 1 ;
+    sh:message "The Report of the grievance committee shall summarize the facts, and make a determination as to whether the individual(s) concerned did or did not commit the acts alleged. 3.14 All decisions on discip" .
+
+# Rule: AIT-0288 | OBLIGATION
+# FOL: O(finalizePresidentDecision)
+ait:AIT_0288Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0288Shape_prop1 .
+
+ait:AIT_0288Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:finalizePresidentDecision ;
+    sh:minCount 1 ;
+    sh:message "The President's decision shall be final." .
+
+# Rule: AIT-0289 | OBLIGATION
+# FOL: O(complies_with_laws(subject))
+ait:AIT_0289Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0289Shape_prop1 .
+
+ait:AIT_0289Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:complies_with_laws ;
+    sh:minCount 1 ;
+    sh:message "The Institute recognizes the importance of health and safety of its students, thus, to further enhance and improve students’ life and study, the Institute observes the following policies related to su" .
+
+# Rule: AIT-0290 | OBLIGATION
+# FOL: O(enforceAndMonitorLawsOfHostCountry(x))
+ait:AIT_0290Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0290Shape_prop1 .
+
+ait:AIT_0290Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:enforceAndMonitorLawsOfHostCountry ;
+    sh:minCount 1 ;
+    sh:message "This policy shall be implemented to enforce and monitor the laws of the host country. ● All students, faculty and staff are expected to take responsibility for their own actions." .
+
+# Rule: AIT-0291 | PROHIBITION
+# FOL: F(exhibitUnsociallyAcceptableBehavior(student))
+ait:AIT_0291Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0291Shape_prop1 .
+
+ait:AIT_0291Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:exhibitUnsociallyAcceptableBehavior ;
+    sh:maxCount 0 ;
+    sh:message "The Institute cannot be responsible for the personal lives and decisions of students. ● Students with substance abuse problems usually come to the attention of the Institute by exhibiting behavior tha" .
+
+# Rule: AIT-0292 | OBLIGATION
+# FOL: O(serveAsReferralUnitForSubstanceAbuseTreatment(clinic))
+ait:AIT_0292Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:serveAsReferralUnitForSubstanceAbuseTreatment ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0292Shape_prop1 .
+
+ait:AIT_0292Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:serveAsReferralUnitForSubstanceAbuseTreatment ;
+    sh:minCount 1 ;
+    sh:message "The AIT Medical Clinic shall serve as the unit for referral for treatment of substance abuse problems." .
+
+# Rule: AIT-0293 | OBLIGATION
+# FOL: O(guidedByAlcoholAbuseCase)
+ait:AIT_0293Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:guidedByAlcoholAbuseCase ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0293Shape_prop1 .
+
+ait:AIT_0293Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:guidedByAlcoholAbuseCase ;
+    sh:minCount 1 ;
+    sh:message "The Institute shall be guided by the following: In case of alcohol abuse: a." .
+
+# Rule: AIT-0294 | OBLIGATION
+# FOL: O(reportIncidentOfAlcoholViolationToDirectorOfficeOfStudentAffairs)(student)
+ait:AIT_0294Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0294Shape_prop1 .
+
+ait:AIT_0294Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reportIncidentOfAlcoholViolationToDirectorOfficeOfStudentAffairs ;
+    sh:minCount 1 ;
+    sh:message "All incidents of alcohol violations shall be reported to the Director, Office of Student Affairs in case of students. c." .
+
+# Rule: AIT-0296 | PROHIBITION
+# FOL: F(imposeExpulsionForDrugAbuse)(subject)
+ait:AIT_0296Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:imposeExpulsionForDrugAbuse ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0296Shape_prop1 .
+
+ait:AIT_0296Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:imposeExpulsionForDrugAbuse ;
+    sh:maxCount 0 ;
+    sh:message "Expulsion shall be imposed for drug abuse." .
+
+# Rule: AIT-0297 | PROHIBITION
+# FOL: F(gamblingByInstitute)
+ait:AIT_0297Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:gamblingByInstitute ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0297Shape_prop1 .
+
+ait:AIT_0297Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:gamblingByInstitute ;
+    sh:maxCount 0 ;
+    sh:message "In case of gambling: Gambling is prohibited under the laws of the host country and is not tolerated by the Institute." .
+
+# Rule: AIT-0298 | OBLIGATION
+# FOL: O(caughtEngagingInActivityOfStudent(x))
+ait:AIT_0298Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0298Shape_prop1 .
+
+ait:AIT_0298Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:caughtEngagingInActivityOfStudent ;
+    sh:minCount 1 ;
+    sh:message "Any student caught engaging in this activity will be subject to disciplinary action and could face possible termination of employment." .
+
+# Rule: AIT-0299 | OBLIGATION
+# FOL: O(produceInternalSystemsAndDocumentationForImplementingPolicyLocally)(responsibilityCenter)
+ait:AIT_0299Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:produceInternalSystemsAndDocumentationForImplementingPolicyLocally ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0299Shape_prop1 .
+
+ait:AIT_0299Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:produceInternalSystemsAndDocumentationForImplementingPolicyLocally ;
+    sh:minCount 1 ;
+    sh:message "Responsibility centers are required to produce internal systems and documentation for implementing this policy locally." .
+
+# Rule: AIT-0300 | OBLIGATION
+# FOL: O(AbideByRules(x))
+ait:AIT_0300Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:abideByRules ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0300Shape_prop1 .
+
+ait:AIT_0300Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:abideByRules ;
+    sh:minCount 1 ;
+    sh:message "Individuals are required to abide by rules and requirements made under the authority of this policy." .
+
+# Rule: AIT-0301 | OBLIGATION
+# FOL: O(fullTimeStudentBelongsToAITStudentUnionAndIsEntitledToVoteInElectionForPosition(subject))
+ait:AIT_0301Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0301Shape_prop1 .
+
+ait:AIT_0301Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:fullTimeStudentBelongsToAITStudentUnionAndIsEntitledToVoteInElectionForPosition ;
+    sh:minCount 1 ;
+    sh:message "All full-time students are members of the AIT Student Union, and are entitled to vote in the election for the General Assembly Speaker, Treasurer, General Secretary and Vice President." .
+
+# Rule: AIT-0302 | OBLIGATION
+# FOL: O(payFeeByStudentUnion)
+ait:AIT_0302Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0302Shape_prop1 .
+
+ait:AIT_0302Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFeeByStudentUnion ;
+    sh:minCount 1 ;
+    sh:message "Student Union Activities Contributions from the Institute and the student (Baht 150 per semester, which is mandatory) support the multinational welcome shows, cultural shows, social activities, open f" .
+
+# Rule: AIT-0303 | OBLIGATION
+# FOL: O(bringToAttentionOfOSA)
+ait:AIT_0303Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0303Shape_prop1 .
+
+ait:AIT_0303Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:bringToAttentionOfOSA ;
+    sh:minCount 1 ;
+    sh:message "Any issue or concern involving student welfare that is related to accommodation should be brought to the attention of the Director, Office of Student Affairs (OSA), on action required." .
+
+# Rule: AIT-0304 | PERMISSION
+# FOL: P(optToResideOffCampus)(student)
+ait:AIT_0304Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0304Shape_prop1 .
+
+ait:AIT_0304Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:optToResideOffCampus ;
+    sh:minCount 0 ;
+    sh:message "For subsequent semesters, these students may opt to reside off-campus." .
+
+# Rule: AIT-0305 | PERMISSION
+# FOL: P(marriedStudent_bringFamily)
+ait:AIT_0305Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0305Shape_prop1 .
+
+ait:AIT_0305Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:marriedStudent_bringFamily ;
+    sh:minCount 0 ;
+    sh:message "Married Students are permitted to bring their immediate families (spouse and children) to join them during their studies." .
+
+# Rule: AIT-0306 | PROHIBITION
+# FOL: F(ResideOnCampus(s, f))
+ait:AIT_0306Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0306Shape_prop1 .
+
+ait:AIT_0306Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:resideOnCampus ;
+    sh:maxCount 0 ;
+    sh:message "Families of non-resident students may not reside on campus if the non-resident student is off-campus." .
+
+# Rule: AIT-0307 | OBLIGATION
+# FOL: O(registers_for_staff_accommodation(x))
+ait:AIT_0307Shape a sh:NodeShape ;
+    sh:targetClass ait:PostgraduateStudent ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0307Shape_prop1 .
+
+ait:AIT_0307Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registers_for_staff_accommodation ;
+    sh:minCount 1 ;
+    sh:message "Master’s or doctoral students with spouses who are AIT employees must register for staff accommodation." .
+
+# Rule: AIT-0308 | OBLIGATION
+# FOL: O(moveWithSpouse(student))
+ait:AIT_0308Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0308Shape_prop1 .
+
+ait:AIT_0308Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:moveWithSpouse ;
+    sh:minCount 1 ;
+    sh:message "Students should move with the spouse when staff accommodation becomes available." .
+
+# Rule: AIT-0309 | OBLIGATION
+# FOL: O(VacatesRoom(x))
+ait:AIT_0309Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0309Shape_prop1 .
+
+ait:AIT_0309Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:vacatesRoom ;
+    sh:minCount 1 ;
+    sh:message "Students, who will study in another country as part of the Exchange/Dual Degree program, are required to vacate their rooms while they study abroad." .
+
+# Rule: AIT-0310 | PROHIBITION
+# FOL: F(giveExceptionsTo)
+ait:AIT_0310Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:giveExceptionsTo ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0310Shape_prop1 .
+
+ait:AIT_0310Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:giveExceptionsTo ;
+    sh:maxCount 0 ;
+    sh:message "Exceptions may only be given to those whose exchange program is less than two months." .
+
+# Rule: AIT-0311 | OBLIGATION
+# FOL: O(registerGuestWithAccommodationUnit(subject))
+ait:AIT_0311Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:registerGuestWithAccommodationUnit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0311Shape_prop1 .
+
+ait:AIT_0311Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registerGuestWithAccommodationUnit ;
+    sh:minCount 1 ;
+    sh:message "All guests must be registered with the Accommodation Unit three days before arrival." .
+
+# Rule: AIT-0312 | PERMISSION
+# FOL: P(stayInStudentDormitory)
+ait:AIT_0312Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0312Shape_prop1 .
+
+ait:AIT_0312Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:stayInStudentDormitory ;
+    sh:minCount 0 ;
+    sh:message "With prior approval of the Accommodation Unit, they may stay in student dormitory for a maximum quota of one week per semester." .
+
+# Rule: AIT-0313 | OBLIGATION
+# FOL: O(overStayGuestFeePayment)
+ait:AIT_0313Shape a sh:NodeShape ;
+    sh:targetClass ait:Administrator ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0313Shape_prop1 .
+
+ait:AIT_0313Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:overStayGuestFeePayment ;
+    sh:minCount 1 ;
+    sh:message "In case of over staying guests, special prior permission must be obtained from the Director, Office of Facilities and Asset Management (OFAM) and a daily rent will be charged for the room." .
+
+# Rule: AIT-0314 | PROHIBITION
+# FOL: F(instituteIsNotResponsibleForLegalStatusOfGuest)
+ait:AIT_0314Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:instituteIsNotResponsibleForLegalStatusOfGuest ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0314Shape_prop1 .
+
+ait:AIT_0314Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:instituteIsNotResponsibleForLegalStatusOfGuest ;
+    sh:maxCount 0 ;
+    sh:message "The Institute shall in no way be held responsible for the legal status of the guests." .
+
+# Rule: AIT-0315 | OBLIGATION
+# FOL: O(responsibleForVisaPermit)
+ait:AIT_0315Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:responsibleForVisaPermit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0315Shape_prop1 .
+
+ait:AIT_0315Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:responsibleForVisaPermit ;
+    sh:minCount 1 ;
+    sh:message "Visas, residence permits, etc. shall be the responsibility of the guests and not the Institute." .
+
+# Rule: AIT-0317 | PERMISSION
+# FOL: P(stayTemporarilyInAccommodationUnitUntilCondition)
+ait:AIT_0317Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0317Shape_prop1 .
+
+ait:AIT_0317Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:stayTemporarilyInAccommodationUnitUntilCondition ;
+    sh:minCount 0 ;
+    sh:message "They are allowed to temporarily stay in such units until the period provided by the Accommodation Unit or until such time that they have been allocated a room in student accommodation." .
+
+# Rule: AIT-0318 | OBLIGATION
+# FOL: O(VacateRoom(x))
+ait:AIT_0318Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0318Shape_prop1 .
+
+ait:AIT_0318Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:vacateRoom ;
+    sh:minCount 1 ;
+    sh:message "Students are required to vacate their rooms within five days (including weekends) after their graduation." .
+
+# Rule: AIT-0320 | PERMISSION
+# FOL: P(queueForRoomChange(student))
+ait:AIT_0320Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0320Shape_prop1 .
+
+ait:AIT_0320Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:queueForRoomChange ;
+    sh:minCount 0 ;
+    sh:message "New and continuing students wishing to move in another category of rooms may queue during the period designated by the Accommodation Unit." .
+
+# Rule: AIT-0322 | OBLIGATION
+# FOL: O(offCampusDataCollectionOrApprovedLeaveEmailRequest(student))
+ait:AIT_0322Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0322Shape_prop1 .
+
+ait:AIT_0322Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:offCampusDataCollectionOrApprovedLeaveEmailRequest ;
+    sh:minCount 1 ;
+    sh:message "· Only continuing students, who are off-campus on data collection or on approved leave, may put their names on the waiting list through email to accommodation@ait.ac.th." .
+
+# Rule: AIT-0323 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0323Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0323Shape_prop1 .
+
+ait:AIT_0323Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:provideapproximatedateofarrivaloncampus ;
+    sh:minCount 1 ;
+    sh:message "They must provide the approximate date of their arrival on campus. · A student wishing to move within the same dorm category requires prior approval of the Director, OFAM." .
+
+# Rule: AIT-0324 | OBLIGATION
+# FOL: O(offerTransferRelocationAccordingToWaitingList(unit))
+ait:AIT_0324Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:offerTransferRelocationAccordingToWaitingList ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0324Shape_prop1 .
+
+ait:AIT_0324Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:offerTransferRelocationAccordingToWaitingList ;
+    sh:minCount 1 ;
+    sh:message "Transfer/Relocation According to Waiting List · An offer for transfer/relocation from one unit to another according to the waiting list shall start during the period designated by the Accommodation Un" .
+
+# Rule: AIT-0325 | OBLIGATION
+# FOL: O(informs(subject, concerned_students, room_allocation_specifics) ∧ sends_email(subject, concerned_students, room_allocation_specifics) ∧ sends_paper_mail(subject, student_dorms, room_allocation_specifics) ∧ accepts_offer_within_five_working_days(student))
+ait:AIT_0325Shape a sh:NodeShape ;
+    sh:targetClass ait:Accommodation ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0325Shape_prop1 .
+
+ait:AIT_0325Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:informs ;
+    sh:minCount 1 ;
+    sh:message "The Accommodation Unit will inform concerned students on room allocation specifics (e.g. new room, date of transfer, etc.) by email and paper mail (posted at student dorms). · A student shall have fiv" .
+
+# Rule: AIT-0326 | OBLIGATION
+# FOL: O(Student(x) ∧ OutstandingDuesSettled(x) → AssignedNewRoom(x))
+ait:AIT_0326Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0326Shape_prop1 .
+
+ait:AIT_0326Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "Failure to accept the allocated dorm shall result in the removal of the student from the waiting list. · A student wishing to move to a new room MUST settle all outstanding dues related to the previou" .
+
+# Rule: AIT-0327 | PERMISSION
+# FOL: P(apply_for_student_village)
+ait:AIT_0327Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0327Shape_prop1 .
+
+ait:AIT_0327Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:apply_for_student_village ;
+    sh:minCount 0 ;
+    sh:message "New and continuing students may apply for student villages following the policies below: Shared Unit for Unmarried Students · Students may apply for a shared unit provided they are able to find a grou" .
+
+# Rule: AIT-0328 | PROHIBITION
+# FOL: F(Action)
+ait:AIT_0328Shape a sh:NodeShape ;
+    sh:targetClass ait:Administrator ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0328Shape_prop1 .
+
+ait:AIT_0328Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:changegrouping ;
+    sh:maxCount 0 ;
+    sh:message "A change in the grouping after allocation is not permitted unless otherwise approved by the Director, OFAM. · If shared units become available, the groups at the head of the waiting list will be notif" .
+
+# Rule: AIT-0329 | OBLIGATION
+# FOL: O(confirmReceiptOfNoticeToAccommodationUnit(student))
+ait:AIT_0329Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0329Shape_prop1 .
+
+ait:AIT_0329Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:confirmReceiptOfNoticeToAccommodationUnit ;
+    sh:minCount 1 ;
+    sh:message "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer." .
+
+# Rule: AIT-0331 | OBLIGATION
+# FOL: O(reportMaintenanceQueryToCallCenter)
+ait:AIT_0331Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:reportMaintenanceQueryToCallCenter ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0331Shape_prop1 .
+
+ait:AIT_0331Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reportMaintenanceQueryToCallCenter ;
+    sh:minCount 1 ;
+    sh:message "All maintenance queries must be reported to the Call Center on 02 524 5800 between 0800 and 1700 hours, Monday to Saturday." .
+
+# Rule: AIT-0332 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0332Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0332Shape_prop1 .
+
+ait:AIT_0332Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:regularcleaningandhygieneoftheunit ;
+    sh:minCount 1 ;
+    sh:message "Regular cleaning and hygiene of the unit has to be maintained by the student." .
+
+# Rule: AIT-0334 | OBLIGATION
+# FOL: O(maintainCleanlinessOfCommonAreaAndLandscape)
+ait:AIT_0334Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0334Shape_prop1 .
+
+ait:AIT_0334Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:maintainCleanlinessOfCommonAreaAndLandscape ;
+    sh:minCount 1 ;
+    sh:message "Students have to upkeep the cleanliness of the common area and landscape around the building." .
+
+# Rule: AIT-0335 | PROHIBITION
+# FOL: F(cookInRoom)
+ait:AIT_0335Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:cookInRoom ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0335Shape_prop1 .
+
+ait:AIT_0335Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cookInRoom ;
+    sh:maxCount 0 ;
+    sh:message "Cooking is not permitted, except in accommodation units rooms where cooking arrangement is facilities or shared cooking facilities are provided." .
+
+# Rule: AIT-0337 | PERMISSION
+# FOL: P(installOutdoorAntennaOrCableTV)
+ait:AIT_0337Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0337Shape_prop1 .
+
+ait:AIT_0337Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:installOutdoorAntennaOrCableTV ;
+    sh:minCount 0 ;
+    sh:message "Students are allowed to install outdoor antennas or cable TV, only with the prior agreement of the Accommodation Unit." .
+
+# Rule: AIT-0338 | PROHIBITION
+# FOL: F(installHeavyApplianceInUnsuitableAccommodation)
+ait:AIT_0338Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0338Shape_prop1 .
+
+ait:AIT_0338Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:installHeavyApplianceInUnsuitableAccommodation ;
+    sh:maxCount 0 ;
+    sh:message "Students are not allowed to install heavy appliances, such as air- conditioners, in accommodation units that are not designed for such facilities, i.e. in Student Villages and Category 1 dorms." .
+
+# Rule: AIT-0339 | OBLIGATION
+# FOL: O(clean(unit(x)) ∧ empty(unit(x)) ∧ same_condition(unit(x)))
+ait:AIT_0339Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0339Shape_prop1 .
+
+ait:AIT_0339Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:clean ;
+    sh:minCount 1 ;
+    sh:message "Upon leaving the accommodation units, students are required to leave their units clean, remove all possessions, and to leave the unit and its furniture and equipment in the same condition as when the " .
+
+# Rule: AIT-0340 | PROHIBITION
+# FOL: F(disturbFellowStudentsInResidentialArea)(student)
+ait:AIT_0340Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0340Shape_prop1 .
+
+ait:AIT_0340Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:disturbFellowStudentsInResidentialArea ;
+    sh:maxCount 0 ;
+    sh:message "Students shall not disturb fellow students in the residential area." .
+
+# Rule: AIT-0341 | PROHIBITION
+# FOL: F(ceaseGameOrActivity(x))
+ait:AIT_0341Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0341Shape_prop1 .
+
+ait:AIT_0341Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:ceaseGameOrActivity ;
+    sh:maxCount 0 ;
+    sh:message "Games and activities shall cease at 2300 hours in all sports fields and courts in and near campus residential areas." .
+
+# Rule: AIT-0342 | PROHIBITION
+# FOL: F(noisyGroupStudyOrPartyInStudentAccommodation)(subject)
+ait:AIT_0342Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0342Shape_prop1 .
+
+ait:AIT_0342Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:noisyGroupStudyOrPartyInStudentAccommodation ;
+    sh:maxCount 0 ;
+    sh:message "Noisy group studies and parties are not allowed in student accommodation." .
+
+# Rule: AIT-0343 | OBLIGATION
+# FOL: O(useDesignatedRoom)
+ait:AIT_0343Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:useDesignatedRoom ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0343Shape_prop1 .
+
+ait:AIT_0343Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useDesignatedRoom ;
+    sh:minCount 1 ;
+    sh:message "Alternative rooms designated for such purpose must be used." .
+
+# Rule: AIT-0344 | PERMISSION
+# FOL: P(openDorm(student, accommodationUnit))
+ait:AIT_0344Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0344Shape_prop1 .
+
+ait:AIT_0344Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:openDorm ;
+    sh:minCount 0 ;
+    sh:message "Students who misplace their accommodation unit keys may ask the Accommodation Unit to open their dorms." .
+
+# Rule: AIT-0345 | OBLIGATION
+# FOL: O(Security_at_main_entrance_to_AIT(x) ∧ After_office_hours(x) → Obligation_fee(x))
+ait:AIT_0345Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:security_at_main_entrance_to_AIT ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0345Shape_prop1 .
+
+ait:AIT_0345Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:security_at_main_entrance_to_AIT ;
+    sh:minCount 1 ;
+    sh:message "If this service is required after office hours, i.e. 1630 hours onwards, a minimal fee will be required and Security at the main entrance to AIT will need to be contacted." .
+
+# Rule: AIT-0346 | PROHIBITION
+# FOL: F(removeFromAccommodationUnit(?x))
+ait:AIT_0346Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:removeFromAccommodationUnit ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0346Shape_prop1 .
+
+ait:AIT_0346Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:removeFromAccommodationUnit ;
+    sh:maxCount 0 ;
+    sh:message "Furniture and appliances should not be removed from the accommodation unit." .
+
+# Rule: AIT-0347 | OBLIGATION
+# FOL: O(request_approval(subject, Accommodation_Unit) ∧ pay_additional_charges(subject) ∧ damage_furniture_appliances(subject, direct_negligence))
+ait:AIT_0347Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0347Shape_prop1 .
+
+ait:AIT_0347Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:request_approval ;
+    sh:minCount 1 ;
+    sh:message "Repair and replacement of furniture and appliances must be requested from and approved by the Accommodation Unit, which may ask the tenant to pay additional charges, in situations where damage to furn" .
+
+# Rule: AIT-0348 | PROHIBITION
+# FOL: F(cookInProhibitedDormitory)(student)
+ait:AIT_0348Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0348Shape_prop1 .
+
+ait:AIT_0348Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cookInProhibitedDormitory ;
+    sh:maxCount 0 ;
+    sh:message "Students who cook in dormitories where cooking is prohibited may face a minimum fine of Baht 2,000 or the actual costs of the damage caused by cooking." .
+
+# Rule: AIT-0349 | OBLIGATION
+# FOL: O(Fined(x) ∧ Charged(x))
+ait:AIT_0349Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:fined ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0349Shape_prop1 .
+
+ait:AIT_0349Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:fined ;
+    sh:minCount 1 ;
+    sh:message "accommodation units dormitories not designed for such facilities, will be fined Baht 2,000 and charged for the services related to the removal of the appliances." .
+
+# Rule: AIT-0350 | OBLIGATION
+# FOL: O(faceFineOrCoverCosts(subject))
+ait:AIT_0350Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0350Shape_prop1 .
+
+ait:AIT_0350Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:faceFineOrCoverCosts ;
+    sh:minCount 1 ;
+    sh:message "Students found guilty may face a fine of Baht 2,000 or the actual costs of the damage caused by smoking or burning." .
+
+# Rule: AIT-0351 | PROHIBITION
+# FOL: F(petInStudentAccommodation)
+ait:AIT_0351Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0351Shape_prop1 .
+
+ait:AIT_0351Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:petInStudentAccommodation ;
+    sh:maxCount 0 ;
+    sh:message "Pets are not allowed in student accommodation." .
+
+# Rule: AIT-0352 | OBLIGATION
+# FOL: O(disturbPeaceOfSurroundings(student))
+ait:AIT_0352Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0352Shape_prop1 .
+
+ait:AIT_0352Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:disturbPeaceOfSurroundings ;
+    sh:minCount 1 ;
+    sh:message "Students disturbing the peace of their surroundings shall receive a formal reprimand as a first warning." .
+
+# Rule: AIT-0353 | PROHIBITION
+# FOL: F(repeated_disturbance)
+ait:AIT_0353Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:repeated_disturbance ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0353Shape_prop1 .
+
+ait:AIT_0353Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:repeated_disturbance ;
+    sh:maxCount 0 ;
+    sh:message "Repeated disturbances may face further sanctions." .
+
+# Rule: AIT-0354 | PROHIBITION
+# FOL: F(useRoomForResidentialPurposes(Subject))
+ait:AIT_0354Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0354Shape_prop1 .
+
+ait:AIT_0354Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useRoomForResidentialPurposes ;
+    sh:maxCount 0 ;
+    sh:message "Rooms must be used for residential purposes only." .
+
+# Rule: AIT-0357 | OBLIGATION
+# FOL: O(payFee(selfFundedStudent))
+ait:AIT_0357Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0357Shape_prop1 .
+
+ait:AIT_0357Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFee ;
+    sh:minCount 1 ;
+    sh:message "Self-funded students are required to pay a one-month advance deposit." .
+
+# Rule: AIT-0358 | OBLIGATION
+# FOL: O(payFee(student))
+ait:AIT_0358Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0358Shape_prop1 .
+
+ait:AIT_0358Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFee ;
+    sh:minCount 1 ;
+    sh:message "Special and exchange students are required to pay in full the rent for the whole duration of their stay on campus." .
+
+# Rule: AIT-0360 | OBLIGATION
+# FOL: O(reportToDirectorOSA)(subject)
+ait:AIT_0360Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0360Shape_prop1 .
+
+ait:AIT_0360Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reportToDirectorOSA ;
+    sh:minCount 1 ;
+    sh:message "Any contact with the police or difficulties off-campus should be reported to the Director, OSA." .
+
+# Rule: AIT-0361 | OBLIGATION
+# FOL: O(neutral_on_political_issues(subject))
+ait:AIT_0361Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:neutral_on_political_issues ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0361Shape_prop1 .
+
+ait:AIT_0361Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:neutral_on_political_issues ;
+    sh:minCount 1 ;
+    sh:message "As an international institution, AIT must be neutral on political issues." .
+
+# Rule: AIT-0362 | OBLIGATION
+# FOL: O(student) 
+ (hasRightToEngageInPoliticalActivitiesAsIndividualsOutsideOfAIT(subject)) 
+ 
+ !representsAITInSuchActivities(subject)
+ait:AIT_0362Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0362Shape_prop1 .
+
+ait:AIT_0362Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "While students have the right to engage in political activities as individuals outside of AIT, they should not portray themselves or make any claim to represent AIT in such activities." .
+
+# Rule: AIT-0363 | OBLIGATION
+# FOL: O(provideIdentityProof)
+ait:AIT_0363Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:provideIdentityProof ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0363Shape_prop1 .
+
+ait:AIT_0363Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:provideIdentityProof ;
+    sh:minCount 1 ;
+    sh:message "Proof of identity is required for most transactions at the bank and may be asked for in the library or at other campus facilities." .
+
+# Rule: AIT-0364 | PERMISSION
+# FOL: P(Action)
+ait:AIT_0364Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0364Shape_prop1 .
+
+ait:AIT_0364Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:stayinthailandunderspecialconditions ;
+    sh:minCount 0 ;
+    sh:message "The opposite side of the student ID card has a statement in Thai which translates as follows: The Asian Institute of Technology hereby certifies that: a. all expatriate students of AIT are allowed to " .
+
+# Rule: AIT-0366 | OBLIGATION
+# FOL: O(obtainNonImmigrantVisa)
+ait:AIT_0366Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0366Shape_prop1 .
+
+ait:AIT_0366Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:obtainNonImmigrantVisa ;
+    sh:minCount 1 ;
+    sh:message "Entering Thailand Students, in receipt of an offer of admission, must obtain a Non-Immigrant VISA (code 'ED') from the Royal Thai Embassy or Consulate-General in their respective countries." .
+
+# Rule: AIT-0367 | PROHIBITION
+# FOL: F(bringFamilyMember)
+ait:AIT_0367Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0367Shape_prop1 .
+
+ait:AIT_0367Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:bringFamilyMember ;
+    sh:maxCount 0 ;
+    sh:message "In addition, the students are not allowed to bring their family member(s)" .
+
+# Rule: AIT-0368 | OBLIGATION
+# FOL: O(submitPassportToGRU(student))
+ait:AIT_0368Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0368Shape_prop1 .
+
+ait:AIT_0368Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitPassportToGRU ;
+    sh:minCount 1 ;
+    sh:message "Upon Arrival Students are required to submit their passports to the Government Relations Unit (GRU) within 1 month after the arrival date." .
+
+# Rule: AIT-0369 | OBLIGATION
+# FOL: O(ApplicationForVISACancellation(x))
+ait:AIT_0369Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0369Shape_prop1 .
+
+ait:AIT_0369Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:applicationForVISACancellation ;
+    sh:minCount 1 ;
+    sh:message "Leaving Thailand The Institute has a commitment to the Thai Government to ensure that all non-Thai students must apply for VISA cancellation before leaving Thailand upon completion of their study prog" .
+
+# Rule: AIT-0370 | PERMISSION
+# FOL: P(stayInThailandBeyondCancellationDateOrNot(student))
+ait:AIT_0370Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0370Shape_prop1 .
+
+ait:AIT_0370Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:stayInThailandBeyondCancellationDateOrNot ;
+    sh:minCount 0 ;
+    sh:message "After the cancellation date, the students are allowed to stay in Thailand for 21 days or not beyond VISA expiration date." .
+
+# Rule: AIT-0371 | OBLIGATION
+# FOL: O(presentImmigrationForVisaCancellation)(student)
+ait:AIT_0371Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0371Shape_prop1 .
+
+ait:AIT_0371Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:presentImmigrationForVisaCancellation ;
+    sh:minCount 1 ;
+    sh:message "Air ticket *Students must be presented at the immigration for the VISA cancellation." .
+
+# Rule: AIT-0372 | PROHIBITION
+# FOL: F(loseBenefit_of_overstaying)(student)
+ait:AIT_0372Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0372Shape_prop1 .
+
+ait:AIT_0372Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:loseBenefit_of_overstaying ;
+    sh:maxCount 0 ;
+    sh:message "A student with the privilege of a return airfare awarded by AIT may lose such benefit in case of over-staying." .
+
+# Rule: AIT-0373 | OBLIGATION
+# FOL: O(placePassportInCustodyOfGRU)(student)
+ait:AIT_0373Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0373Shape_prop1 .
+
+ait:AIT_0373Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:placePassportInCustodyOfGRU ;
+    sh:minCount 1 ;
+    sh:message "Keeping passport Non-Thai students may place their passports in the custody of the GRU throughout their stay in Thailand." .
+
+# Rule: AIT-0374 | OBLIGATION
+# FOL: O(obtainReentryVisa(student))
+ait:AIT_0374Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0374Shape_prop1 .
+
+ait:AIT_0374Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:obtainReentryVisa ;
+    sh:minCount 1 ;
+    sh:message "Re-Entry VISAs Non-Thai students who travel out of Thailand during their period of study should obtain a Re-entry VISA before EXIT Thailand at:" .
+
+# Rule: AIT-0377 | OBLIGATION
+# FOL: O(payThaiVISAExtensionFee(student))
+ait:AIT_0377Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0377Shape_prop1 .
+
+ait:AIT_0377Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payThaiVISAExtensionFee ;
+    sh:minCount 1 ;
+    sh:message "Thai VISA Extension Fees All Non-Thai students are required to pay Baht 1,900 fee for a VISA extension." .
+
+# Rule: AIT-0378 | OBLIGATION
+# FOL: O(ApplicationForVISAExtension(x) ∧ SubmissionToGRU(x) ∧ DocumentSubmission(x))
+ait:AIT_0378Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0378Shape_prop1 .
+
+ait:AIT_0378Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:applicationForVISAExtension ;
+    sh:minCount 1 ;
+    sh:message "Applications for VISA extension of students and their dependents must be submitted to the GRU, along with the following document." .
+
+# Rule: AIT-0379 | OBLIGATION
+# FOL: O(contact_GRU_for_VISA_extension(x) and close_to_VISA_expiry_date(x))
+ait:AIT_0379Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0379Shape_prop1 .
+
+ait:AIT_0379Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:contact_GRU_for_VISA_extension ;
+    sh:minCount 1 ;
+    sh:message "Original AIT Resident Certificate The student must contact GRU to proceed with a VISA extension one and half months before the VISA expiry date." .
+
+# Rule: AIT-0380 | OBLIGATION
+# FOL: O(failToExtendVisa(x))
+ait:AIT_0380Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:failToExtendVisa ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0380Shape_prop1 .
+
+ait:AIT_0380Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:failToExtendVisa ;
+    sh:minCount 1 ;
+    sh:message "Failure to extend the VISA after the expiry date will result in a fine of Baht 500 per day up to a maximum of Baht 20," .
+
+# Rule: AIT-0382 | OBLIGATION
+# FOL: O(ApplicationForExtensionOfStay(x))
+ait:AIT_0382Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0382Shape_prop1 .
+
+ait:AIT_0382Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:applicationForExtensionOfStay ;
+    sh:minCount 1 ;
+    sh:message "The dependent spouse and children of AIT students must apply for an extension of stay at the GRU office one and a half months before the VISA expiry date." .
+
+# Rule: AIT-0383 | OBLIGATION
+# FOL: O(hasBirthCertificateInEnglishLanguage(child))
+ait:AIT_0383Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:hasBirthCertificateInEnglishLanguage ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0383Shape_prop1 .
+
+ait:AIT_0383Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:hasBirthCertificateInEnglishLanguage ;
+    sh:minCount 1 ;
+    sh:message "Birth certificate for each child. *All original documents should be in the English Language." .
+
+# Rule: AIT-0385 | OBLIGATION
+# FOL: O(makeInquiryAboutVisaAtGRU)
+ait:AIT_0385Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:makeInquiryAboutVisaAtGRU ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0385Shape_prop1 .
+
+ait:AIT_0385Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:makeInquiryAboutVisaAtGRU ;
+    sh:minCount 1 ;
+    sh:message "Inquiries about VISAs should be made at the Government Relations Unit (GRU), 1st floor of the Administration Building, between 7:30 AM - 4:30 PM (Monday– Friday) Tel: 02-524-" .
+
+# Rule: AIT-0386 | OBLIGATION
+# FOL: O(submitReportOnNinetyDaysStay)
+ait:AIT_0386Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0386Shape_prop1 .
+
+ait:AIT_0386Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submitReportOnNinetyDaysStay ;
+    sh:minCount 1 ;
+    sh:message "Email: gru@ait.ac.th Report on Ninety Days of Stay Students, together with spouses and dependents, if staying in Thailand longer than ninety days must submit to the Immigration Department reports conc" .
+
+# Rule: AIT-0387 | OBLIGATION
+# FOL: O(stayEveryNinetyDays(x))
+ait:AIT_0387Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0387Shape_prop1 .
+
+ait:AIT_0387Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:stayEveryNinetyDays ;
+    sh:minCount 1 ;
+    sh:message "Students are required to do so every ninety days of stay." .
+
+# Rule: AIT-0388 | OBLIGATION
+# FOL: O(Action(x))
+ait:AIT_0388Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0388Shape_prop1 .
+
+ait:AIT_0388Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:fineduptobaht2000 ;
+    sh:minCount 1 ;
+    sh:message "Students who fail to comply with this immigration provision shall be fined up to Baht 2,000. “Suspended” students due to financial inability will be recommended for dismissal. “Dismissed” students can" .
+
+# Rule: AIT-0389 | PROHIBITION
+# FOL: F(cancelEducationVISAforStudentAtAIT)
+ait:AIT_0389Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0389Shape_prop1 .
+
+ait:AIT_0389Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:cancelEducationVISAforStudentAtAIT ;
+    sh:maxCount 0 ;
+    sh:message "The “Education VISA” will be canceled after 15 days, and the student will not be allowed to come to Thailand to study at AIT." .
+
+# Rule: AIT-0390 | OBLIGATION
+# FOL: O(RegisterAndBookQueue(x) ∧ ScanQRCode(x))
+ait:AIT_0390Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0390Shape_prop1 .
+
+ait:AIT_0390Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:registerAndBookQueue ;
+    sh:minCount 1 ;
+    sh:message "Student must Register and book queue by scanning the QR code below Requires document are following:" .
+
+# Rule: AIT-0391 | PERMISSION
+# FOL: P(organizeCoffeeBreakOrMealOrDinnerParty)(organizer)
+ait:AIT_0391Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:organizeCoffeeBreakOrMealOrDinnerParty ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0391Shape_prop1 .
+
+ait:AIT_0391Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:organizeCoffeeBreakOrMealOrDinnerParty ;
+    sh:minCount 0 ;
+    sh:message "Organizers may arrange coffee breaks, meals or dinner parties for their participants or guests by contacting the AITCC (aitccr@ait.ac.th) to make prior arrangements." .
+
+# Rule: AIT-0393 | OBLIGATION
+# FOL: O(wearsProperSportsAttireAtSportsFacility)
+ait:AIT_0393Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:wearsProperSportsAttireAtSportsFacility ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0393Shape_prop1 .
+
+ait:AIT_0393Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:wearsProperSportsAttireAtSportsFacility ;
+    sh:minCount 1 ;
+    sh:message "Proper sports attire is required for each sports facility." .
+
+# Rule: AIT-0395 | OBLIGATION
+# FOL: O(queuing(x) if (firstComeFirstServedBasis(courtOrField(x)) && waitingPlayers(x)))
+ait:AIT_0395Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:queuing ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0395Shape_prop1 .
+
+ait:AIT_0395Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:queuing ;
+    sh:minCount 1 ;
+    sh:message "First come-first served basis rule must be followed for each court/field and queuing must be adhered to if there are many players waiting." .
+
+# Rule: AIT-0396 | OBLIGATION
+# FOL: O(participateInDoublesRacquetSportsEvent(subject) where thereIsQueue(condition))
+ait:AIT_0396Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:participateInDoublesRacquetSportsEvent ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0396Shape_prop1 .
+
+ait:AIT_0396Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:participateInDoublesRacquetSportsEvent ;
+    sh:minCount 1 ;
+    sh:message "For racquet sports, doubles events should be prioritized over single events if there is a queue." .
+
+# Rule: AIT-0397 | PROHIBITION
+# FOL: F(useSportsFacilityForOtherSportingEvent)
+ait:AIT_0397Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:useSportsFacilityForOtherSportingEvent ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0397Shape_prop1 .
+
+ait:AIT_0397Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:useSportsFacilityForOtherSportingEvent ;
+    sh:maxCount 0 ;
+    sh:message "Sports facilities cannot be used for other sporting events aside from the intended use of the court/field." .
+
+# Rule: AIT-0398 | PROHIBITION
+# FOL: F(consumeInSportsFacility(?x))
+ait:AIT_0398Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:consumeInSportsFacility ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0398Shape_prop1 .
+
+ait:AIT_0398Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:consumeInSportsFacility ;
+    sh:maxCount 0 ;
+    sh:message "Food and beverages are not allowed in the sports facility." .
+
+# Rule: AIT-0401 | OBLIGATION
+# FOL: O(isAITCommunityMember(x))
+ait:AIT_0401Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0401Shape_prop1 .
+
+ait:AIT_0401Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:isAITCommunityMember ;
+    sh:minCount 1 ;
+    sh:message "The users of the pool should only be AIT community members which includes AIT staff, students and their families and visitors at AITCC." .
+
+# Rule: AIT-0402 | OBLIGATION
+# FOL: O(Register(x) ∧ UseSwimmingPool(x))
+ait:AIT_0402Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0402Shape_prop1 .
+
+ait:AIT_0402Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:register ;
+    sh:minCount 1 ;
+    sh:message "All users have to register before using the swimming pool and the swimming pool staff may also request for the AIT ID verification." .
+
+# Rule: AIT-0403 | OBLIGATION
+# FOL: O(wearProperSwimwear(x))
+ait:AIT_0403Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:wearProperSwimwear ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0403Shape_prop1 .
+
+ait:AIT_0403Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:wearProperSwimwear ;
+    sh:minCount 1 ;
+    sh:message "Proper swim wear is required." .
+
+# Rule: AIT-0404 | PROHIBITION
+# FOL: F(swimmingWithFoodOrBeverage)
+ait:AIT_0404Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:swimmingWithFoodOrBeverage ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0404Shape_prop1 .
+
+ait:AIT_0404Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:swimmingWithFoodOrBeverage ;
+    sh:maxCount 0 ;
+    sh:message "Food and beverages are not allowed in the pool." .
+
+# Rule: AIT-0405 | PROHIBITION
+# FOL: F(bringIntoxicatingDrinks)
+ait:AIT_0405Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:bringIntoxicatingDrinks ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0405Shape_prop1 .
+
+ait:AIT_0405Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:bringIntoxicatingDrinks ;
+    sh:maxCount 0 ;
+    sh:message "Bringing liquor or any intoxicating drinks is prohibited." .
+
+# Rule: AIT-0406 | PROHIBITION
+# FOL: F(intoxicatedIndividualUsesPool)
+ait:AIT_0406Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:intoxicatedIndividualUsesPool ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0406Shape_prop1 .
+
+ait:AIT_0406Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:intoxicatedIndividualUsesPool ;
+    sh:maxCount 0 ;
+    sh:message "Individuals intoxicated with liquor are not permitted to use the pool." .
+
+# Rule: AIT-0407 | PROHIBITION
+# FOL: F(Smokes_at_pool(?x))
+ait:AIT_0407Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:smokes_at_pool ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0407Shape_prop1 .
+
+ait:AIT_0407Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:smokes_at_pool ;
+    sh:maxCount 0 ;
+    sh:message "Smoking is not permitted at the pool." .
+
+# Rule: AIT-0408 | OBLIGATION
+# FOL: O(Children_are_accompanied_and_supervised_by_parents_or_guardians)
+ait:AIT_0408Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:children_are_accompanied_and_supervised_by_parents_or_guardians ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0408Shape_prop1 .
+
+ait:AIT_0408Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:children_are_accompanied_and_supervised_by_parents_or_guardians ;
+    sh:minCount 1 ;
+    sh:message "Children must be accompanied and supervised by parents or guardians at all times." .
+
+# Rule: AIT-0409 | OBLIGATION
+# FOL: O(accompaniedByExperiencedSwimmer(InexperiencedSwimmer))
+ait:AIT_0409Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:accompaniedByExperiencedSwimmer ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0409Shape_prop1 .
+
+ait:AIT_0409Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:accompaniedByExperiencedSwimmer ;
+    sh:minCount 1 ;
+    sh:message "Inexperienced swimmer must be accompanied by an experienced swimmer." .
+
+# Rule: AIT-0410 | PROHIBITION
+# FOL: F(usesPoolByContagiousPersonOrOpenWounded)
+ait:AIT_0410Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:usesPoolByContagiousPersonOrOpenWounded ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0410Shape_prop1 .
+
+ait:AIT_0410Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:usesPoolByContagiousPersonOrOpenWounded ;
+    sh:maxCount 0 ;
+    sh:message "Persons suffering from contagious diseases or those with open wounds are strictly prohibited from using the pool." .
+
+# Rule: AIT-0411 | PROHIBITION
+# FOL: F(playAroundPoolEdgeBySubject)
+ait:AIT_0411Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:playAroundPoolEdgeBySubject ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0411Shape_prop1 .
+
+ait:AIT_0411Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:playAroundPoolEdgeBySubject ;
+    sh:maxCount 0 ;
+    sh:message "Running and playing around the edge of the pool are not allowed as these may result in injury due to falling in the water or falling in the concrete." .
+
+# Rule: AIT-0413 | OBLIGATION
+# FOL: O(Book(x) & UseCarts(x))
+ait:AIT_0413Shape a sh:NodeShape ;
+    sh:targetClass ait:Employee ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0413Shape_prop1 .
+
+ait:AIT_0413Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:book ;
+    sh:minCount 1 ;
+    sh:message "Students or staff should book for use of the carts through the SU Secretary, with a deposit of Baht 500 and can be collected after the usage of the cart." .
+
+# Rule: AIT-0414 | OBLIGATION
+# FOL: O(Contact_AIT_Campus_Mail_Services_Office(x) ∧ Bring_intended_shipment(x) ∧ During_office_hours(x) → Use_courier_service(x))
+ait:AIT_0414Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:contact_AIT_Campus_Mail_Services_Office ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0414Shape_prop1 .
+
+ait:AIT_0414Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:contact_AIT_Campus_Mail_Services_Office ;
+    sh:minCount 1 ;
+    sh:message "Anyone wishing to use the courier service should contact the AIT Campus Mail Services Office and bring the intended shipment during office hours." .
+
+# Rule: AIT-0415 | OBLIGATION
+# FOL: O(becomeCompetentAcademicWriter(student))
+ait:AIT_0415Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0415Shape_prop1 .
+
+ait:AIT_0415Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:becomeCompetentAcademicWriter ;
+    sh:minCount 1 ;
+    sh:message "While some of you are very fluent speakers of English, at AIT all degree program students are expected to become competent academic writers." .
+
+# Rule: AIT-0416 | OBLIGATION
+# FOL: O(Fulfill_English_Requirements(x))
+ait:AIT_0416Shape a sh:NodeShape ;
+    sh:targetClass ait:Graduate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0416Shape_prop1 .
+
+ait:AIT_0416Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:fulfill_English_Requirements ;
+    sh:minCount 1 ;
+    sh:message "Therefore, all AIT degree program students are required to fulfill the English requirements before they can graduate." .
+
+# Rule: AIT-0417 | PERMISSION
+# FOL: P(exemptedFromELCourses(student))
+ait:AIT_0417Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0417Shape_prop1 .
+
+ait:AIT_0417Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:exemptedFromELCourses ;
+    sh:minCount 0 ;
+    sh:message "If you score above a 6.0 on the AWPT, you will automatically be exempted from having to take mandatory EL courses." .
+
+# Rule: AIT-0418 | OBLIGATION
+# FOL: O(Attend_and_Successfully_Complete_EL_15_and_EL_19(x) → Graduate(x))
+ait:AIT_0418Shape a sh:NodeShape ;
+    sh:targetClass ait:Graduate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0418Shape_prop1 .
+
+ait:AIT_0418Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:attend_and_Successfully_Complete_EL_ ;
+    sh:minCount 1 ;
+    sh:message "If you score 5.0, you are required to attend and successfully complete EL 15 and EL 19 before you can graduate." .
+
+# Rule: AIT-0419 | OBLIGATION
+# FOL: O(AttendAndCompleteEL19(x))
+ait:AIT_0419Shape a sh:NodeShape ;
+    sh:targetClass ait:Graduate ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0419Shape_prop1 .
+
+ait:AIT_0419Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:attendAndCompleteEL ;
+    sh:minCount 1 ;
+    sh:message "If you score 5.5, you are required to attend and successfully complete EL 19 before you can graduate." .
+
+# Rule: AIT-0420 | OBLIGATION
+# FOL: O(payFeeByStudent)
+ait:AIT_0420Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0420Shape_prop1 .
+
+ait:AIT_0420Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payFeeByStudent ;
+    sh:minCount 1 ;
+    sh:message "The LC also offers a range of elective academic writing courses each semester and during term breaks, all covered under the 2,000 Baht Language Support Fee students are required to pay in the first se" .
+
+# Rule: AIT-0422 | OBLIGATION
+# FOL: O(submit_title_page(x, advisor_signed, LC_signed) to AIT_Registry)
+ait:AIT_0422Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0422Shape_prop1 .
+
+ait:AIT_0422Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:submit_title_page ;
+    sh:minCount 1 ;
+    sh:message "Finally, they must submit the title page signed by their advisor and by LC to the AIT Registry." .
+
+# Rule: AIT-0423 | OBLIGATION
+# FOL: O(usesInternetByStudent)
+ait:AIT_0423Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0423Shape_prop1 .
+
+ait:AIT_0423Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:usesInternetByStudent ;
+    sh:minCount 1 ;
+    sh:message "When using Internet, students have to adhere to the Institute’s Policies & Procedures on the Use of Computing and Network Services at AIT whose details can be viewed from http://intranet.ait.ac.th/adm" .
+
+# Rule: AIT-0424 | OBLIGATION
+# FOL: O(AdherenceToThaiLaws(x))
+ait:AIT_0424Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:adherenceToThaiLaws ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0424Shape_prop1 .
+
+ait:AIT_0424Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:adherenceToThaiLaws ;
+    sh:minCount 1 ;
+    sh:message "Nevertheless, adherence to the host country’s (Thai) laws still must be strictly observed." .
+
+# Rule: AIT-0425 | OBLIGATION
+# FOL: O(payCampusFee(student))
+ait:AIT_0425Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0425Shape_prop1 .
+
+ait:AIT_0425Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:payCampusFee ;
+    sh:minCount 1 ;
+    sh:message "UIA subscription is mandatory for every student residing on campus and its current fee of 400 Baht/month is monthly collected with accommodation rental fee." .
+
+# Rule: AIT-0427 | PERMISSION
+# FOL: P(student_avails_microsoft_office365_license)
+ait:AIT_0427Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0427Shape_prop1 .
+
+ait:AIT_0427Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student_avails_microsoft_office ;
+    sh:minCount 0 ;
+    sh:message "Students may also avail of Microsoft Office 365 licenses through Microsoft’s Student Advantage Program where every student is entitled to install Microsoft Office 365 on up to 5 devices, including PC," .
+
+# Rule: AIT-0428 | OBLIGATION
+# FOL: O(Student(x) ∧ Difficulties(x) ∧ UsingInternet(x) ∨ OtherITServices(x) → ContactHelpdesk(x))
+ait:AIT_0428Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0428Shape_prop1 .
+
+ait:AIT_0428Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:student ;
+    sh:minCount 1 ;
+    sh:message "Details of IT services mentioned above as well other information are available on Helpdesk website https://helpdesk.ait.ac.th/ Students encountering difficulties in using Internet and other campus wid" .
+
+# Rule: AIT-0429 | OBLIGATION
+# FOL: O(presentGeneraliCard(insuredUnderGeneraliMedicalInsurance))
+ait:AIT_0429Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0429Shape_prop1 .
+
+ait:AIT_0429Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:presentGeneraliCard ;
+    sh:minCount 1 ;
+    sh:message "Student’s Insurance: Those insured under the Generali Medical Insurance should present their Generali Card before consulting with the doctor for the diagnosis of any illness." .
+
+# Rule: AIT-0430 | PERMISSION
+# FOL: P(contactNurseOnDuty)
+ait:AIT_0430Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:contactNurseOnDuty ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0430Shape_prop1 .
+
+ait:AIT_0430Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:contactNurseOnDuty ;
+    sh:minCount 0 ;
+    sh:message "In emergency cases or if any medical emergency assistance is required, the nurse on duty can be contacted at 02-524-" .
+
+# Rule: AIT-0432 | PROHIBITION
+# FOL: F(workAloneInLaboratoryAtNightWithoutPermissionFromLaboratorySupervisor)
+ait:AIT_0432Shape a sh:NodeShape ;
+    sh:targetClass ait:Faculty ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0432Shape_prop1 .
+
+ait:AIT_0432Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:workAloneInLaboratoryAtNightWithoutPermissionFromLaboratorySupervisor ;
+    sh:maxCount 0 ;
+    sh:message "You should not work alone in the laboratory, especially at night, without written permission from the Laboratory Supervisor." .
+
+# Rule: AIT-0437 | OBLIGATION
+# FOL: O(presentAITorIDCard(subject))
+ait:AIT_0437Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:presentAITorIDCard ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0437Shape_prop1 .
+
+ait:AIT_0437Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:presentAITorIDCard ;
+    sh:minCount 1 ;
+    sh:message "The offender is required to present an AIT or valid ID card to the security on duty." .
+
+# Rule: AIT-0439 | OBLIGATION
+# FOL: O(provideIdentification(x))
+ait:AIT_0439Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:provideIdentification ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0439Shape_prop1 .
+
+ait:AIT_0439Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:provideIdentification ;
+    sh:minCount 1 ;
+    sh:message "If ID card is not available, other form of identification should be provided." .
+
+# Rule: AIT-0441 | PERMISSION
+# FOL: P(bringBicycle)
+ait:AIT_0441Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:bringBicycle ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0441Shape_prop1 .
+
+ait:AIT_0441Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:bringBicycle ;
+    sh:minCount 0 ;
+    sh:message "You may prefer to bring a bicycle with you." .
+
+# Rule: AIT-0443 | OBLIGATION
+# FOL: O(reserveVehicleByFacultyMemberOrSeniorAdminStaffMemberOrStudentUnionPresident)
+ait:AIT_0443Shape a sh:NodeShape ;
+    sh:targetClass ait:Resident ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0443Shape_prop1 .
+
+ait:AIT_0443Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:reserveVehicleByFacultyMemberOrSeniorAdminStaffMemberOrStudentUnionPresident ;
+    sh:minCount 1 ;
+    sh:message "In all such cases, the reservation of the vehicle must be made by a member of the faculty or a senior administrative staff member in the School or by the Student Union President to the Motor Pool." .
+
+# Rule: AIT-0445 | PERMISSION
+# FOL: P(takeBus(rangsit, nonAirConditioned))
+ait:AIT_0445Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:takeBus ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0445Shape_prop1 .
+
+ait:AIT_0445Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:takeBus ;
+    sh:minCount 0 ;
+    sh:message "From Rangsit, you may take the following buses: Non-air-conditioned Bus No." .
+
+# Rule: AIT-0446 | OBLIGATION
+# FOL: F(paid_in_full(s, d))
+ait:AIT_0446Shape a sh:NodeShape ;
+    sh:targetSubjectsOf ait:paid_in_full ;
+    sh:severity sh:Violation ;
+    sh:property ait:AIT_0446Shape_prop1 .
+
+ait:AIT_0446Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:paid_in_full ;
+    sh:minCount 1 ;
+    sh:message "Fares for the latter should always be agreed in advance with the driver, and must be paid in full on arrival at the destination." .
+
+# Rule: AIT-0447 | PERMISSION
+# FOL: P(waits_at_location(x))
+ait:AIT_0447Shape a sh:NodeShape ;
+    sh:targetClass ait:Student ;
+    sh:severity sh:Info ;
+    sh:property ait:AIT_0447Shape_prop1 .
+
+ait:AIT_0447Shape_prop1 a sh:PropertyShape ;
+    sh:path ait:waits_at_location ;
+    sh:minCount 0 ;
+    sh:message "Students may wait for the vans at the Thammasat Road near AIT Gate No. 2 or at the bus stop near the AIT Front Gate No." .
+

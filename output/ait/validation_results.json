@@ -1,0 +1,360 @@
+{
+  "conforms": false,
+  "shape_count": 569,
+  "entity_count": 180,
+  "violation_count": 27045,
+  "violations": [
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS031",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS066",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS097",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS056",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS064",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS013",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS090",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS028",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS064",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS037",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS084",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS011",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS089",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS007",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS085",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS093",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS037",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS062",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS028",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS003",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS096",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS047",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS044",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS083",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS017",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS017",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS040",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS085",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS020",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS007",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS046",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS062",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS014",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS018",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS043",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS063",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS089",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS093",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS043",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS047",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS084",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS020",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS035",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS071",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS071",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS046",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS056",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS009",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Neg_GS097",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    },
+    {
+      "focus_node": "http://example.org/ait-policy#Pos_GS083",
+      "source_shape": "http://example.org/ait-policy#AIT_0362Shape",
+      "source_path": "http://example.org/ait-policy#theStudentsConcernedWill",
+      "result_message": "The students concerned will be given five working days to confirm receipt of notice to the Accommodation Unit; otherwise, the group may lose the offer.",
+      "severity": "http://www.w3.org/ns/shacl#Violation"
+    }
+  ],
+  "pipeline_shapes": 484,
+  "valid_shapes": 473
+}
