@@ -1,374 +1,631 @@
-# PolicyChecker — Automated Policy Formalization Pipeline
-
-An end-to-end agentic pipeline that converts institutional policy documents (PDF) into machine-executable SHACL validation rules. Built as a thesis research project at the Asian Institute of Technology (AIT).
-
+# PolicyChecker — AI Policy Formalization System
+ 
+An agentic LangGraph pipeline that extracts, classifies, and formalizes institutional
+policy rules from PDF documents into validatable SHACL shapes.
+ 
+> **Master's Thesis — Asian Institute of Technology (AIT), 2026**
+ 
 ---
-
+ 
 ## Table of Contents
-
-1. [Project Overview](#1-project-overview)
-2. [Project Organization](#2-project-organization)
-3. [Local Development Setup](#3-local-development-setup)
-4. [Deployment with Docker](#4-deployment-with-docker)
-
+ 
+1. [Project Structure](#1-project-structure)
+2. [Pipeline Stages](#2-pipeline-stages)
+3. [Local Environment Setup](#3-local-environment-setup)
+4. [Dev Container Setup](#4-dev-container-setup)
+5. [Running the Pipeline](#5-running-the-pipeline)
+6. [Compliance Dashboard (Web UI)](#6-compliance-dashboard-web-ui)
+7. [Running Evaluation](#7-running-evaluation)
 ---
-
-## 1. Project Overview
-
-PolicyChecker addresses the **Policy Compliance Gap** — the difficulty of translating hundreds of pages of natural language institutional policies into enforceable, machine-readable rules.
-
-### What It Does
-
-The pipeline takes PDF policy documents as input and automatically produces SHACL (Shapes Constraint Language) validation rules that can be run against a university's student database to detect compliance violations.
-
-### Pipeline Stages
-
+ 
+## 1. Project Structure
+ 
 ```
-PDF Policies → Text Extraction → Rule Prefiltering → LLM Classification → FOL Formalization → SHACL Translation → Validation 
+.
+├── data/                                   # All data files — input, reference, output
+│   ├── institutional_policy/
+│   │   └── AIT/                            # Source policy PDFs (pipeline input)
+│   │       ├── AA-4-1-1 Academic Integrity...pdf
+│   │       ├── FB-6-1-1 Credit Policy...pdf
+│   │       ├── FS-1-1-1 Campus Accommodation...pdf
+│   │       ├── PA-2-1-2 Ethical Behavior...pdf
+│   │       └── Student-Handbook_August-2021.pdf
+│   ├── shacl/
+│   │   ├── ontology/
+│   │   │   └── ait_policy_ontology.ttl     # AIT domain ontology (vocabulary definitions)
+│   │   ├── shapes/
+│   │   │   └── ait_policy_shapes.ttl       # 96 gold-standard SHACL shapes (hand-curated)
+│   │   └── test_data/
+│   │       └── tdd_test_data_fixed.ttl     # TDD test entities (Pos/Neg per rule)
+│   ├── cache/                              # LLM response cache — gitignored
+│   │   └── llm_cache.db
+│   └── output/                             # Pipeline run artifacts — gitignored
+│       └── ait/
+│           ├── classified_rules.json       # Step 2 output
+│           ├── fol_formulas.json           # Step 3 output
+│           ├── shapes_generated.ttl        # Step 4 output
+│           ├── validation_results.json     # Step 5 output
+│           └── pipeline_report.json        # Step 6 final report
+│
+├── models/                                 # LangGraph agent (pipeline orchestrator)
+│   └── langgraph_agent/
+│       ├── state.py                        # Shared PipelineState (TypedDict)
+│       ├── graph.py                        # Pipeline graph assembly (StateGraph)
+│       ├── llm.py                          # Ollama LLM configuration
+│       ├── run.py                          # CLI entry point
+│       ├── _stubs.py                       # Fallback stubs for missing nodes
+│       ├── edges/
+│       │   └── route_classify.py           # Conditional routing after classification
+│       └── nodes/                          # One file per pipeline stage
+│           ├── extract.py                  # Step 1: PDF → sentences
+│           ├── prefilter.py                # Step 2a: heuristic filter
+│           ├── classify.py                 # Step 2b: LLM classification (O/P/F)
+│           ├── reclassify.py               # Step 2c: second-opinion pass
+│           ├── fol.py                      # Step 3: FOL formalization
+│           ├── shacl.py                    # Step 4a: FOL → SHACL shapes
+│           ├── direct_shacl.py             # Step 4b: NL → SHACL fallback
+│           ├── validate.py                 # Step 5: pyshacl validation
+│           └── report.py                   # Step 6: structured report
+│
+├── src/
+│   └── policy_checker/                     # Main Python package
+│       ├── __init__.py                     # Defines PROJECT_ROOT
+│       ├── core/
+│       │   ├── llm_cache.py                # SQLite-backed LLM response cache
+│       │   ├── mcp_server.py               # JSON-RPC MCP server (5 tools)
+│       │   └── prefilter.py                # Heuristic filter logic
+│       ├── database/
+│       │   ├── connection.py               # PostgreSQL connection handler
+│       │   ├── rdf_converter.py            # SQL rows → RDF triples (data graph)
+│       │   ├── schema.sql                  # Database schema
+│       │   └── seed.py                     # Seed test student records
+│       ├── evaluation/
+│       │   ├── align.py                    # M1: pipeline vs gold-standard alignment
+│       │   ├── per_rule_eval.py            # M4: per-rule pyshacl correctness
+│       │   └── report.py                   # M1–M5 thesis metrics aggregator
+│       └── web/
+│           ├── app.py                      # FastAPI compliance dashboard (port 8000)
+│           ├── static/                     # CSS + JS
+│           └── templates/
+│               └── index.html              # Dashboard UI
+│
+├── logs/                                   # Runtime logs — gitignored
+├── dev-setup.sh                            # One-time setup script
+├── docker-compose.yml                      # Dev + PostgreSQL services
+├── dockerfile                              # Dev container image
+├── pyproject.toml                          # Project config + dependencies
+├── uv.lock                                 # Pinned dependency versions
+├── .env                                    # Local secrets — never committed
+└── .env.example                            # Environment variable template
 ```
-
-Report
-
-| Stage | Description |
-|-------|-------------|
-| **Phase 1 — Extraction** | Extracts and segments sentences from PDF policy documents using `pdfplumber`, with optional sentence segmentation via spaCy sentencizer |
-| **Phase 1b — Prefiltering** | Heuristically filters non-rule content using deontic markers, section-aware weighting, speech-act classification, and epistemic vs. deontic modal disambiguation |
-| **Phase 2 — Classification** | Uses a local LLM (Mistral via Ollama) to classify candidate sentences as obligations, permissions, or prohibitions, enriched with contextual hints from the prefilter stage |
-| **Phase 2c — Reclassification** | Performs a second-opinion LLM pass for uncertain classifications using a configurable secondary model |
-| **Phase 3 — FOL Formalization** | Converts classified rules into First-Order Logic (FOL) formulas using deontic operators such as O(φ), P(φ), and F(φ), with placeholder rejection and retry handling |
-| **Phase 4 — SHACL Generation (FOL-mediated)** | Translates FOL formulas into executable SHACL NodeShapes with confidence-weighted severity, named property shapes, and `sh:targetSubjectsOf` fallback targeting |
-| **Phase 4b — SHACL Generation (NL fallback)** | Directly converts natural-language rules into SHACL for cases where FOL formalization fails, including an automatic syntax repair loop |
-| **Phase 5 — Validation** | Merges generated SHACL shapes with gold-standard shapes and runs `pyshacl` validation against TDD test data, including false-positive triage |
-| **Phase 6 — Reporting** | Produces a structured JSON report containing pipeline statistics, validation results, environment metadata, and severity breakdowns |
-
-### Technology Stack
-
-| Category | Technology | Purpose |
-|----------|------------|---------|
-| Agent Framework | LangGraph | Orchestrates the multi-step pipeline as a stateful graph |
-| LLM | Mistral 7B via Ollama | Classification, FOL generation, SHACL generation |
-| PDF Processing | pdfplumber, PyMuPDF | Text extraction from policy PDFs |
-| RDF / SHACL | rdflib, pyshacl | Knowledge graph construction and SHACL validation |
-| Web Dashboard | FastAPI, Jinja2 | Compliance results browser |
-| Database | PostgreSQL | University student data (RDF source) |
-| Cache | SQLite | LLM response cache to avoid redundant API calls |
-| Package Manager | uv | Dependency management and virtual environment |
-| Dev Environment | Docker + devcontainer | Reproducible development environment |
-
+ 
+### Key concepts
+ 
+| Folder | Purpose |
+|---|---|
+| `data/` | Everything that flows IN or comes OUT of the pipeline |
+| `data/shacl/` | SHACL reference files used by evaluation and TDD |
+| `models/langgraph_agent/` | The AI agent that orchestrates the pipeline |
+| `src/policy_checker/` | Shared utilities, database, evaluation, web UI |
+ 
 ---
-
-## 2. Project Organization
-
+ 
+## 2. Pipeline Stages
+ 
+The pipeline runs as a LangGraph state machine. Each stage passes its output
+to the next via a shared `PipelineState` object.
+ 
 ```
-policy-checker/
-│
-├── .devcontainer/                  # VS Code devcontainer configuration
-│   └── dev/
-│       ├── devcontainer.json
-│       └── devcontainer-lock.json
-│
-├── .env                            # Local secrets (never committed)
-├── .env.example                    # Safe template — copy to .env to get started
-├── dockerfile                      # Ubuntu 24.04 dev container image
-├── docker-compose.yml              # Orchestrates dev + postgres + ollama
-├── pyproject.toml                  # Project dependencies (uv)
-├── uv.lock                         # Pinned dependency lockfile
-│
-│
-├── institutional_policy/           # Source PDF policy documents (research input)
-│   └── AIT/
-│       ├── AA-4-1-1 Academic Integrity (...).pdf
-│       ├── FB-6-1-1 Credit Policy (...).pdf
-│       ├── FS-1-1-1 Campus Accommodation (...).pdf
-│       ├── PA-2-1-2 Ethical Behavior (...).pdf
-│       └── Student-Handbook_August-2021.pdf
-│
-├── shacl/                          # RDF research artifacts (not Python code)
-│   ├── ontology/
-│   │   └── ait_policy_ontology.ttl     # AIT domain ontology
-│   ├── shapes/
-│   │   └── ait_policy_shapes.ttl       # Gold-standard SHACL shapes (ground truth)
-│   └── test_data/
-│       └── tdd_test_data_fixed.ttl     # TDD test fixtures (Pos/Neg entity pairs)
-│
-├── output/                         # Runtime pipeline outputs (git-ignored)
-│   └── ait/
-│       ├── classified_rules.json
-│       ├── fol_formulas.json
-│       ├── shapes_generated.ttl
-│       ├── validation_results.json
-│       └── pipeline_report.json
-│
-├── cache/                          # SQLite LLM response cache (git-ignored)
-│   └── llm_cache.db
-│
-├── graphdb_data/                   # GraphDB runtime data (git-ignored)
-│
-└── src/
-    └── policy_checker/             # Main Python package
-        │
-        ├── __init__.py             # Defines canonical PROJECT_ROOT
-        │
-        ├── core/                   # Shared services
-        │   ├── llm_cache.py        # SQLite-backed LLM response cache (LRU)
-        │   ├── prefilter.py        # Heuristic sentence pre-filter (deontic markers)
-        │   └── mcp_server.py       # MCP JSON-RPC server for external tool access
-        │
-        ├── data/                     # PostgreSQL integration
-        │   ├── connection.py       # psycopg2 connection manager
-        │   ├── rdf_converter.py    # Converts DB rows to RDF Turtle (data graph)
-        │   ├── seed.py             # Seeds realistic AIT demo data
-        │   └── schema.sql          # Database schema (students, fees, accommodations...)
-        │
-        ├── langgraph_agent/        # LangGraph pipeline
-        │   ├── graph.py            # Builds and compiles the StateGraph
-        │   ├── state.py            # PipelineState TypedDict definition
-        │   ├── llm.py              # ChatOllama factory (deterministic decoding)
-        │   ├── run.py              # CLI entry point (--source, --verbose, --ablation)
-        │   ├── _stubs.py           # No-op node stubs for incremental development
-        │   ├── edges/
-        │   │   └── route_classify.py   # Conditional routing after classification
-        │   └── nodes/              # One file per pipeline node
-        │       ├── extract.py          # Phase 1: PDF → sentences
-        │       ├── prefilter.py        # Phase 2a: heuristic filter
-        │       ├── classify.py         # Phase 2b: LLM classification
-        │       ├── reclassify.py       # Phase 2c: second-opinion LLM
-        │       ├── fol.py              # Phase 3: FOL generation
-        │       ├── shacl.py            # Phase 4a: FOL → SHACL shapes
-        │       ├── direct_shacl.py     # Phase 4b: NL fallback → SHACL
-        │       ├── validate.py         # Phase 5: pyshacl validation
-        │       └── report.py           # Phase 6: pipeline report
-        │
-        ├── evaluation/             # Thesis metrics (M1–M5)
-        │   ├── align.py            # M1: align pipeline rules to gold shapes
-        │   ├── per_rule_eval.py    # M4: per-rule Pos/Neg correctness test
-        │   └── report.py           # M1–M5 aggregated metrics report
-        │
-        └── web/                    # Compliance dashboard (FastAPI)
-            ├── app.py              # API routes + validation endpoint
-            ├── static/
-            │   ├── app.js
-            │   └── style.css
-            └── templates/
-                └── index.html
+PDFs
+ │
+ ▼
+Step 1 ── extract.py ──────────────────────────────────────────────────────
+          Opens all PDFs with pdfplumber
+          Splits text into sentences
+          Filters out headers/footers
+          Output: extracted_sentences[] (1,565 sentences)
+          File written: none (stays in memory)
+ │
+ ▼
+Step 2a ── prefilter.py ────────────────────────────────────────────────────
+           Quick keyword scan — no LLM involved
+           Keeps sentences with deontic markers:
+             must / shall / required  → obligation candidate
+             may / permitted          → permission candidate
+             must not / cannot        → prohibition candidate
+           Also disambiguates epistemic "may" vs deontic "may"
+           Output: candidates[] (~450 sentences)
+           File written: none
+ │
+ ▼
+Step 2b ── classify.py ─────────────────────────────────────────────────────
+           Sends each candidate to Mistral AI:
+             "Is this a policy rule?"
+             "If yes, is it Obligation / Permission / Prohibition?"
+           Returns confidence score per classification
+           Output: rules[]          (confidence ≥ 0.6 → confident)
+                   uncertain_rules[] (confidence 0.4–0.6 → needs review)
+           File written: data/output/ait/classified_rules.json
+ │
+ ├─ confident ──────────────────────────────────────────────────── Step 3
+ │
+ └─ uncertain ──────────────────────────────────────────────────────────────
+    Step 2c ── reclassify.py
+               Second-opinion pass using a configurable secondary model
+               Adds few-shot examples to prompt for better accuracy
+               Promotes uncertain rules to rules[] or discards them
+               File written: updates classified_rules.json
+               └──────────────────────────────────────────────── Step 3
+ │
+ ▼
+Step 3 ── fol.py ───────────────────────────────────────────────────────────
+          Converts each rule to First-Order Logic format
+          Asks Mistral to produce:
+            deontic_formula:  O(payFee(student))
+            fol_expansion:    ∀x Student(x) → pay(x, fees)
+            predicates:       [Student, pay, fees]
+          Has placeholder-rejection retry:
+            if Mistral returns O(Action(x)) → retries with stricter prompt
+          Output: fol_formulas[]  (success)
+                  fol_failed[]    (failed formalization → goes to Step 4b)
+          File written: data/output/ait/fol_formulas.json
+ │
+ ├─ fol_formulas[] ─────────────────────────────────────────────────────────
+ │  Step 4a ── shacl.py
+ │             Translates FOL formula → SHACL NodeShape
+ │             Mapping rules:
+ │               O(φ) → sh:minCount 1   (must exist)
+ │               P(φ) → sh:minCount 0   (may exist)
+ │               F(φ) → sh:maxCount 0   (must not exist)
+ │             Output: shacl_shapes[] (appended)
+ │             File written: data/output/ait/shapes_generated.ttl
+ │
+ └─ fol_failed[] ───────────────────────────────────────────────────────────
+    Step 4b ── direct_shacl.py
+               Fallback: skips FOL, converts rule text → SHACL directly
+               Has syntax repair loop: invalid SHACL → fix and retry
+               Output: shacl_shapes[] (appended to Step 4a output)
+               File written: updates shapes_generated.ttl
+ │
+ ▼ (both branches converge)
+Step 5 ── validate.py ──────────────────────────────────────────────────────
+          Runs pyshacl engine
+          Merges generated shapes with gold-standard shapes
+          Validates against TDD test data (Pos/Neg entities per rule)
+          Finds which test entities violate which rules
+          Output: validation_results{}
+          File written: data/output/ait/validation_results.json
+ │
+ ▼
+Step 6 ── report.py ────────────────────────────────────────────────────────
+          Collects all stats from every stage
+          Builds final summary with:
+            sentences / candidates / rules / shapes / violations counts
+            severity breakdown (Violation / Info)
+            top-5 triggered shapes
+            environment metadata (model, seed, version, git sha)
+          File written: data/output/ait/pipeline_report.json
 ```
-
+ 
+### Output files summary
+ 
+| File | Written by | Contents |
+|---|---|---|
+| `classified_rules.json` | Step 2b + 2c | All sentences — deontic type, confidence, rule ID |
+| `fol_formulas.json` | Step 3 | FOL formula, deontic formula, predicates per rule |
+| `shapes_generated.ttl` | Step 4a + 4b | All generated SHACL shapes in Turtle syntax |
+| `validation_results.json` | Step 5 | Which entities violated which shapes |
+| `pipeline_report.json` | Step 6 | Full run summary with stats and environment info |
+ 
 ---
-
-## 3. Local Development Setup
-
+ 
+## 3. Local Environment Setup
+ 
+Use this if you want to run the project directly on your machine without Docker.
+ 
 ### Prerequisites
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) 24.0+
-- [VS Code](https://code.visualstudio.com/) with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
-
-> All Python dependencies, PostgreSQL, and Ollama run inside Docker. Nothing needs to be installed on your host machine beyond Docker and VS Code.
-
-### Step 1 — Clone and configure environment
-
+ 
+| Tool | Version | Install |
+|---|---|---|
+| Python | 3.10+ | [python.org](https://python.org) |
+| uv | latest | see below |
+| Ollama | latest | [ollama.com/download](https://ollama.com/download) |
+| PostgreSQL | 15+ | [postgresql.org](https://postgresql.org) — optional, see note |
+ 
+> **Note:** PostgreSQL is only needed if you use `src/policy_checker/database/` to load
+> student entity data. The core pipeline (`models/langgraph_agent/`) runs without it.
+ 
+### Step 1 — Install uv
+ 
+**Windows (PowerShell):**
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+ 
+# Add to PATH (current session):
+$env:Path = "C:\Users\<you>\.local\bin;$env:Path"
+ 
+# Add to PATH permanently:
+[Environment]::SetEnvironmentVariable(
+    "Path",
+    "C:\Users\<you>\.local\bin;" + [Environment]::GetEnvironmentVariable("Path", "User"),
+    "User"
+)
+```
+ 
+**macOS / Linux:**
 ```bash
-git clone https://github.com/A4niia/python-project-starter.git
-cd policy-checker
-
-# Copy the env template and fill in values
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+ 
+### Step 2 — Clone the repo
+ 
+```bash
+git clone <repo-url>
+cd compliance-checker
+```
+ 
+### Step 3 — Install dependencies
+ 
+```bash
+uv python install    # installs Python from .python-version
+uv sync              # installs all packages from pyproject.toml
+```
+ 
+### Step 4 — Set up environment
+ 
+```bash
 cp .env.example .env
 ```
-
-The only required change in `.env` for local dev is:
-
+ 
+Open `.env` and set these minimum required values:
+ 
 ```bash
-PROJECT_NAME=policy-checker   # must match your folder name
-POSTGRES_HOST=postgres        # use service name, not localhost, inside Docker
+OLLAMA_HOST=http://localhost:11434    # local Ollama
+OLLAMA_MODEL=mistral                  # must match what you pulled
+OLLAMA_SEED=42                        # fixed seed for reproducibility
+PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
+POSTGRES_HOST=localhost               # local PostgreSQL (optional)
 ```
-
-### Step 2 — Start the containers
-
+ 
+To clear the LLM cache after changing prompts:
 ```bash
-docker compose up -d
+# Option A — bump PIPELINE_VERSION in .env
+# Option B — delete cache file:
+rm data/cache/llm_cache.db
 ```
-
-This starts three services:
-
-| Service | Port | Purpose |
-|---------|------|---------|
-| `dev` | — | Ubuntu 24.04 dev container (`sleep infinity`) |
-| `postgres` | 5432 | PostgreSQL 16 database |
-| `ollama` | 11434 | Ollama LLM server |
-
-### Step 3 — Open in VS Code devcontainer
-
-1. Open the project folder in VS Code
-2. When prompted, click **Reopen in Container**
-   - Or press `Ctrl+Shift+P` → **Dev Containers: Reopen in Container**
-3. VS Code attaches to the running `dev` container
-
-### Step 4 — Install dependencies
-
-Inside the VS Code terminal (you are now inside the container):
-
+ 
+### Step 5 — Install and start Ollama
+ 
+Ollama must be running **before** the pipeline starts.
+ 
 ```bash
-uv sync
+# Install from https://ollama.com/download
+# Then pull the model (one-time, ~4GB download):
+ollama pull mistral
 ```
-
-### Step 5 — Pull the LLM model
-
-From PowerShell on your **host machine** (not inside the container):
-
+ 
+**Windows:** Ollama runs automatically as a background service after install.
+ 
+**macOS / Linux:** Start it manually:
 ```bash
-docker compose exec ollama ollama pull mistral
+ollama serve
 ```
-
-> Mistral 7B is approximately 4 GB. This only needs to be done once — the model is stored in the `ollama_data` Docker volume.
-
-### Step 6 — Seed the database
-
+ 
+Verify Ollama is running:
+```bash
+curl http://localhost:11434
+# → Ollama is running ✓
+ 
+ollama list
+# → mistral:latest   4.4GB ✓
+```
+ 
+Check GPU is being used (faster inference):
+```bash
+ollama ps
+# → mistral:latest   GPU 100%  ← good
+# → mistral:latest   CPU 100%  ← slow, check GPU drivers
+```
+ 
+### Step 6 — Seed the database (optional)
+ 
+Only needed if using the compliance dashboard database features:
+ 
 ```bash
 uv run python -m policy_checker.database.seed
 ```
-
+ 
 ### Step 7 — Run the pipeline
-
+ 
 ```bash
-# Standard run
-uv run python -m policy_checker.langgraph_agent.run --source ait
-
-# With per-step statistics
-uv run python -m policy_checker.langgraph_agent.run --source ait --verbose
-
-# Ablation study (thesis §7)
-uv run python -m policy_checker.langgraph_agent.run --source ait --ablation no-hints
+uv run policy-checker --source ait --verbose
 ```
-
-### Step 8 — Run the web dashboard
-
+ 
+---
+ 
+## 4. Dev Container Setup
+ 
+Use this for a consistent, team-ready environment using Docker.
+ 
+### Prerequisites
+ 
+| Tool | Install |
+|---|---|
+| Docker Desktop | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/) |
+| VS Code | [code.visualstudio.com](https://code.visualstudio.com/) |
+| Dev Containers extension | VS Code Extensions: `ms-vscode-remote.remote-containers` |
+| Ollama | [ollama.com/download](https://ollama.com/download) — installed on your machine, **not** in Docker |
+ 
+### Why Ollama runs on your machine, not in Docker
+ 
+Ollama automatically detects and uses your GPU when installed natively.
+Running it inside Docker requires complex GPU passthrough that varies by OS and
+GPU vendor. Installing it directly on your machine is simpler and faster for everyone.
+ 
+### Step 1 — Install Ollama on your machine
+ 
+Download and install from [ollama.com/download](https://ollama.com/download).
+ 
+Pull the model (one-time, ~4GB):
 ```bash
-uv run uvicorn policy_checker.web.app:app --host=0.0.0.0 --port=8000
+ollama pull mistral
 ```
-
-Open `http://localhost:8000` in your browser.
-
-### Optional — Run evaluation metrics (M1–M5)
-
+ 
+Verify:
 ```bash
-# Install evaluation dependencies first
-uv sync --group eval
-
-# Align pipeline rules to gold standard
+curl http://localhost:11434
+# → Ollama is running ✓
+ 
+ollama list
+# → mistral:latest   4.4GB ✓
+```
+ 
+### Step 2 — Clone the repo
+ 
+```bash
+git clone <repo-url>
+cd compliance-checker
+```
+ 
+### Step 3 — Set up environment
+ 
+```bash
+cp .env.example .env
+```
+ 
+Open `.env` and set these minimum required values:
+ 
+```bash
+# Inside Dev Container, use host.docker.internal not localhost
+OLLAMA_HOST=http://host.docker.internal:11434
+ 
+OLLAMA_MODEL=mistral                  # must match what you pulled
+OLLAMA_SEED=42                        # fixed seed for reproducibility
+PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
+ 
+# PostgreSQL runs as a Docker service named "postgres"
+POSTGRES_HOST=postgres
+```
+ 
+To clear the LLM cache after changing prompts:
+```bash
+# Option A — bump PIPELINE_VERSION in .env
+# Option B — delete cache file:
+rm data/cache/llm_cache.db
+```
+ 
+### Step 4 — Open in Dev Container
+ 
+1. Open VS Code
+2. `File → Open Folder` → select the project folder
+3. VS Code shows: *"Folder contains a Dev Container config"*
+4. Click **Reopen in Container**
+5. Wait for container to build (~2–3 minutes on first run)
+### Step 5 — Run dev-setup.sh
+ 
+Inside the VS Code terminal (you are now inside the container):
+ 
+```bash
+bash dev-setup.sh
+```
+ 
+This will:
+- Fix volume permissions
+- Load `.env`
+- Install Python and all dependencies via `uv sync`
+- Install CLI tab completion
+### Step 6 — Verify everything works
+ 
+```bash
+# Ollama reachable from container
+curl http://host.docker.internal:11434
+# → Ollama is running ✓
+ 
+# Environment variable is correct
+echo $OLLAMA_HOST
+# → http://host.docker.internal:11434 ✓
+ 
+# Package imports work
+uv run python -c "from policy_checker import PROJECT_ROOT; print(PROJECT_ROOT)"
+# → /Projects/compliance-checker ✓
+```
+ 
+### Step 7 — Run the pipeline
+ 
+```bash
+uv run policy-checker --source ait --verbose
+```
+ 
+### Subsequent runs (every day after first setup)
+ 
+```bash
+# Windows: Ollama runs automatically — no action needed
+# macOS/Linux: make sure ollama serve is running
+ 
+# Start Docker services if stopped
+docker compose up -d
+ 
+# Open VS Code → Reopen in Container
+# Run pipeline
+uv run policy-checker --source ait --verbose
+```
+ 
+---
+ 
+## 5. Running the Pipeline
+ 
+ 
+### Basic run
+ 
+```bash
+uv run policy-checker --source ait
+```
+ 
+### Verbose — shows per-step stats
+ 
+```bash
+uv run policy-checker --source ait --verbose
+```
+ 
+### Ablation studies
+ 
+Run these to measure the contribution of individual pipeline components
+(used for thesis experiments):
+ 
+```bash
+uv run policy-checker --source ait --ablation no-hints
+uv run policy-checker --source ait --ablation no-prefilter
+uv run policy-checker --source ait --ablation no-reclassify
+uv run policy-checker --source ait --ablation no-fallback
+uv run policy-checker --source ait --ablation no-fol-retry
+uv run policy-checker --source ait --ablation no-may-disambig
+```
+ 
+| Flag | What it disables |
+|---|---|
+| `no-prefilter` | Skips heuristic filter — all sentences go to classifier |
+| `no-hints` | Strips prefilter hints from classifier prompt |
+| `no-reclassify` | Skips second-opinion pass for uncertain rules |
+| `no-fallback` | Skips direct NL→SHACL fallback (Step 4b) |
+| `no-fol-retry` | Disables placeholder rejection retry in FOL step |
+| `no-may-disambig` | Skips epistemic "may" disambiguation |
+ 
+Output is isolated to `data/output/ait_<ablation>/` for side-by-side comparison.
+ 
+### Expected terminal output
+ 
+```
+============================================================
+Environment:
+  Model:     mistral
+  Seed:      42
+  Version:   2.1-hints
+  Ablation:  baseline
+============================================================
+ 
+  >> Step 1  - PDF Extraction          {'sentences': 1565}
+  >> Step 2a - Heuristic Pre-filter    {'candidates': 450}
+  >> Step 2b - LLM Classification      {'rules': 440}
+  >> Step 2c - Second-Opinion          {'rules': 440}
+  >> Step 3  - FOL Formalization       {'fol_ok': 371, 'fol_fail': 69}
+  >> Step 4a - SHACL Generation        {'shapes': 371}
+  >> Step 4b - SHACL NL Fallback       {'shapes': 69}
+  >> Step 5  - SHACL Validation
+  >> Step 6  - Report
+ 
+[DONE] Pipeline complete - report: data/output/ait/pipeline_report.json
+```
+ 
+### MCP server (optional)
+ 
+Exposes the pipeline as tools for MCP-compatible AI clients:
+ 
+```bash
+uv run policy-mcp    # stdio MCP mode — connect from Claude or other clients
+```
+ 
+Available tools: `verify_rule`, `check_status`, `list_rules`, `get_metrics`, `run_pipeline`.
+ 
+---
+ 
+## 6. Compliance Dashboard (Web UI)
+ 
+An interactive web dashboard for browsing pipeline results and running live
+SHACL validation against custom RDF data.
+ 
+> **Important:** Run the pipeline at least once before starting the dashboard.
+> The dashboard reads from `data/output/ait/` which is populated by the pipeline.
+ 
+### Start the dashboard
+ 
+```bash
+uv run uvicorn policy_checker.web.app:app --host 0.0.0.0 --port 8000 --reload
+```
+ 
+Then open [http://localhost:8000](http://localhost:8000) in your browser.
+ 
+If running inside Dev Container, port 8000 is forwarded automatically.
+Open [http://localhost:8000](http://localhost:8000) from your Windows browser.
+ 
+### Dashboard features
+ 
+| Feature | Description |
+|---|---|
+| **Pipeline Stats** | Summary of extraction, classification, and shape generation metrics from the latest run |
+| **Rule Browser** | Browse and search all classified rules — filter by type (obligation / permission / prohibition) |
+| **Rule Detail** | Click any rule to see its original text, FOL formula, and generated SHACL shape side by side |
+| **Compliance Check** | Paste RDF data in Turtle format and run live pyshacl validation against pipeline shapes |
+| **Violation Report** | Severity-coded violations showing affected entities, source shapes, and violation messages |
+ 
+### What the dashboard reads
+ 
+| Data source | Used for |
+|---|---|
+| `data/output/ait/pipeline_report.json` | Pipeline stats on the home page |
+| `data/output/ait/classified_rules.json` | Rule browser |
+| `data/output/ait/fol_formulas.json` | FOL formula in rule detail view |
+| `data/output/ait/shapes_generated.ttl` | SHACL shape in rule detail + live validation |
+| `data/shacl/test_data/tdd_test_data_fixed.ttl` | Sample RDF data for compliance check |
+| `data/shacl/ontology/ait_policy_ontology.ttl` | Domain ontology loaded during validation |
+ 
+---
+ 
+## 7. Running Evaluation
+ 
+Run evaluation scripts **after** the pipeline completes to measure accuracy
+against the 96 gold-standard shapes in `data/shacl/shapes/ait_policy_shapes.ttl`.
+ 
+```bash
+# M1 — extraction coverage
 uv run python -m policy_checker.evaluation.align
-
-# Per-rule correctness evaluation
+ 
+# M4 — per-rule shape correctness
 uv run python -m policy_checker.evaluation.per_rule_eval
-
-# Full thesis metrics report
+ 
+# M1–M5 — full thesis metrics summary
 uv run python -m policy_checker.evaluation.report
-uv run python -m policy_checker.evaluation.report --md   # Markdown table
+ 
+# Markdown table (for thesis document)
+uv run python -m policy_checker.evaluation.report --md
+ 
+# Save results to JSON
+uv run python -m policy_checker.evaluation.report --save
 ```
-
-### Environment Variables Reference
-
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `PROJECT_NAME` | Yes | — | Docker container/image name prefix |
-| `POSTGRES_HOST` | Yes | `postgres` | Use `postgres` inside Docker, `localhost` outside |
-| `POSTGRES_PORT` | No | `5432` | PostgreSQL port |
-| `POSTGRES_DB` | Yes | `ait_database` | Database name |
-| `POSTGRES_USER` | Yes | `myuser` | Database user |
-| `POSTGRES_PASSWORD` | Yes | — | Database password |
-| `OLLAMA_HOST` | Yes | `http://ollama:11434` | Ollama server URL |
-| `OLLAMA_MODEL` | No | `mistral` | Primary LLM model |
-| `OLLAMA_SECOND_MODEL` | No | `mistral` | Second-opinion model for reclassification |
-| `OLLAMA_SEED` | No | `42` | Random seed for reproducibility (M5) |
-| `PIPELINE_VERSION` | No | `dev` | Version tag in pipeline reports |
-| `EXTRACT_SPACY` | No | `0` | Set to `1` to use spaCy sentence segmentation |
-| `CACHE_MAX_ENTRIES` | No | `2000` | Max LLM cache entries before LRU eviction |
-
----
-
-## 4. Deployment with Docker
-
-The project uses a **devcontainer pattern** — Docker is the primary runtime for both development and deployment. There is no separate production image configuration; the same `dockerfile` and `docker-compose.yml` are used in both contexts.
-
-### Services
-
-```yaml
-dev       # Python application container (Ubuntu 24.04 + uv)
-postgres  # PostgreSQL 16 (student data)
-ollama    # Ollama LLM server (Mistral 7B)
-```
-
-### Start all services
-
-```bash
-docker compose up -d
-```
-
-### Stop all services
-
-```bash
-docker compose down
-```
-
-### Stop and remove all volumes (full reset)
-
-```bash
-docker compose down -v
-```
-
-> This removes `.venv`, `.python`, `.uv_cache`, and all database data. After this, run `uv sync` and `uv run python -m policy_checker.database.seed` again.
-
-### Rebuild the image
-
-Run this after changing the `dockerfile`:
-
-```bash
-docker compose build --no-cache
-docker compose up -d
-```
-
-### Named Volumes
-
-| Volume | Purpose |
-|--------|---------|
-| `venv` | Python virtual environment (`.venv/`) |
-| `python` | uv-managed Python install (`.python/`) |
-| `uv_cache` | uv download cache (`.uv_cache/`) |
-| `postgres_data` | PostgreSQL data directory |
-| `ollama_data` | Ollama model weights |
-
-### Running commands in the container
-
-```bash
-# Open a shell in the dev container
-docker compose exec dev bash
-
-# Run the pipeline directly
-docker compose exec dev uv run python -m policy_checker.models.run --source ait
-
-# Seed the database
-docker compose exec dev uv run python -m policy_checker.database.seed
-
-# Pull a different LLM model
-docker compose exec ollama ollama pull mistral
-docker compose exec ollama ollama list
-```
-
-### Checking service health
-
-```bash
-docker compose ps
-```
-
-Expected output when everything is running:
-
-```
-NAME                              STATUS
-policy-checker-dev-1              running
-policy-checker-postgres-1         running (healthy)
-policy-checker-ollama-1           running
-```
-
----
-
-**Status**: Research / In Development
-
-**Maintainer**: AIT Internship Project
+ 
+### Metrics reference
+ 
+| Metric | Definition |
+|---|---|
+| M1 | Extraction coverage — gold rules with an aligned pipeline rule (cosine ≥ 0.65) |
+| M2 | Classification accuracy — correct deontic type (O/P/F) assignment |
+| M3 | FOL quality — formulas with semantic (non-placeholder) predicates |
+| M4 | Shape correctness — per-rule precision/recall against Pos/Neg test entities |
+| M5 | Reproducibility — identical output across clean-cache runs with fixed seed |
+ 
+### Evaluation output files
+ 
+| File | Written by | Contents |
+|---|---|---|
+| `data/output/ait/gold_alignment.json` | `align.py` | M1 alignment results — matched, missed, false positives |
+| `data/output/ait/per_rule_eval.json` | `per_rule_eval.py` | M4 per-rule verdicts (PASS/FAIL, too_strict/too_permissive) |
+| `data/output/ait/thesis_metrics.json` | `report.py --save` | M1–M5 summary for thesis |
