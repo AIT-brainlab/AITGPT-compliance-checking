@@ -282,19 +282,19 @@ ollama pull mistral
 ```bash
 ollama serve
 ```
+ 
+### Step 5 — Run the pipeline
+ 
+```bash
+uv run policy-checker --source ait --verbose
+```
 
-### Step 5 — Seed the database (optional)
+### Step 6 — Seed the database (optional)
  
 Only needed if using the compliance dashboard database features:
  
 ```bash
 uv run python -m policy_checker.database.seed
-```
- 
-### Step 6 — Run the pipeline
- 
-```bash
-uv run policy-checker --source ait --verbose
 ```
  
 ---
@@ -387,6 +387,14 @@ uv run policy-checker --source ait --verbose
  
 ```bash
 uv run policy-checker --source ait
+```
+
+### Step 6 — Seed the database (optional)
+ 
+Only needed if using the compliance dashboard database features:
+ 
+```bash
+uv run python -m policy_checker.database.seed
 ```
  
 ### Verbose — shows per-step stats
