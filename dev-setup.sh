@@ -1,54 +1,42 @@
 #!/bin/bash
 
+# Fix permissions if inside Dev Container
 if [ "$IS_DEVCONTAINER" = "True" ]; then
     echo "-- Correcting permissions..."
-    sudo chown 1000:1000 .venv
-    sudo chown 1000:1000 .python
-    sudo chown 1000:1000 .uv_cache
+    sudo chown 1000:1000 .venv 2>/dev/null || true
+    sudo chown 1000:1000 .python 2>/dev/null || true
+    sudo chown 1000:1000 .uv_cache 2>/dev/null || true
 fi
 
+# Fix line endings in .env if needed
+sed -i 's/\r//' .env 2>/dev/null || true
+
+# Load environment variables
 echo "-- Loading .env"
 source .env
 
+# Install uv if not found
+echo "-- Checking uv..."
+if ! command -v uv &> /dev/null; then
+    echo "-- Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.local/bin:$PATH"
+    echo "✓ uv installed"
+else
+    echo "✓ uv already installed"
+fi
+
+# Install Python
 echo "-- Installing Python"
 uv python install
 
+# Install dependencies
 echo "-- Installing dependencies"
 uv sync
 
+# Install CLI completion
 echo "-- Installing CLI"
-${PROJECT_NAME} --install-completion
-
-# NEW — Check Ollama installed on host
-echo ""
-echo "-- Checking Ollama..."
-if command -v ollama &> /dev/null; then
-    echo "✓ Ollama already installed"
-else
-    echo "✗ Ollama not found"
-    echo ""
-    echo "Please install Ollama manually:"
-    echo "  Windows/Mac: https://ollama.com/download"
-    echo "  Linux: curl -fsSL https://ollama.com/install.sh | sh"
-    echo ""
-    echo "Then run this script again."
-    exit 1
-fi
-
-# Check if Ollama is running
-if curl -s http://localhost:11434 > /dev/null 2>&1; then
-    echo "✓ Ollama is running"
-else
-    echo "-- Starting Ollama..."
-    ollama serve &
-    sleep 3
-    echo "✓ Ollama started"
-fi
-
-# Pull model
-echo "-- Pulling mistral model (~4GB, first time only)..."
-ollama pull mistral
-echo "✓ Model ready"
+uv run policy-checker --install-completion 2>/dev/null || true
 
 echo ""
 echo "================================================"
