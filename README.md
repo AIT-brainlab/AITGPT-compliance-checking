@@ -453,6 +453,7 @@ uv run python -m policy_checker.evaluation.report --save
 | `data/output/ait/thesis_metrics.json` | `report.py --save` | M1–M5 summary for thesis |
 
 ## 8. API Deployment
+Status - In Development Progress
 
 PolicyChecker exposes a REST API for integration with the AITGPT platform.
 
@@ -490,4 +491,3 @@ User clicks → sees broken rules
 | `/api/db-entities` | GET | List all entities in database |
 | `/api/load-from-db` | POST | Convert database entities to RDF Turtle |
 
-### Status: In The Middle Of Development
