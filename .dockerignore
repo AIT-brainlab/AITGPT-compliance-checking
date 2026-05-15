@@ -10,7 +10,6 @@ __pycache__/
 output/
 cache/
 logs/
-graphdb_data/logs/
 
 # Dev volumes (created by Docker)
 .venv/
@@ -21,13 +20,5 @@ graphdb_data/logs/
 .git/
 .github/
 
-# Docs / notebooks
-notebooks/
-docs/
+# Documentation
 *.md
-
-# Large PDFs — mount as volume instead
-institutional_policy/
-
-# Tests
-tests/

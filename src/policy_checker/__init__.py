@@ -8,5 +8,5 @@ from pathlib import Path
 #   PROJECT_ROOT = Path(__file__).parent.parent.parent  (in nodes/)
 #   PROJECT_ROOT = Path(__file__).parent.parent          (in web/app.py)
 #   PROJECT_ROOT = Path(__file__).resolve().parent.parent (in db/)
-PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
  

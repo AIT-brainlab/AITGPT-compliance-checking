@@ -195,6 +195,7 @@ def get_metrics(source: str = "ait") -> dict:
             "source": source,
             "metrics": json.loads(metrics_path.read_text(encoding="utf-8")),
         }
+    # Fall back to computing live if evaluation module is available
     try:
         from policy_checker.evaluation.report import build_report
         from dataclasses import asdict
@@ -210,6 +211,7 @@ def get_metrics(source: str = "ait") -> dict:
 
 
 def run_pipeline(source: str = "ait", ablation: str = "baseline") -> dict:
+    """Trigger a pipeline run and return the report."""
     try:
         from langgraph_agent.run import run
         report = run(source, verbose=False, ablation=ablation)

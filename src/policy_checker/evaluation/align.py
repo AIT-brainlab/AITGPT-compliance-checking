@@ -11,7 +11,7 @@ from rdflib.namespace import SH
  
 # PROJECT_ROOT = Path(__file__).parent.parent
 from policy_checker import PROJECT_ROOT
- 
+
 AIT = Namespace("http://example.org/ait-policy#")
 DEONTIC = Namespace("http://example.org/deontic#")
 
