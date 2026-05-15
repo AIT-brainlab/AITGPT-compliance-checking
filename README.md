@@ -100,114 +100,22 @@ policy rules from PDF documents into validatable SHACL shapes.
 └── .env.example                            # Environment variable template
 ```
  
-### Key concepts
- 
-| Folder | Purpose |
-|---|---|
-| `data/` | Everything that flows IN or comes OUT of the pipeline |
-| `data/shacl/` | SHACL reference files used by evaluation and TDD |
-| `models/langgraph_agent/` | The AI agent that orchestrates the pipeline |
-| `src/policy_checker/` | Shared utilities, database, evaluation, web UI |
- 
----
- 
 ## 2. Pipeline Stages
  
 The pipeline runs as a LangGraph state machine. Each stage passes its output
 to the next via a shared `PipelineState` object.
  
-```
-PDFs
- │
- ▼
-Step 1 ── extract.py ──────────────────────────────────────────────────────
-          Opens all PDFs with pdfplumber
-          Splits text into sentences
-          Filters out headers/footers
-          Output: extracted_sentences[] (1,565 sentences)
-          File written: none (stays in memory)
- │
- ▼
-Step 2a ── prefilter.py ────────────────────────────────────────────────────
-           Quick keyword scan — no LLM involved
-           Keeps sentences with deontic markers:
-             must / shall / required  → obligation candidate
-             may / permitted          → permission candidate
-             must not / cannot        → prohibition candidate
-           Also disambiguates epistemic "may" vs deontic "may"
-           Output: candidates[] (~450 sentences)
-           File written: none
- │
- ▼
-Step 2b ── classify.py ─────────────────────────────────────────────────────
-           Sends each candidate to Mistral AI:
-             "Is this a policy rule?"
-             "If yes, is it Obligation / Permission / Prohibition?"
-           Returns confidence score per classification
-           Output: rules[]          (confidence ≥ 0.6 → confident)
-                   uncertain_rules[] (confidence 0.4–0.6 → needs review)
-           File written: data/output/ait/classified_rules.json
- │
- ├─ confident ──────────────────────────────────────────────────── Step 3
- │
- └─ uncertain ──────────────────────────────────────────────────────────────
-    Step 2c ── reclassify.py
-               Second-opinion pass using a configurable secondary model
-               Adds few-shot examples to prompt for better accuracy
-               Promotes uncertain rules to rules[] or discards them
-               File written: updates classified_rules.json
-               └──────────────────────────────────────────────── Step 3
- │
- ▼
-Step 3 ── fol.py ───────────────────────────────────────────────────────────
-          Converts each rule to First-Order Logic format
-          Asks Mistral to produce:
-            deontic_formula:  O(payFee(student))
-            fol_expansion:    ∀x Student(x) → pay(x, fees)
-            predicates:       [Student, pay, fees]
-          Has placeholder-rejection retry:
-            if Mistral returns O(Action(x)) → retries with stricter prompt
-          Output: fol_formulas[]  (success)
-                  fol_failed[]    (failed formalization → goes to Step 4b)
-          File written: data/output/ait/fol_formulas.json
- │
- ├─ fol_formulas[] ─────────────────────────────────────────────────────────
- │  Step 4a ── shacl.py
- │             Translates FOL formula → SHACL NodeShape
- │             Mapping rules:
- │               O(φ) → sh:minCount 1   (must exist)
- │               P(φ) → sh:minCount 0   (may exist)
- │               F(φ) → sh:maxCount 0   (must not exist)
- │             Output: shacl_shapes[] (appended)
- │             File written: data/output/ait/shapes_generated.ttl
- │
- └─ fol_failed[] ───────────────────────────────────────────────────────────
-    Step 4b ── direct_shacl.py
-               Fallback: skips FOL, converts rule text → SHACL directly
-               Has syntax repair loop: invalid SHACL → fix and retry
-               Output: shacl_shapes[] (appended to Step 4a output)
-               File written: updates shapes_generated.ttl
- │
- ▼ (both branches converge)
-Step 5 ── validate.py ──────────────────────────────────────────────────────
-          Runs pyshacl engine
-          Merges generated shapes with gold-standard shapes
-          Validates against TDD test data (Pos/Neg entities per rule)
-          Finds which test entities violate which rules
-          Output: validation_results{}
-          File written: data/output/ait/validation_results.json
- │
- ▼
-Step 6 ── report.py ────────────────────────────────────────────────────────
-          Collects all stats from every stage
-          Builds final summary with:
-            sentences / candidates / rules / shapes / violations counts
-            severity breakdown (Violation / Info)
-            top-5 triggered shapes
-            environment metadata (model, seed, version, git sha)
-          File written: data/output/ait/pipeline_report.json
-```
- 
+| Step | File | What it does |
+|---|---|---|
+| **Step 1** | `extract.py` | Opens all PDFs with pdfplumber, splits text into sentences, filters headers/footers |
+| **Step 2a** | `prefilter.py` | Quick keyword scan — no LLM. Keeps sentences with deontic markers (must/shall/may/cannot). Disambiguates epistemic vs deontic "may" |
+| **Step 2b** | `classify.py` | Asks Mistral AI: "Is this a rule? If yes, is it O/P/F?" Returns confidence score per classification |
+| **Step 2c** | `reclassify.py` | Second-opinion pass for uncertain rules only. Adds few-shot examples to prompt. Promotes uncertain → rules or discards. **Skipped if no uncertain rules.** |
+| **Step 3** | `fol.py` | Converts each rule to First-Order Logic. Asks Mistral to produce deontic formula, FOL expansion, predicates. Has placeholder-rejection retry. |
+| **Step 4a** | `shacl.py` | Translates FOL → SHACL NodeShape. Mapping: O→minCount 1, P→minCount 0, F→maxCount 0 |
+| **Step 4b** | `direct_shacl.py` | Fallback for FOL failures. Converts rule text → SHACL directly, skipping FOL. Has syntax repair loop. **Skipped if no FOL failures.** |
+| **Step 5** | `validate.py` | Runs pyshacl engine. Merges generated shapes with gold-standard shapes. Validates against TDD test data. |
+| **Step 6** | `report.py` | Collects all stats from every stage. Builds final summary with counts, severity breakdown, top-5 shapes, environment metadata. |
 ### Output files summary
  
 | File | Written by | Contents |
