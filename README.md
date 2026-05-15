@@ -16,6 +16,7 @@ policy rules from PDF documents into validatable SHACL shapes.
 5. [Running the Pipeline](#5-running-the-pipeline)
 6. [Compliance Dashboard (Web UI)](#6-compliance-dashboard-web-ui)
 7. [Running Evaluation](#7-running-evaluation)
+8. [API Deployment](#8-api-deployment)
 ---
  
 ## 1. Project Structure
