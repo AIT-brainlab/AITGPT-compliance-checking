@@ -450,3 +450,41 @@ uv run python -m policy_checker.evaluation.report --save
 | `data/output/ait/gold_alignment.json` | `align.py` | M1 alignment results — matched, missed, false positives |
 | `data/output/ait/per_rule_eval.json` | `per_rule_eval.py` | M4 per-rule verdicts (PASS/FAIL, too_strict/too_permissive) |
 | `data/output/ait/thesis_metrics.json` | `report.py --save` | M1–M5 summary for thesis |
+
+## 8. API Deployment
+
+PolicyChecker exposes a REST API for integration with the AITGPT platform.
+
+When a user logs into AITGPT, the platform calls PolicyChecker to check
+whether that student is compliant with AIT institutional policies.
+PolicyChecker validates the student profile against generated SHACL shapes
+and returns any broken rules.
+
+### How It Works
+
+```
+AITGPT (caller)                    PolicyChecker (this project)
+───────────────                    ────────────────────────────
+User logs in
+        ↓
+POST /check_compliance     →       validates student against SHACL shapes
+{ student_profile: {...} }         returns violations
+        ←
+{ compliant: false,
+  broken_rules: [...] }
+        ↓
+Show notification icon
+User clicks → sees broken rules
+```
+
+### Available Endpoints
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/validate` | POST | Validate RDF Turtle data against SHACL shapes — returns violations |
+| `/api/rules` | GET | List all classified rules with filtering and pagination |
+| `/api/rules/{rule_id}` | GET | Get single rule with FOL formula and SHACL shape |
+| `/api/stats` | GET | Pipeline summary statistics |
+| `/api/db-status` | GET | Check PostgreSQL connection and entity count |
+| `/api/db-entities` | GET | List all entities in database |
+| `/api/load-from-db` | POST | Convert database entities to RDF Turtle |
