@@ -1,0 +1,33 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Secrets
+.env
+
+# Runtime outputs (rebuilt at runtime)
+output/
+cache/
+logs/
+graphdb_data/logs/
+
+# Dev volumes (created by Docker)
+.venv/
+.python/
+.uv_cache/
+
+# Git
+.git/
+.github/
+
+# Docs / notebooks
+notebooks/
+docs/
+*.md
+
+# Large PDFs — mount as volume instead
+institutional_policy/
+
+# Tests
+tests/

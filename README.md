@@ -1,271 +1,493 @@
 # PolicyChecker — AI Policy Formalization System
-
-An agentic LangGraph pipeline for extracting, classifying, and formalizing institutional
-policy rules from PDF documents into validatable SHACL shapes. Target use: academic
-research on automated compliance verification over institutional corpora.
-
+ 
+An agentic LangGraph pipeline that extracts, classifies, and formalizes institutional
+policy rules from PDF documents into validatable SHACL shapes.
+ 
 > **Master's Thesis — Asian Institute of Technology (AIT), 2026**
-
-## 🎯 What it does
-
-Given a folder of policy PDFs, PolicyChecker runs a nine-stage pipeline:
-
-1. **Extract** — parses PDFs into sentences (`pdfplumber`, optional spaCy sentencizer)
-2. **Prefilter** — heuristically filters non-rule content using deontic markers,
-   section-aware weights (Brodie et al., 2006), Searle-style speech-act
-   classification, and epistemic vs. deontic "may" disambiguation
-3. **Classify** — uses a local LLM (Ollama/Mistral) to label each candidate as
-   *obligation*, *permission*, or *prohibition*, enriched with prefilter hints
-   (deontic strength, speech act, section context)
-4. **Reclassify** — second-opinion pass for uncertain classifications using a
-   configurable secondary model
-5. **Formalize** — converts rules to First-Order Logic (FOL) formulas using deontic
-   operators `O(φ)`, `P(φ)`, `F(φ)`, with placeholder rejection and retry
-6. **Generate (FOL-mediated)** — translates FOL into SHACL `NodeShape`s with
-   confidence-weighted severity, `sh:targetSubjectsOf` fallback, and named property shapes
-7. **Generate (NL fallback)** — direct natural-language-to-SHACL for rules that
-   resist FOL formalization, with syntax repair loop
-8. **Validate** — merges pipeline shapes with gold-standard shapes and runs `pyshacl`
-   against TDD test data, with false-positive triage
-9. **Report** — generates a structured JSON report with pipeline stats, violation
-   triage, environment metadata, and severity breakdown
-
-The pipeline is orchestrated as a LangGraph state machine with conditional routing,
-parallel fallback branches, and full ablation support for research measurement.
-
-## 📊 Current pipeline output (AIT corpus)
-
-Running the pipeline on the Asian Institute of Technology policy corpus
-(`institutional_policy/AIT/`, 1,531 extracted sentences):
-
-| Stage | Output |
-|---|---:|
-| Sentences extracted | 1,531 |
-| Candidates after prefilter | 493 |
-| Rules classified (confident) | 484 |
-| FOL formulas generated | 467 (96.5% parse success) |
-| FOL formulas failed | 17 |
-| SHACL shapes produced | 484 (473 syntactically valid, 97.7%) |
-| — FOL-mediated | 467 |
-| — Direct NL fallback | 17 |
-| Rule-type distribution | 385 obligations · 54 prohibitions · 45 permissions |
-| Validation violations | 27,045 |
-| Pipeline errors | 0 |
-
-## 📈 Evaluation
-
-The project includes a gold-standard evaluation harness (`evaluation/`) that aligns
-pipeline-generated rules to 96 curated SHACL shapes (`shacl/shapes/ait_policy_shapes.ttl`)
-using multi-signal alignment (embedding similarity, TF-IDF, fuzzy matching) and
-evaluates each pipeline shape against its corresponding `Pos_GSxxx` / `Neg_GSxxx`
-test entities.
-
-| Metric | Definition | Current |
-|---|---|---:|
-| **M1** Extraction coverage | Gold rules with aligned pipeline rule (cosine ≥ 0.65) | **91.7%** (88/96) |
-| **M2** Classification accuracy | Aligned rules with correct deontic type | **84.1%** (74/88) |
-| **M3** FOL quality | FOL formulas with semantic predicates | **29.8%** (139/467) |
-| **M4** Shape correctness (F1) | Per-rule precision/recall against Pos/Neg test entities | **F1 = 0.000** |
-| **M5** Reproducibility | Identical output across clean-cache runs with fixed seed | ⏳ Not yet tested |
-
-> [!NOTE]
-> **M4 analysis:** All 43 evaluated shapes are currently `too_strict` (correct
-> structure but failing Pos entities), and 32 are `too_permissive`. This indicates the
-> pipeline shapes have the right *intent* but the property paths don't precisely match
-> the gold-standard test data properties. This is the primary area for improvement.
-
-> [!NOTE]
-> **M3 analysis:** The low FOL quality rate (29.8%) reflects Mistral's tendency to
-> generate placeholder predicates like `O(Action(x))`. The retry mechanism catches some,
-> but a larger model or fine-tuned prompt would significantly improve this metric.
-
-### Running the evaluation
-
+ 
+---
+ 
+## Table of Contents
+ 
+1. [Project Structure](#1-project-structure)
+2. [Pipeline Stages](#2-pipeline-stages)
+3. [Local Environment Setup](#3-local-environment-setup)
+4. [Dev Container Setup](#4-dev-container-setup)
+5. [Running the Pipeline](#5-running-the-pipeline)
+6. [Compliance Dashboard (Web UI)](#6-compliance-dashboard-web-ui)
+7. [Running Evaluation](#7-running-evaluation)
+8. [API Deployment](#8-api-deployment)
+---
+ 
+## 1. Project Structure
+ 
+```
+.
+├── data/                                   # All data files — input, reference, output
+│   ├── institutional_policy/
+│   │   └── AIT/                            # Source policy PDFs (pipeline input)
+│   │       ├── AA-4-1-1 Academic Integrity...pdf
+│   │       ├── FB-6-1-1 Credit Policy...pdf
+│   │       ├── FS-1-1-1 Campus Accommodation...pdf
+│   │       ├── PA-2-1-2 Ethical Behavior...pdf
+│   │       └── Student-Handbook_August-2021.pdf
+│   ├── shacl/
+│   │   ├── ontology/
+│   │   │   └── ait_policy_ontology.ttl     # AIT domain ontology (vocabulary definitions)
+│   │   ├── shapes/
+│   │   │   └── ait_policy_shapes.ttl       # 96 gold-standard SHACL shapes (hand-curated)
+│   │   └── test_data/
+│   │       └── tdd_test_data_fixed.ttl     # TDD test entities (Pos/Neg per rule)
+│   ├── cache/                              # LLM response cache — gitignored
+│   │   └── llm_cache.db
+│   └── output/                             # Pipeline run artifacts — gitignored
+│       └── ait/
+│           ├── classified_rules.json       # Step 2 output
+│           ├── fol_formulas.json           # Step 3 output
+│           ├── shapes_generated.ttl        # Step 4 output
+│           ├── validation_results.json     # Step 5 output
+│           └── pipeline_report.json        # Step 6 final report
+│
+├── models/                                 # LangGraph agent (pipeline orchestrator)
+│   └── langgraph_agent/
+│       ├── state.py                        # Shared PipelineState (TypedDict)
+│       ├── graph.py                        # Pipeline graph assembly (StateGraph)
+│       ├── llm.py                          # Ollama LLM configuration
+│       ├── run.py                          # CLI entry point
+│       ├── _stubs.py                       # Fallback stubs for missing nodes
+│       ├── edges/
+│       │   └── route_classify.py           # Conditional routing after classification
+│       └── nodes/                          # One file per pipeline stage
+│           ├── extract.py                  # Step 1: PDF → sentences
+│           ├── prefilter.py                # Step 2a: heuristic filter
+│           ├── classify.py                 # Step 2b: LLM classification (O/P/F)
+│           ├── reclassify.py               # Step 2c: second-opinion pass
+│           ├── fol.py                      # Step 3: FOL formalization
+│           ├── shacl.py                    # Step 4a: FOL → SHACL shapes
+│           ├── direct_shacl.py             # Step 4b: NL → SHACL fallback
+│           ├── validate.py                 # Step 5: pyshacl validation
+│           └── report.py                   # Step 6: structured report
+│
+├── src/
+│   └── policy_checker/                     # Main Python package
+│       ├── __init__.py                     # Defines PROJECT_ROOT
+│       ├── core/
+│       │   ├── llm_cache.py                # SQLite-backed LLM response cache
+│       │   ├── mcp_server.py               # JSON-RPC MCP server (5 tools)
+│       │   └── prefilter.py                # Heuristic filter logic
+│       ├── database/
+│       │   ├── connection.py               # PostgreSQL connection handler
+│       │   ├── rdf_converter.py            # SQL rows → RDF triples (data graph)
+│       │   ├── schema.sql                  # Database schema
+│       │   └── seed.py                     # Seed test student records
+│       ├── evaluation/
+│       │   ├── align.py                    # M1: pipeline vs gold-standard alignment
+│       │   ├── per_rule_eval.py            # M4: per-rule pyshacl correctness
+│       │   └── report.py                   # M1–M5 thesis metrics aggregator
+│       └── web/
+│           ├── app.py                      # FastAPI compliance dashboard (port 8000)
+│           ├── static/                     # CSS + JS
+│           └── templates/
+│               └── index.html              # Dashboard UI
+│
+├── .gitignore                              # Files that git should never track
+├── .gitattribute                           # Enforce LF line endings for shell scripts across all OS
+├── dev-setup.sh                            # One-time setup script
+├── docker-compose.yml                      # Dev + PostgreSQL services
+├── dockerfile                              # Dev container image
+├── pyproject.toml                          # Project config + dependencies
+├── uv.lock                                 # Pinned dependency versions
+├── .env                                    # Local secrets — never committed
+└── .env.example                            # Environment variable template
+```
+ 
+## 2. Pipeline Stages
+ 
+The pipeline runs as a LangGraph state machine. Each stage passes its output
+to the next via a shared `PipelineState` object.
+ 
+| Step | File | What it does |
+|---|---|---|
+| **Step 1** | `extract.py` | Opens all PDFs with pdfplumber, splits text into sentences, filters headers/footers |
+| **Step 2a** | `prefilter.py` | Quick keyword scan — no LLM. Keeps sentences with deontic markers (must/shall/may/cannot). Disambiguates epistemic vs deontic "may" |
+| **Step 2b** | `classify.py` | Asks Mistral AI: "Is this a rule? If yes, is it O/P/F?" Returns confidence score per classification |
+| **Step 2c** | `reclassify.py` | Second-opinion pass for uncertain rules only. Adds few-shot examples to prompt. Promotes uncertain → rules or discards. **Skipped if no uncertain rules.** |
+| **Step 3** | `fol.py` | Converts each rule to First-Order Logic. Asks Mistral to produce deontic formula, FOL expansion, predicates. Has placeholder-rejection retry. |
+| **Step 4a** | `shacl.py` | Translates FOL → SHACL NodeShape. Mapping: O→minCount 1, P→minCount 0, F→maxCount 0 |
+| **Step 4b** | `direct_shacl.py` | Fallback for FOL failures. Converts rule text → SHACL directly, skipping FOL. Has syntax repair loop. **Skipped if no FOL failures.** |
+| **Step 5** | `validate.py` | Runs pyshacl engine. Merges generated shapes with gold-standard shapes. Validates against TDD test data. |
+| **Step 6** | `report.py` | Collects all stats from every stage. Builds final summary with counts, severity breakdown, top-5 shapes, environment metadata. |
+### Output files summary
+ 
+| File | Written by | Contents |
+|---|---|---|
+| `classified_rules.json` | Step 2b + 2c | All sentences — deontic type, confidence, rule ID |
+| `fol_formulas.json` | Step 3 | FOL formula, deontic formula, predicates per rule |
+| `shapes_generated.ttl` | Step 4a + 4b | All generated SHACL shapes in Turtle syntax |
+| `validation_results.json` | Step 5 | Which entities violated which shapes |
+| `pipeline_report.json` | Step 6 | Full run summary with stats and environment info |
+ 
+---
+ 
+## 3. Local Environment Setup
+ 
+Use this if you want to run the project directly on your machine without Docker.
+ 
+### Prerequisites
+ 
+| Tool | Version |
+|---|---|
+| Python | 3.10+ |
+| uv | latest |
+| Ollama | latest |
+| PostgreSQL | 15+ |
+ 
+> **Note:** PostgreSQL is only needed if you use `src/policy_checker/database/` to load
+> student entity data. The core pipeline (`models/langgraph_agent/`) runs without it.
+  
+### Step 1 — Clone the repo
+ 
 ```bash
-python -m evaluation.align          # M1 extraction coverage → gold_alignment.json
-python -m evaluation.per_rule_eval  # M4 shape correctness → per_rule_eval.json
-python -m evaluation.report         # All metrics M1–M5 → console summary
-python -m evaluation.report --md    # Markdown table for thesis
-python -m evaluation.report --save  # Save thesis_metrics.json
+git clone <repo-url>
+cd compliance-checker
 ```
-
-## 🧪 Ablation studies
-
-The pipeline supports **7 component-level ablations** for measuring the contribution
-of each enhancement:
-
-| Ablation | Flag | What it disables |
-|----------|------|------------------|
-| Baseline | `baseline` | Full pipeline (control) |
-| No prefilter | `no-prefilter` | Skips heuristic filter, all sentences pass |
-| No hints | `no-hints` | Strips prefilter hints from classifier |
-| No reclassify | `no-reclassify` | Skips second-opinion pass |
-| No fallback | `no-fallback` | Skips direct NL→SHACL fallback |
-| No FOL retry | `no-fol-retry` | Disables placeholder rejection retry |
-| No may disambig | `no-may-disambig` | Skips epistemic "may" filter |
-
+ 
+### Step 2 — Install dependencies
+ 
 ```bash
-python -m langgraph_agent.run --source ait --ablation no-hints
-python -m langgraph_agent.run --source ait --ablation no-reclassify
-python -m langgraph_agent.run --source ait --ablation no-fallback
+uv python install    # installs Python from .python-version
+uv sync              # installs all packages from pyproject.toml
 ```
-
-Output is isolated to `output/ait_<ablation>/` for side-by-side comparison.
-
-## 🗂️ Project structure
-
-```
-Compliance_Checking4Intern/
-├── core/                     # PreFilter, LLM cache (SQLite), MCP server
-│   ├── prefilter.py          # Heuristic filter (600+ lines, may disambiguation)
-│   ├── llm_cache.py          # SQLite cache with prompt versioning
-│   └── mcp_server.py         # JSON-RPC MCP compatibility layer
-├── evaluation/               # Gold-standard alignment & thesis metrics
-│   ├── align.py              # Multi-signal GS ↔ AIT alignment (M1)
-│   ├── per_rule_eval.py      # Per-rule pyshacl evaluation (M4)
-│   └── report.py             # M1–M5 thesis metrics aggregator
-├── institutional_policy/     # Source PDFs (AIT corpus)
-├── langgraph_agent/          # Pipeline orchestration
-│   ├── nodes/                # 9 processing nodes
-│   │   ├── extract.py        # PDF → sentences (pdfplumber + spaCy)
-│   │   ├── prefilter.py      # Heuristic pre-filter wrapper
-│   │   ├── classify.py       # LLM classification with hint injection
-│   │   ├── reclassify.py     # Second-opinion reclassification
-│   │   ├── fol.py            # FOL formalization with retry
-│   │   ├── shacl.py          # FOL → SHACL (named shapes, severity tiers)
-│   │   ├── direct_shacl.py   # NL → SHACL fallback with repair loop
-│   │   ├── validate.py       # pyshacl validation with shape merging
-│   │   └── report.py         # Structured report with env capture
-│   ├── edges/                # Conditional routing (route_classify)
-│   ├── graph.py              # Graph assembly (StateGraph)
-│   ├── state.py              # Typed state schema (PipelineState)
-│   ├── llm.py                # Ollama LLM configuration (seed, top_k)
-│   └── run.py                # CLI with --ablation support
-├── shacl/                    # Authoritative shapes, ontology, TDD test data
-│   ├── shapes/               # 96 curated gold-standard shapes
-│   ├── ontology/             # Domain ontology (Person, Student, Faculty, …)
-│   └── test_data/            # 180 Pos/Neg test entities per rule
-├── output/                   # Pipeline reports & intermediate artifacts
-├── tests/                    # Pytest suite (121 tests)
-│   ├── test_prefilter.py     # Core prefilter unit tests
-│   ├── test_shacl_shapes.py  # Gold-standard SHACL shape validation
-│   ├── test_may_disambiguation.py  # 45-sentence may eval set
-│   ├── test_classify_hints.py      # Hint wiring & cache key tests
-│   ├── test_align.py               # Alignment algorithm tests
-│   ├── test_per_rule_eval.py       # Per-rule eval verdict tests
-│   └── test_graph.py               # Graph structure tests
-├── .env.example              # Environment configuration template
-├── ARCHITECTURE.md           # Pipeline design & node walkthrough
-└── POLICYCHECKER_ENHANCEMENT_PLAN.md   # Enhancement roadmap (completed)
-```
-
-## 🚀 Quick start
-
-### 1. Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-A local **Ollama** instance is required for LLM inference:
-
-```bash
-# macOS / Linux installer: https://ollama.com/download
-ollama pull mistral
-ollama serve   # leave running in a separate terminal
-```
-
-### 2. Environment
-
+ 
+### Step 3 — Set up environment
+ 
 ```bash
 cp .env.example .env
 ```
-
-Key settings (see `.env.example` for full list):
-
+ 
+Open `.env` and set these minimum required values:
+ 
 ```bash
-OLLAMA_HOST=http://localhost:11434
-OLLAMA_MODEL=mistral
-OLLAMA_SECOND_MODEL=mistral          # override with a different model for second-opinion
-OLLAMA_SEED=42                       # required for reproducibility
-PIPELINE_VERSION=2.1-hints           # bumped on any behavior-affecting change
+OLLAMA_HOST=http://localhost:11434    # local Ollama
+OLLAMA_MODEL=mistral                  # must match what you pulled
+OLLAMA_SEED=42                        # fixed seed for reproducibility
+PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
+POSTGRES_HOST=localhost               # local PostgreSQL (optional)
+```
+ 
+### Step 4 — Install and start Ollama
+ 
+Ollama must be running **before** the pipeline starts.
+ 
+```bash
+# Install from https://ollama.com/download
+# Then pull the model (one-time, ~4GB download):
+ollama pull mistral
+```
+ 
+**Windows:** Ollama runs automatically as a background service after install.
+ 
+**macOS / Linux:** Start it manually:
+```bash
+ollama serve
+```
+ 
+### Step 5 — Run the pipeline
+ 
+```bash
+uv run policy-checker --source ait --verbose
 ```
 
-### 3. Run the pipeline
-
+### Step 6 — Seed the database (optional)
+ 
+Only needed if using the compliance dashboard database features:
+ 
 ```bash
-python -m langgraph_agent.run --source ait --verbose
+uv run python -m policy_checker.database.seed
+```
+ 
+---
+ 
+## 4. Dev Container Setup
+ 
+Use this for a consistent, team-ready environment using Docker.
+ 
+### Step 1 — Install Ollama on your machine
+ 
+Download and install from [ollama.com/download](https://ollama.com/download).
+ 
+Pull the model (one-time, ~4GB):
+```bash
+ollama pull mistral
+ollaa serve
 ```
 
-Outputs land in `output/ait/`:
-
-- `pipeline_report.json` — summary stats, violation triage, and environment metadata
-- `classified_rules.json` — all rules with deontic type and confidence
-- `fol_formulas.json` — generated FOL formulas
-- `shapes_generated.ttl` — pipeline-produced SHACL shapes
-- `validation_results.json` — pyshacl output against test data
-
-### 4. Run the tests
-
+### Step 2 — Clone the repo
+ 
 ```bash
-pytest                     # all 121 tests
-pytest -m prefilter        # prefilter unit tests only
-pytest -m shacl            # SHACL shape syntactic tests only
-pytest tests/test_may_disambiguation.py  # May disambiguation eval set
+git clone <repo-url>
+cd compliance-checker
+```
+ 
+### Step 3 — Set up environment
+ 
+```bash
+cp .env.example .env
+```
+ 
+Open `.env` and set these minimum required values:
+ 
+```bash
+# Inside Dev Container, use host.docker.internal not localhost
+OLLAMA_HOST=http://host.docker.internal:11434
+ 
+OLLAMA_MODEL=mistral                  # must match what you pulled
+OLLAMA_SEED=42                        # fixed seed for reproducibility
+PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
+ 
+POSTGRES_HOST=host.docker.internal
+```
+ 
+### Step 4 — Open in Dev Container
+ 
+1. Open VS Code
+2. `File → Open Folder` → select the project folder
+3. `Ctrl + Shift + P` → select rebuild and reopen in container
+4. Select docker outside docker
+
+### Step 5 — Run dev-setup.sh
+ 
+Inside the VS Code terminal (you are now inside the container):
+ 
+```bash
+bash dev-setup.sh
+```
+ 
+This will:
+- Load `.env`
+- Install uv and Python and all dependencies via `uv sync`
+ 
+### Step 6 — Run the pipeline
+ 
+```bash
+uv run policy-checker --source ait --verbose
+```
+ 
+### Subsequent runs (every day after first setup)
+ 
+```bash
+# Windows: Ollama runs automatically — no action needed
+# macOS/Linux: make sure ollama serve is running
+ 
+# Start Docker services if stopped
+docker compose up -d
+ 
+# Open VS Code → Reopen in Container
+# Run pipeline
+uv run policy-checker --source ait --verbose
+```
+ 
+---
+ 
+## 5. Running the Pipeline
+ 
+ 
+### Basic run
+ 
+```bash
+uv run policy-checker --source ait
 ```
 
-## ⚠️ Current limitations
+### Step 6 — Seed the database (optional)
+ 
+Only needed if using the compliance dashboard database features:
+ 
+```bash
+uv run python -m policy_checker.database.seed
+```
+ 
+### Verbose — shows per-step stats
+ 
+```bash
+uv run policy-checker --source ait --verbose
+```
+ 
+### Ablation studies
+ 
+Run these to measure the contribution of individual pipeline components
+(used for thesis experiments):
+ 
+```bash
+uv run policy-checker --source ait --ablation no-hints
+uv run policy-checker --source ait --ablation no-prefilter
+uv run policy-checker --source ait --ablation no-reclassify
+uv run policy-checker --source ait --ablation no-fallback
+uv run policy-checker --source ait --ablation no-fol-retry
+uv run policy-checker --source ait --ablation no-may-disambig
+```
+ 
+| Flag | What it disables |
+|---|---|
+| `no-prefilter` | Skips heuristic filter — all sentences go to classifier |
+| `no-hints` | Strips prefilter hints from classifier prompt |
+| `no-reclassify` | Skips second-opinion pass for uncertain rules |
+| `no-fallback` | Skips direct NL→SHACL fallback (Step 4b) |
+| `no-fol-retry` | Disables placeholder rejection retry in FOL step |
+| `no-may-disambig` | Skips epistemic "may" disambiguation |
+ 
+Output is isolated to `data/output/ait_<ablation>/` for side-by-side comparison.
+ 
+### Expected terminal output
+ 
+```
+============================================================
+Environment:
+  Model:     mistral
+  Seed:      42
+  Version:   2.1-hints
+  Ablation:  baseline
+============================================================
+ 
+  >> Step 1  - PDF Extraction          {'sentences': 1565}
+  >> Step 2a - Heuristic Pre-filter    {'candidates': 450}
+  >> Step 2b - LLM Classification      {'rules': 440}
+  >> Step 2c - Second-Opinion          {'rules': 440}
+  >> Step 3  - FOL Formalization       {'fol_ok': 371, 'fol_fail': 69}
+  >> Step 4a - SHACL Generation        {'shapes': 371}
+  >> Step 4b - SHACL NL Fallback       {'shapes': 69}
+  >> Step 5  - SHACL Validation
+  >> Step 6  - Report
+ 
+[DONE] Pipeline complete - report: data/output/ait/pipeline_report.json
+```
+ 
+### MCP server (optional)
+ 
+Exposes the pipeline as tools for MCP-compatible AI clients:
+ 
+```bash
+uv run policy-mcp    # stdio MCP mode — connect from Claude or other clients
+```
+ 
+Available tools: `verify_rule`, `check_status`, `list_rules`, `get_metrics`, `run_pipeline`.
+ 
+---
+ 
+## 6. Compliance Dashboard (Web UI)
+ 
+An interactive web dashboard for browsing pipeline results and running live
+SHACL validation against custom RDF data.
+ 
+> **Important:** Run the pipeline at least once before starting the dashboard.
+> The dashboard reads from `data/output/ait/` which is populated by the pipeline.
+ 
+### Start the dashboard
+ 
+```bash
+uv run python -m uvicorn policy_checker.web.app:app --host 0.0.0.0 --port 8000 --reload
+```
+ 
+Then open [http://localhost:8000](http://localhost:8000) in your browser.
+ 
+### Dashboard features
+ 
+| Feature | Description |
+|---|---|
+| **Pipeline Stats** | Summary of extraction, classification, and shape generation metrics from the latest run |
+| **Rule Browser** | Browse and search all classified rules — filter by type (obligation / permission / prohibition) |
+| **Rule Detail** | Click any rule to see its original text, FOL formula, and generated SHACL shape side by side |
+| **Compliance Check** | Paste RDF data in Turtle format and run live pyshacl validation against pipeline shapes |
+| **Violation Report** | Severity-coded violations showing affected entities, source shapes, and violation messages |
+ 
+### What the dashboard reads
+ 
+| Data source | Used for |
+|---|---|
+| `data/output/ait/pipeline_report.json` | Pipeline stats on the home page |
+| `data/output/ait/classified_rules.json` | Rule browser |
+| `data/output/ait/fol_formulas.json` | FOL formula in rule detail view |
+| `data/output/ait/shapes_generated.ttl` | SHACL shape in rule detail + live validation |
+| `data/shacl/test_data/tdd_test_data_fixed.ttl` | Sample RDF data for compliance check |
+| `data/shacl/ontology/ait_policy_ontology.ttl` | Domain ontology loaded during validation |
+ 
+---
+ 
+## 7. Running Evaluation
+ 
+Run evaluation scripts **after** the pipeline completes to measure accuracy
+against the 96 gold-standard shapes in `data/shacl/shapes/ait_policy_shapes.ttl`.
+ 
+```bash
+# M1 — extraction coverage
+uv run python -m policy_checker.evaluation.align
+ 
+# M4 — per-rule shape correctness
+uv run python -m policy_checker.evaluation.per_rule_eval
+ 
+# M1–M5 — full thesis metrics summary
+uv run python -m policy_checker.evaluation.report
+ 
+# Markdown table (for thesis document)
+uv run python -m policy_checker.evaluation.report --md
+ 
+# Save results to JSON
+uv run python -m policy_checker.evaluation.report --save
+```
+ 
+### Metrics reference
+ 
+| Metric | Definition |
+|---|---|
+| M1 | Extraction coverage — gold rules with an aligned pipeline rule (cosine ≥ 0.65) |
+| M2 | Classification accuracy — correct deontic type (O/P/F) assignment |
+| M3 | FOL quality — formulas with semantic (non-placeholder) predicates |
+| M4 | Shape correctness — per-rule precision/recall against Pos/Neg test entities |
+| M5 | Reproducibility — identical output across clean-cache runs with fixed seed |
+ 
+### Evaluation output files
+ 
+| File | Written by | Contents |
+|---|---|---|
+| `data/output/ait/gold_alignment.json` | `align.py` | M1 alignment results — matched, missed, false positives |
+| `data/output/ait/per_rule_eval.json` | `per_rule_eval.py` | M4 per-rule verdicts (PASS/FAIL, too_strict/too_permissive) |
+| `data/output/ait/thesis_metrics.json` | `report.py --save` | M1–M5 summary for thesis |
 
-Transparency about what the pipeline does *not* yet handle well:
+## 8. API Deployment
+Status - In Development Progress
 
-- **FOL predicate quality (M3 = 29.8%)** — the local LLM (Mistral 7B) frequently returns
-  placeholder predicates like `O(Action(x))` instead of semantic ones like
-  `O(payFee(student))`. The retry mechanism mitigates but does not eliminate this.
-  A larger model or domain-specific fine-tuning would significantly improve M3.
-- **Shape correctness (M4 = 0.000 F1)** — pipeline shapes are structurally valid but
-  the property paths don't precisely match the gold-standard test data properties,
-  causing all shapes to be classified as `too_strict` or `too_permissive`.
-- **Epistemic vs. deontic "may"** — disambiguation is implemented at the prefilter level
-  with 80%+ accuracy on the eval set, but recall is not yet 100%.
-- **Sentence boundary detection** — PDF extraction produces some cross-item
-  contamination. An optional spaCy sentencizer is available via `EXTRACT_SPACY=1`.
-- **Target-class inference** — fallback to `sh:targetSubjectsOf` for `Person`-class
-  shapes reduces over-broadening but doesn't eliminate it entirely.
+PolicyChecker exposes a REST API for integration with the AITGPT platform.
 
-## 🔧 Additional tools
+When a user logs into AITGPT, the platform calls PolicyChecker to check
+whether that student is compliant with AIT institutional policies.
+PolicyChecker validates the student profile against generated SHACL shapes
+and returns any broken rules.
 
-- **MCP server** (`core/mcp_server.py`) — exposes 5 tools over JSON-RPC for
-  MCP-compatible clients:
-  - `verify_rule` — classify a single text as policy rule
-  - `check_status` — check Ollama availability
-  - `list_rules` — browse classified rules from the latest run (filterable by type)
-  - `get_metrics` — return M1–M5 thesis metrics
-  - `run_pipeline` — trigger a full pipeline run with optional ablation
+### How It Works
 
-  ```bash
-  python -m core.mcp_server --mcp          # stdio MCP mode
-  python -m core.mcp_server                # interactive REPL
-  ```
+```
+AITGPT (caller)                    PolicyChecker (this project)
+───────────────                    ────────────────────────────
+User logs in
+        ↓
+POST /check_compliance     →       validates student against SHACL shapes
+{ student_profile: {...} }         returns violations
+        ←
+{ compliant: false,
+  broken_rules: [...] }
+        ↓
+Show notification icon
+User clicks → sees broken rules
+```
 
-- **LLM cache** (`core/llm_cache.py`) — SQLite-backed deterministic cache for
-  LLM responses. Cache keys include prompt version, so prompt edits invalidate
-  stale entries automatically. Clear with:
+### Available Endpoints
 
-  ```bash
-  rm cache/llm_cache.db     # macOS/Linux
-  Remove-Item cache\llm_cache.db   # Windows
-  ```
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/validate` | POST | Validate RDF Turtle data against SHACL shapes — returns violations |
+| `/api/rules` | GET | List all classified rules with filtering and pagination |
+| `/api/rules/{rule_id}` | GET | Get single rule with FOL formula and SHACL shape |
+| `/api/stats` | GET | Pipeline summary statistics |
+| `/api/db-status` | GET | Check PostgreSQL connection and entity count |
+| `/api/db-entities` | GET | List all entities in database |
+| `/api/load-from-db` | POST | Convert database entities to RDF Turtle |
 
-## 📚 References
-
-The pipeline design draws on:
-
-- Goknil et al. (2024) — PAPEL: hierarchical filtering for policy extraction
-- Brodie et al. (2006) — Section-aware classification for legal documents
-- Searle (1969) — Speech Act Theory (directive / commissive / prohibitive / …)
-- Governatori & Rotolo (2010) — Permission-as-exception in deontic logic
-  (`deontic:overrides` in the ontology)
-
-## 📝 License
-
-Academic research project — AIT Master's Thesis.
