@@ -1,5 +1,5 @@
 [project]
-name = "policy-checker"
+name = "AITGPT-compliance-checking"
 version = "0.1.0"
 description = "Automated policy formalization pipeline: PDF → FOL → SHACL"
 readme = "README.md"

@@ -32,3 +32,4 @@ graphdb_data/
 .idea/
 *.swp
 .DS_Store
+.devcontainer/postgres_data

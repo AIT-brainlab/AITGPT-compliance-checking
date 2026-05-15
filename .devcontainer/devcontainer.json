@@ -2,11 +2,11 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-outside-of-docker-compose
 {
 	"name": "dev environment",
-	"dockerComposeFile": "../../docker-compose.yml",
+	"dockerComposeFile": "docker-compose.yml",
 	"service": "dev",
 	"overrideCommand": true,
     // "runServices": ["psql"],
-	"workspaceFolder": "/Projects/${localWorkspaceFolderBasename}",
+	"workspaceFolder": "/Projects/compliance-checking",
     "remoteUser": "ubuntu",
     "updateRemoteUserUID": true,
 	"shutdownAction": "stopCompose",
@@ -44,9 +44,8 @@
 		}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8000, 5432],
-	"postCreateCommand": "bash dev-setup.sh"
-
+	"forwardPorts": [8000]
+	
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "bash /start.sh "
 
