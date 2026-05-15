@@ -37,6 +37,8 @@ services:
       timeout: 5s
       retries: 5
 
+    # @A4niia: Add ollama service
+
 volumes:
   venv:           # team convention: cache .venv
   python:         # team convention: cache uv-managed Python
