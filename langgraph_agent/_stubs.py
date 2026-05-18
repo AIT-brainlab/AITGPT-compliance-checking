@@ -1,37 +1,24 @@
+from __future__ import annotations
+
+from collections.abc import Callable
+
 from langgraph_agent.state import PipelineState
 
 
-def extract_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "extract"}
+def _stub_node(step: str) -> Callable[[PipelineState], PipelineState]:
+    def node(state: PipelineState) -> PipelineState:
+        return {**state, "current_step": step}
+
+    node.__name__ = f"{step}_node"
+    return node
 
 
-def prefilter_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "prefilter"}
-
-
-def classify_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "classify"}
-
-
-def reclassify_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "reclassify"}
-
-
-def fol_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "fol"}
-
-
-def shacl_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "shacl"}
-
-
-def direct_shacl_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "direct_shacl"}
-
-
-def validate_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "validate"}
-
-
-def report_node(state: PipelineState) -> PipelineState:
-    return {**state, "current_step": "report"}
+extract_node = _stub_node("extract")
+prefilter_node = _stub_node("prefilter")
+classify_node = _stub_node("classify")
+reclassify_node = _stub_node("reclassify")
+fol_node = _stub_node("fol")
+shacl_node = _stub_node("shacl")
+direct_shacl_node = _stub_node("direct_shacl")
+validate_node = _stub_node("validate")
+report_node = _stub_node("report")

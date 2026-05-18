@@ -4,7 +4,7 @@ import json
 import os
 import platform
 import subprocess
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
@@ -86,7 +86,9 @@ def report_node(state: PipelineState) -> PipelineState:
             "total_errors":         len(state.get("errors", [])),
         },
         "violation_triage": triage,
-        "rule_type_distribution": _count_by_type(state.get("rules", [])),
+        "rule_type_distribution": dict(
+            Counter(r.get("rule_type", "unknown") for r in state.get("rules", []))
+        ),
         "errors": state.get("errors", []),
     }
 
@@ -211,11 +213,3 @@ def _build_violation_triage(violations: list, entity_count: int) -> dict:
 
 def _save(path: Path, data: object) -> None:
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-
-
-def _count_by_type(rules: list) -> dict:
-    dist: dict[str, int] = {}
-    for r in rules:
-        t = r.get("rule_type", "unknown")
-        dist[t] = dist.get(t, 0) + 1
-    return dist

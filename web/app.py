@@ -27,6 +27,8 @@ from fastapi.templating import Jinja2Templates
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from core.turtle_utils import get_rule_block, prefix_block
+
 app = FastAPI(title="PolicyChecker Compliance Dashboard", version="1.0.0")
 
 # Static files and templates
@@ -121,18 +123,7 @@ def _get_report() -> dict:
 def _get_shapes_for_rule(rule_id: str) -> str:
     """Extract the SHACL shape block for a specific rule from the combined TTL."""
     shapes_text = _load_text(SHAPES_FILE)
-    if not shapes_text:
-        return ""
-    # Find the block for this rule
-    marker = f"# Rule: {rule_id}"
-    start = shapes_text.find(marker)
-    if start == -1:
-        return ""
-    # Find the next rule block or end
-    next_marker = shapes_text.find("# Rule:", start + len(marker))
-    if next_marker == -1:
-        return shapes_text[start:].strip()
-    return shapes_text[start:next_marker].strip()
+    return get_rule_block(shapes_text, rule_id) if shapes_text else ""
 
 
 
@@ -309,24 +300,22 @@ async def validate_data(request: Request):
         if str(SHAPES_FILE) in _cache:
             del _cache[str(SHAPES_FILE)]
         shapes_text = _load_text(SHAPES_FILE)
+        prefix = prefix_block(shapes_text)
 
         if selected_shapes != "all" and isinstance(selected_shapes, list):
             # Extract only selected shape blocks
-            blocks = []
-            prefix_end = shapes_text.find("# Rule:")
-            if prefix_end > 0:
-                blocks.append(shapes_text[:prefix_end])
+            blocks = [prefix] if prefix.strip() else []
             for rid in selected_shapes:
                 block = _get_shapes_for_rule(rid)
                 if block:
                     blocks.append(block)
             shapes_text = "\n\n".join(blocks)
+            prefix = prefix_block(shapes_text)
 
         # Parse shapes block-by-block — skip any LLM-generated invalid Turtle
         shapes_graph = Graph()
-        prefix_block = shapes_text[:shapes_text.find("# Rule:")] if "# Rule:" in shapes_text else ""
-        shape_blocks = shapes_text.split("# Rule:")
         skipped = 0
+        shape_blocks = shapes_text.split("# Rule:")
         for i, block in enumerate(shape_blocks):
             if i == 0:
                 # This is the prefix block — always include
@@ -335,7 +324,7 @@ async def validate_data(request: Request):
                 except Exception:
                     pass
                 continue
-            turtle_block = prefix_block + "\n# Rule:" + block
+            turtle_block = prefix + "\n# Rule:" + block
             try:
                 shapes_graph.parse(data=turtle_block, format="turtle")
             except Exception:

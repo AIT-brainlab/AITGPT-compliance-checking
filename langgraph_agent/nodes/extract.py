@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import os
 from pathlib import Path
 from typing import List
 
@@ -23,8 +24,6 @@ _LIST_MARKER = re.compile(r"\n\s*(\d+\.|\([a-z]\)|[a-z]\)|\*|\-)\s+")
 _SOFT_WRAP = re.compile(r"(?<=[a-z,;:])\n(?=[a-z])")
 _MULTI_NL = re.compile(r"\n{2,}")
 _TRAILING_LIST_NUM = re.compile(r"\s*\n?\s*\d+\.\s*$")
-
-import os
 USE_SPACY = os.getenv("EXTRACT_SPACY", "0") == "1"
 
 if USE_SPACY:

@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List
 
 from langgraph_agent.state import FOLItem, PipelineState, SHACLShape
+from langgraph_agent.nodes.common import invoke_text
 from rdflib import Graph, Namespace, RDFS
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -264,9 +265,7 @@ def _try_direct_fallback(fol: FOLItem) -> SHACLShape | None:
             rule_type=fol["deontic_type"],
             shape_id=shape_id,
         )
-        from langchain_core.messages import HumanMessage
-        response = _llm.invoke([HumanMessage(content=prompt)])
-        turtle = _strip_fences(response.content.strip())
+        turtle = _strip_fences(invoke_text(_llm, prompt).strip())
         valid, parse_error = _validate_turtle(turtle)
 
         # Attempt repair if invalid

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import re
 import sys
@@ -8,11 +7,10 @@ from pathlib import Path
 from typing import List
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from core.llm_cache import get_cache
-
-from langchain_core.messages import HumanMessage
+from core.llm_cache import get_cache, prompt_key
 
 from langgraph_agent.llm import DEFAULT_MODEL, get_llm
+from langgraph_agent.nodes.common import cached_or_generate, invoke_text, parse_json_object
 from langgraph_agent.state import FOLItem, PipelineState, RuleItem
 
 _cache = get_cache()
@@ -49,17 +47,11 @@ _PLACEHOLDER_PREDS = re.compile(
 
 
 def _parse_fol(raw: str) -> dict | None:
-    match = re.search(r"\{.*\}", raw, re.DOTALL)
-    if not match:
-        return None
-    try:
-        data = json.loads(match.group())
-        # Validate minimum required fields
-        if "deontic_formula" in data and "fol_expansion" in data:
-            return data
-        return None
-    except json.JSONDecodeError:
-        return None
+    return parse_json_object(
+        raw,
+        default=None,
+        required=("deontic_formula", "fol_expansion"),
+    )
 
 
 def _is_placeholder(parsed: dict) -> bool:
@@ -103,8 +95,7 @@ def _generate_with_retry(text: str, rule_type: str, max_retries: int = 1) -> dic
     if os.getenv("ABLATION_NO_FOL_RETRY", "0") == "1":
         max_retries = 0
     prompt = _FOL_PROMPT.format(text=text, rule_type=rule_type)
-    response = _llm.invoke([HumanMessage(content=prompt)])
-    parsed = _parse_fol(response.content)
+    parsed = _parse_fol(invoke_text(_llm, prompt))
 
     if not parsed:
         return None
@@ -117,8 +108,7 @@ def _generate_with_retry(text: str, rule_type: str, max_retries: int = 1) -> dic
             text=text, rule_type=rule_type,
             bad_formula=parsed.get("deontic_formula", ""),
         )
-        response = _llm.invoke([HumanMessage(content=retry_prompt)])
-        parsed = _parse_fol(response.content) or parsed
+        parsed = _parse_fol(invoke_text(_llm, retry_prompt)) or parsed
 
     # If still placeholder after retry, tag it 
     if _is_placeholder(parsed):
@@ -140,21 +130,18 @@ def fol_node(state: PipelineState) -> PipelineState:
         rule_type = rule["rule_type"]
 
         # --- cache check ---
-        cached = _cache.get(text, model, "fol_generation",
-                            extra_params={"rule_type": rule_type,
-                                          "prompt_version": FOL_PROMPT_VERSION})
-        if cached:
-            parsed = cached
-        else:
-            try:
-                parsed = _generate_with_retry(text, rule_type)
-                if parsed:
-                    _cache.set(text, model, "fol_generation", parsed,
-                               extra_params={"rule_type": rule_type,
-                                             "prompt_version": FOL_PROMPT_VERSION})
-            except Exception as exc:
-                errors.append(f"fol[{rule['rule_id']}]: {exc}")
-                parsed = None
+        try:
+            parsed = cached_or_generate(
+                _cache,
+                text,
+                model,
+                "fol_generation",
+                prompt_key(FOL_PROMPT_VERSION, rule_type=rule_type),
+                lambda: _generate_with_retry(text, rule_type),
+            )
+        except Exception as exc:
+            errors.append(f"fol[{rule['rule_id']}]: {exc}")
+            parsed = None
 
         if parsed:
             # Note: We keep placeholder rules but tag them.

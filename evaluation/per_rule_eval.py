@@ -8,6 +8,8 @@ from typing import List, Optional
 from pyshacl import validate
 from rdflib import Graph, Namespace, URIRef
 
+from core.turtle_utils import split_rule_blocks
+
 PROJECT_ROOT = Path(__file__).parent.parent
 AIT = Namespace("http://example.org/ait-policy#")
 
@@ -104,7 +106,7 @@ def main() -> None:
 
     # Parse the generated shapes file into a dict keyed by rule_id
     pipeline_shapes_text = shapes_file.read_text(encoding="utf-8")
-    shape_blocks = _split_shape_blocks(pipeline_shapes_text)  # see utility below
+    shape_blocks = split_rule_blocks(pipeline_shapes_text)
 
     results: List[RuleEvalResult] = []
     for al in alignments:
@@ -125,22 +127,7 @@ def main() -> None:
 
 def _split_shape_blocks(ttl_text: str) -> dict[str, str]:
     """Parse the comment markers `# Rule: AIT-xxxx` to associate turtle blocks."""
-    import re
-    blocks: dict[str, str] = {}
-    current_id = None
-    current_lines: list[str] = []
-    for line in ttl_text.splitlines():
-        m = re.match(r"# Rule:\s+(AIT-\d+)", line)
-        if m:
-            if current_id and current_lines:
-                blocks[current_id] = "\n".join(current_lines)
-            current_id = m.group(1)
-            current_lines = [line]
-        elif current_id:
-            current_lines.append(line)
-    if current_id and current_lines:
-        blocks[current_id] = "\n".join(current_lines)
-    return blocks
+    return split_rule_blocks(ttl_text)
 
 
 def _print_summary(results: List[RuleEvalResult]) -> None:
