@@ -130,10 +130,10 @@ export default function Dashboard() {
             <div style={{ marginTop: '24px', padding: '14px', background: 'var(--bg-code)', borderRadius: 'var(--radius-sm)' }}>
               <div className="text-xs text-muted" style={{ marginBottom: '8px', fontWeight: 600 }}>KEY METRICS</div>
               <div className="flex gap-4" style={{ flexWrap: 'wrap' }}>
-                <div><span className="text-xs text-muted">M1 Extraction</span><br /><strong>85.4%</strong></div>
-                <div><span className="text-xs text-muted">M2 Classification</span><br /><strong>85.4%</strong></div>
-                <div><span className="text-xs text-muted">M4 F1 Score</span><br /><strong>0.866</strong></div>
-                <div><span className="text-xs text-muted">Fleiss' κ</span><br /><strong>0.635</strong></div>
+                <div><span className="text-xs text-muted">IRR Fleiss' κ</span><br /><strong>0.8436</strong></div>
+                <div><span className="text-xs text-muted">LLM Accuracy</span><br /><strong>84.0%</strong></div>
+                <div><span className="text-xs text-muted">M3 FOL Quality</span><br /><strong>100%</strong></div>
+                <div><span className="text-xs text-muted">M5 Stability</span><br /><strong>PASS</strong></div>
               </div>
             </div>
           </div>

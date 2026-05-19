@@ -49,6 +49,18 @@ ABLATIONS = {
     "no-may-disambig":    {"ABLATION_NO_MAY_DISAMBIG": "1"},
 }
 
+STEP_LABELS = {
+    "extract":      "Step 1 - PDF Extraction",
+    "prefilter":    "Step 2a - Heuristic Pre-filter",
+    "classify":     "Step 2b - LLM Classification",
+    "reclassify":   "Step 2c - Second-Opinion Reclassification",
+    "fol":          "Step 3 - FOL Formalization",
+    "shacl":        "Step 4a - SHACL Generation (FOL-mediated)",
+    "direct_shacl": "Step 4b - SHACL Generation (Direct NL fallback)",
+    "validate":     "Step 5 - SHACL Validation",
+    "report":       "Step 6 - Report",
+}
+
 
 def _print_environment(ablation: str = "baseline") -> None:
     """Print active configuration at the top of every run (§6.1)."""
@@ -131,17 +143,6 @@ def run(source: str, verbose: bool = False, ablation: str = "baseline",
         node_state = step[node_name]
         current = node_state.get("current_step", node_name)
 
-        STEP_LABELS = {
-            "extract":      "Step 1 - PDF Extraction",
-            "prefilter":    "Step 2a - Heuristic Pre-filter",
-            "classify":     "Step 2b - LLM Classification",
-            "reclassify":   "Step 2c - Second-Opinion Reclassification",
-            "fol":          "Step 3 - FOL Formalization",
-            "shacl":        "Step 4a - SHACL Generation (FOL-mediated)",
-            "direct_shacl": "Step 4b - SHACL Generation (Direct NL fallback)",
-            "validate":     "Step 5 - SHACL Validation",
-            "report":       "Step 6 - Report",
-        }
         label = STEP_LABELS.get(current, current)
         print(f"  >> {label}")
 

@@ -30,17 +30,16 @@ build/
 *~
 
 # Note md
-ARCHITECTURE.md
-POLICYCHECKER_ENHANCEMENT_PLAN.md
-INTERN_GUIDE.md
+# ARCHITECTURE.md
+# INTERN_GUIDE.md
+CLAUDE.md
+SKILL.md
 
 # Environment
 .env
-.env.example
 .env.local
 .env.*.local
 *.env
-.gitignore
 
 # Logs
 *.log

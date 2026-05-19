@@ -8,6 +8,7 @@ from typing import List
 
 from langgraph_agent.state import FOLItem, PipelineState, SHACLShape
 from langgraph_agent.corpus_config import get_corpus_config
+from langgraph_agent.nodes.common import invoke_text
 from rdflib import Graph, Namespace, RDFS
 
 
@@ -727,10 +728,7 @@ def _try_direct_fallback(fol: FOLItem) -> SHACLShape | None:
             ns_prefix=cfg.prefix,
             namespace=cfg.namespace,
         )
-        from langchain_core.messages import HumanMessage
-
-        response = _get_llm().invoke([HumanMessage(content=prompt)])
-        turtle = _strip_fences(response.content.strip())
+        turtle = _strip_fences(invoke_text(_get_llm(), prompt).strip())
         valid, parse_error = _validate_turtle(turtle)
 
         # Attempt repair if invalid

@@ -1,17 +1,16 @@
 from __future__ import annotations
 
-import json
+import os
 import re
 import sys
 from pathlib import Path
 from typing import List, Tuple
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from core.llm_cache import get_cache
-
-from langchain_core.messages import HumanMessage
+from core.llm_cache import get_cache, prompt_key
 
 from langgraph_agent.llm import DEFAULT_MODEL, get_llm
+from langgraph_agent.nodes.common import cached_or_generate, invoke_text
 from langgraph_agent.state import PipelineState, RuleItem, SHACLShape
 from langgraph_agent.corpus_config import get_corpus_config
 
@@ -51,9 +50,9 @@ Rule text: "{text}"
 Requirements:
 - Use the namespace prefix {ns_prefix}: <{namespace}>  and  sh: <http://www.w3.org/ns/shacl#>
 - The shape MUST be a sh:NodeShape with sh:targetClass, sh:severity, sh:property
-- Obligations  → sh:minCount 1  and sh:severity sh:Violation
-- Prohibitions → sh:maxCount 0  and sh:severity sh:Violation
-- Permissions  → sh:severity sh:Info
+- Obligations  -> sh:minCount 1  and sh:severity sh:Violation
+- Prohibitions -> sh:maxCount 0  and sh:severity sh:Violation
+- Permissions  -> sh:severity sh:Info
 
 Shape name: {ns_prefix}:{shape_id}Shape
 
@@ -75,17 +74,9 @@ def _validate_turtle(text: str) -> Tuple[bool, str]:
     """Validate Turtle syntax and basic SHACL rules. Returns (is_valid, error_message)."""
     try:
         from rdflib import Graph
-        from rdflib.namespace import SH
-        from rdflib.term import Literal
-        
+
         g = Graph()
         g.parse(data=_get_shacl_prefixes() + "\n" + text, format="turtle")
-        
-        # Check for common PySHACL ConstraintLoadErrors that are syntactically valid Turtle
-        for s, p, o in g:
-            if p == SH.pattern and not isinstance(o, Literal):
-                return False, "sh:pattern must be a string literal enclosed in quotes, e.g., sh:pattern \"^[0-9]+$\" ;"
-                
         return True, ""
     except Exception as exc:
         return False, str(exc)
@@ -99,79 +90,70 @@ def _strip_fences(text: str) -> str:
 
 
 def _repair_turtle(turtle: str, error: str, rule_id: str) -> Tuple[str, bool]:
-    """Attempt to repair invalid Turtle by re-prompting the LLM with the error.
-    Returns (repaired_turtle, is_valid)."""
-    for attempt in range(1, MAX_REPAIR_ATTEMPTS + 1):
+    """Attempt to repair invalid Turtle by re-prompting the LLM."""
+    for _ in range(MAX_REPAIR_ATTEMPTS):
         try:
             prompt = _REPAIR_PROMPT.format(turtle=turtle, error=error)
-            response = _get_llm().invoke([HumanMessage(content=prompt)])
-            repaired = _strip_fences(response.content.strip())
+            repaired = _strip_fences(invoke_text(_get_llm(), prompt).strip())
             valid, new_error = _validate_turtle(repaired)
             if valid:
                 return repaired, True
-            # Update for next attempt
             turtle = repaired
             error = new_error
         except Exception:
-            break  # LLM call failed, stop retrying
+            break
     return turtle, False
 
 
 def direct_shacl_node(state: PipelineState) -> PipelineState:
-    # §7 — Ablation: skip direct NL fallback entirely
-    import os
     if os.getenv("ABLATION_SKIP_DIRECT_SHACL", "0") == "1":
         return {"shacl_shapes": [], "errors": ["ablation: direct_shacl skipped"]}
 
     failed_rules: List[RuleItem] = state.get("fol_failed", [])
-    model = DEFAULT_MODEL
     errors: List[str] = []
-
     new_shapes: List[SHACLShape] = []
 
     from tqdm import tqdm
+
     for rule in tqdm(failed_rules, desc="Direct SHACL", leave=False):
         text = rule["text"]
         shape_id = rule["rule_id"].replace("-", "_")
 
-        cached = _cache.get(text, model, "direct_shacl",
-                            extra_params={"prompt_version": DIRECT_SHACL_PROMPT_VERSION})
-        if cached:
+        def _generate_direct_shape() -> dict:
+            prompt = _DIRECT_PROMPT.format(
+                text=text,
+                rule_type=rule["rule_type"],
+                shape_id=shape_id,
+            )
+            turtle = _strip_fences(invoke_text(_llm, prompt).strip())
+            valid, parse_error = _validate_turtle(turtle)
+
+            if not valid and turtle:
+                turtle, valid = _repair_turtle(turtle, parse_error, rule["rule_id"])
+
+            return {"turtle": turtle, "valid": valid}
+
+        try:
+            cached = cached_or_generate(
+                _cache,
+                text,
+                DEFAULT_MODEL,
+                "direct_shacl",
+                prompt_key(DIRECT_SHACL_PROMPT_VERSION),
+                _generate_direct_shape,
+            )
             turtle = cached.get("turtle", "")
             valid = cached.get("valid", False)
-        else:
-            try:
-                cfg = get_corpus_config()
-                prompt = _DIRECT_PROMPT.format(
-                    text=text,
-                    rule_type=rule["rule_type"],
-                    shape_id=shape_id,
-                    ns_prefix=cfg.prefix,
-                    namespace=cfg.namespace,
-                )
-                response = _get_llm().invoke([HumanMessage(content=prompt)])
-                turtle = _strip_fences(response.content.strip())
-                valid, parse_error = _validate_turtle(turtle)
-
-                # ── Repair loop: re-prompt LLM with the error ──
-                if not valid and turtle:
-                    turtle, valid = _repair_turtle(
-                        turtle, parse_error, rule["rule_id"]
-                    )
-
-                _cache.set(text, model, "direct_shacl",
-                           {"turtle": turtle, "valid": valid},
-                           extra_params={"prompt_version": DIRECT_SHACL_PROMPT_VERSION})
-            except Exception as exc:
-                errors.append(f"direct_shacl[{rule['rule_id']}]: {exc}")
-                turtle = ""
-                valid = False
+        except Exception as exc:
+            errors.append(f"direct_shacl[{rule['rule_id']}]: {exc}")
+            turtle = ""
+            valid = False
 
         if turtle:
             new_shapes.append(SHACLShape(
                 rule_id=rule["rule_id"],
                 turtle_text=turtle,
-                target_class="Unknown",  # harder to infer from raw LLM output
+                target_class="Unknown",
                 deontic_type=rule["rule_type"],
                 syntax_valid=valid,
                 generation_method="direct_nl",
