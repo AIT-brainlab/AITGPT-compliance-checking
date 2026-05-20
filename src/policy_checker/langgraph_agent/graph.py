@@ -2,55 +2,55 @@ from __future__ import annotations
 
 from langgraph.graph import END, StateGraph
 
-from langgraph_agent.state import PipelineState
-from langgraph_agent.edges.route_classify import route_classify
+from policy_checker.langgraph_agent.state import PipelineState
+from policy_checker.langgraph_agent.edges.route_classify import route_classify
 
 # Node imports — replaced one-by-one as each Phase builds them out.
 # Until a real implementation exists the stubs in _stubs.py are used.
 try:
-    from langgraph_agent.nodes.extract import extract_node
+    from policy_checker.langgraph_agent.nodes.extract import extract_node
 except ImportError:
-    from langgraph_agent._stubs import extract_node
+    from policy_checker.langgraph_agent._stubs import extract_node
 
 try:
-    from langgraph_agent.nodes.prefilter import prefilter_node
+    from policy_checker.langgraph_agent.nodes.prefilter import prefilter_node
 except ImportError:
-    from langgraph_agent._stubs import prefilter_node
+    from policy_checker.langgraph_agent._stubs import prefilter_node
 
 try:
-    from langgraph_agent.nodes.classify import classify_node
+    from policy_checker.langgraph_agent.nodes.classify import classify_node
 except ImportError:
-    from langgraph_agent._stubs import classify_node
+    from policy_checker.langgraph_agent._stubs import classify_node
 
 try:
-    from langgraph_agent.nodes.reclassify import reclassify_node
+    from policy_checker.langgraph_agent.nodes.reclassify import reclassify_node
 except ImportError:
-    from langgraph_agent._stubs import reclassify_node
+    from policy_checker.langgraph_agent._stubs import reclassify_node
 
 try:
-    from langgraph_agent.nodes.fol import fol_node
+    from policy_checker.langgraph_agent.nodes.fol import fol_node
 except ImportError:
-    from langgraph_agent._stubs import fol_node
+    from policy_checker.langgraph_agent._stubs import fol_node
 
 try:
-    from langgraph_agent.nodes.shacl import shacl_node
+    from policy_checker.langgraph_agent.nodes.shacl import shacl_node
 except ImportError:
-    from langgraph_agent._stubs import shacl_node
+    from policy_checker.langgraph_agent._stubs import shacl_node
 
 try:
-    from langgraph_agent.nodes.direct_shacl import direct_shacl_node
+    from policy_checker.langgraph_agent.nodes.direct_shacl import direct_shacl_node
 except ImportError:
-    from langgraph_agent._stubs import direct_shacl_node
+    from policy_checker.langgraph_agent._stubs import direct_shacl_node
 
 try:
-    from langgraph_agent.nodes.validate import validate_node
+    from policy_checker.langgraph_agent.nodes.validate import validate_node
 except ImportError:
-    from langgraph_agent._stubs import validate_node
+    from policy_checker.langgraph_agent._stubs import validate_node
 
 try:
-    from langgraph_agent.nodes.report import report_node
+    from policy_checker.langgraph_agent.nodes.report import report_node
 except ImportError:
-    from langgraph_agent._stubs import report_node
+    from policy_checker.langgraph_agent._stubs import report_node
 
 
 def build_graph() -> StateGraph:
@@ -97,7 +97,7 @@ def build_graph() -> StateGraph:
     return g.compile()
 
 
-# Allow `python -m langgraph_agent.graph` to print the Mermaid diagram
+# Allow `python -m policy_checker.langgraph_agent.graph` to print the Mermaid diagram
 if __name__ == "__main__":
     graph = build_graph()
     print(graph.get_graph().draw_mermaid())

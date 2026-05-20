@@ -6,7 +6,7 @@ from typing import List
 from pyshacl import validate
 from rdflib import Graph, Namespace, RDF, SH, BNode
 
-from langgraph_agent.state import PipelineState, SHACLShape
+from policy_checker.langgraph_agent.state import PipelineState, SHACLShape
  
 # PROJECT_ROOT = Path(__file__).parent.parent.parent
 from policy_checker import PROJECT_ROOT
@@ -36,7 +36,7 @@ def _resolve_parent_shape(source_shape, shapes_graph: Graph) -> str:
 
 def _merge_shapes(pipeline_shapes: List[SHACLShape]) -> Graph:
     """Merge authoritative shapes with pipeline-generated shapes into one graph."""
-    from langgraph_agent.nodes.shacl import _TTL_PREFIXES
+    from policy_checker.langgraph_agent.nodes.shacl import _TTL_PREFIXES
 
     g = Graph()
 

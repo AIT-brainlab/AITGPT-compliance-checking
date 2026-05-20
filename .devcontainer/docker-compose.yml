@@ -1,7 +1,6 @@
 services:
   dev:
     image: aitgpt-compliance-checking:latest
-    container_name: compliance-checking-dev
     build:
       context: .
       dockerfile: dockerfile
@@ -17,8 +16,12 @@ services:
       - uv_cache:/Projects/compliance-checking/.uv_cache
       # Team convention: forward Docker socket
       - /var/run/docker.sock:/var/run/docker-host.sock
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
     depends_on:
       postgres:
+        condition: service_healthy
+      ollama:
         condition: service_healthy
 
   postgres:
@@ -37,9 +40,19 @@ services:
       timeout: 5s
       retries: 5
 
-    # @A4niia: Add ollama service
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 180s
 
 volumes:
   venv:           # team convention: cache .venv
   python:         # team convention: cache uv-managed Python
   uv_cache:       # team convention: cache uv download cache
+  ollama_data:    # persist downloaded models across restarts

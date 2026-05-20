@@ -6,7 +6,7 @@ from typing import List
 
 import pdfplumber
 
-from langgraph_agent.state import PipelineState, SentenceItem
+from policy_checker.langgraph_agent.state import PipelineState, SentenceItem
 
 # Minimum / maximum token counts for a sentence to be worth keeping
 _MIN_WORDS = 5

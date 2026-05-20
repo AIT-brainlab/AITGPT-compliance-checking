@@ -3,9 +3,9 @@
 PolicyChecker - LangGraph Pipeline CLI
 
 Usage:
-    python -m langgraph_agent.run --source ait
-    python -m langgraph_agent.run --source ait --verbose
-    python -m langgraph_agent.run --source ait --ablation no-hints
+    python -m policy_checker.langgraph_agent.run --source ait
+    python -m policy_checker.langgraph_agent.run --source ait --verbose
+    python -m policy_checker.langgraph_agent.run --source ait --ablation no-hints
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ import logging
 from pathlib import Path
 
 from dotenv import load_dotenv
-load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
+load_dotenv(Path(__file__).resolve().parent.parent.parent.parent / ".env")
 
 # PROJECT_ROOT = Path(__file__).parent.parent
 # sys.path.insert(0, str(PROJECT_ROOT))
@@ -27,8 +27,8 @@ from policy_checker import PROJECT_ROOT
 # Suppress rdflib's verbose tracebacks for ISO8601 parsing on failed literals
 logging.getLogger("rdflib.term").setLevel(logging.ERROR)
 
-from langgraph_agent.graph import build_graph
-from langgraph_agent.state import PipelineState
+from policy_checker.langgraph_agent.graph import build_graph
+from policy_checker.langgraph_agent.state import PipelineState
 
 SOURCES = {
     "ait": {
