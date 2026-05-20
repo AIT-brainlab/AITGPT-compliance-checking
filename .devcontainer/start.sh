@@ -28,7 +28,7 @@ GPU=$(detect_gpu)
 case $GPU in
     nvidia)
         echo "-- NVIDIA GPU detected — enabling GPU acceleration"
-        COMPOSE_FILES="$COMPOSE_FILES -f docker-compose.gpu.yml"
+        COMPOSE_FILES="$COMPOSE_FILES -f docker-compose.nvidia.yml"
         ;;
     amd)
         echo "-- AMD GPU detected — enabling ROCm acceleration"
