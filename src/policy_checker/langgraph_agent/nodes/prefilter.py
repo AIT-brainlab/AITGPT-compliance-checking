@@ -9,7 +9,7 @@ from typing import List
 # from core.prefilter import PreFilter
 from policy_checker.core.prefilter import PreFilter
 
-from langgraph_agent.state import PipelineState, SentenceItem
+from policy_checker.langgraph_agent.state import PipelineState, SentenceItem
 
 _prefilter = PreFilter()
 

@@ -8,7 +8,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from langgraph_agent.state import PipelineState
+from policy_checker.langgraph_agent.state import PipelineState
  
 # PROJECT_ROOT = Path(__file__).parent.parent.parent
 from policy_checker import PROJECT_ROOT

@@ -1,4 +1,4 @@
-from langgraph_agent.state import PipelineState
+from policy_checker.langgraph_agent.state import PipelineState
 
 
 def extract_node(state: PipelineState) -> PipelineState:

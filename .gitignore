@@ -33,3 +33,5 @@ graphdb_data/
 *.swp
 .DS_Store
 .devcontainer/postgres_data
+.devcontainer/.docker-compose.override.yml
+
