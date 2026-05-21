@@ -3,7 +3,7 @@ name = "AITGPT-compliance-checking"
 version = "0.1.0"
 description = "Automated policy formalization pipeline: PDF → FOL → SHACL"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 
 dependencies = [
     # Web / API (app.py uses FastAPI — NOT Flask, which was in requirements.txt by mistake)
@@ -11,31 +11,27 @@ dependencies = [
     "uvicorn[standard]>=0.29.0",
     "jinja2>=3.1.0",
     "python-multipart>=0.0.9",
-
     # LangGraph agentic pipeline
     "langgraph>=0.2.0",
     "langchain>=0.3.0",
     "langchain-ollama>=0.2.0",
     "langchain-core>=0.3.0",
-
     # LLM HTTP calls (mcp_server.py, report_node.py)
     "requests>=2.31.0",
-
     # PDF processing (extract.py)
     "pdfplumber>=0.10.0",
     "pymupdf>=1.23.0",
-
     # RDF / SHACL (shacl.py, validate.py, align.py)
     "rdflib>=7.0.0",
     "pyshacl>=0.25.0",
-
     # Database (connection.py, rdf_converter.py)
     "psycopg2-binary>=2.9.0",
-
     # Utilities
     "python-dotenv>=1.0.0",
     "numpy>=1.24.0",
     "tqdm>=4.66.0",   # used in classify.py, fol.py, reclassify.py, direct_shacl.py
+    "tool>=0.8.0",
+    "typer>=0.25.1",
 ]
 
 [dependency-groups]
@@ -64,6 +60,7 @@ eval = [
 package = true   # team convention
 
 [project.scripts]
+policy-ollama  = "policy_checker.cli:cli"
 policy-checker = "policy_checker.langgraph_agent.run:main"
 policy-web     = "policy_checker.web.app:main"
 policy-mcp     = "policy_checker.core.mcp_server:run_mcp_server"
