@@ -1,0 +1,45 @@
+services:
+  dev:
+    image: aitgpt-compliance-checking:latest
+    container_name: compliance-checking-dev
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        - BUILD_VERSION=DEV
+        - WORKDIR=/Projects/compliance-checking
+    volumes:
+      # Team convention: mount entire project folder
+      - ../:/Projects/compliance-checking:cached
+      # Team convention: named volumes for caching
+      - venv:/Projects/compliance-checking/.venv
+      - python:/Projects/compliance-checking/.python
+      - uv_cache:/Projects/compliance-checking/.uv_cache
+      # Team convention: forward Docker socket
+      - /var/run/docker.sock:/var/run/docker-host.sock
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: aitgpt_cc_db
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      # Auto-run schema on first start
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dbuser"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    # @A4niia: Add ollama service
+
+volumes:
+  venv:           # team convention: cache .venv
+  python:         # team convention: cache uv-managed Python
+  uv_cache:       # team convention: cache uv download cache

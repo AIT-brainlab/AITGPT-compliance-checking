@@ -11,3 +11,27 @@ __pycache__
 latex/
 research/
 *.pdf
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Secrets
+.env
+
+# Runtime outputs (rebuilt at runtime)
+output/
+cache/
+logs/
+
+# Dev volumes (created by Docker)
+.venv/
+.python/
+.uv_cache/
+
+# Git
+.git/
+.github/
+
+# Documentation
+*.md
