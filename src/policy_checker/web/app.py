@@ -424,10 +424,14 @@ def _parse_violations(results_graph) -> list:
 
 # ── Startup ───────────────────────────────────────────────────────────────
 
-if __name__ == "__main__":
+def main():
     import uvicorn
     print(f"\n{'='*60}")
     print(f"  PolicyChecker — Compliance Dashboard")
-    print(f"  http://localhost:3000")
+    print(f"  http://localhost:8000")
     print(f"{'='*60}\n")
-    uvicorn.run(app, host="0.0.0.0", port=3000, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+
+
+if __name__ == "__main__":
+    main()
