@@ -1,3 +1,4 @@
+name: devcontainer
 services:
   dev:
     image: aitgpt-compliance-checking:latest
@@ -31,7 +32,7 @@ services:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: dbpassword
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
       # Auto-run schema on first start
       - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
     healthcheck:
@@ -56,3 +57,4 @@ volumes:
   python:         # team convention: cache uv-managed Python
   uv_cache:       # team convention: cache uv download cache
   ollama_data:    # persist downloaded models across restarts
+  postgres_data:  # persist database data across restarts

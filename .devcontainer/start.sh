@@ -5,7 +5,6 @@
 cd "$(dirname "$0")"
 
 # ── Step 1: Auto-detect GPU ───────────────────────────────────────────────
-COMPOSE_FILES="-f docker-compose.yml"
 
 detect_gpu() {
     if docker run --rm --gpus all ubuntu nvidia-smi > /dev/null 2>&1; then
@@ -27,46 +26,38 @@ GPU=$(detect_gpu)
 
 case $GPU in
     nvidia)
-        echo "-- NVIDIA GPU detected — enabling GPU acceleration"
-        COMPOSE_FILES="$COMPOSE_FILES -f docker-compose.nvidia.yml"
+        echo "-- NVIDIA GPU detected — writing nvidia override"
+        cp docker-compose.nvidia.yml .docker-compose.override.yml
         ;;
     amd)
-        echo "-- AMD GPU detected — enabling ROCm acceleration"
-        COMPOSE_FILES="$COMPOSE_FILES -f docker-compose.amd.yml"
+        echo "-- AMD GPU detected — writing AMD override"
+        cp docker-compose.amd.yml .docker-compose.override.yml
         ;;
     cpu)
-        echo "-- No GPU detected — using CPU (inference will be slow)"
+        echo "-- No GPU detected — writing empty override (CPU only)"
+        echo "name: policychecker" > .docker-compose.override.yml
         ;;
 esac
 
 # ── Step 2: Start containers ──────────────────────────────────────────────
 echo ""
 echo "-- Starting containers..."
-docker compose $COMPOSE_FILES down --remove-orphans 2>/dev/null
-docker compose $COMPOSE_FILES up -d
-
+echo "-- Starting containers..."
+docker compose -f docker-compose.yml -f .docker-compose.override.yml down --remove-orphans 2>/dev/null
+docker compose -f docker-compose.yml -f .docker-compose.override.yml up -d
+ 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to start containers. Check docker compose logs."
     exit 1
 fi
-
-# ── Step 3: Run dev-setup.sh inside the dev container ────────────────────
+ 
 DEV_CONTAINER=$(docker compose $COMPOSE_FILES ps -q dev 2>/dev/null | head -1)
-
-if [ -z "$DEV_CONTAINER" ]; then
-    echo "[ERROR] Dev container not found. Check docker compose status."
-    exit 1
-fi
-
-echo ""
-echo "-- Running dev-setup inside container..."
-docker exec -it "$DEV_CONTAINER" bash /Projects/compliance-checking/dev-setup.sh
 
 echo ""
 echo "============================================================"
 echo " Done! To enter the dev container:"
 echo "   Open VS Code → Reopen in Container"
 echo " Or attach directly:"
-echo "   docker exec -it $DEV_CONTAINER bash"
+echo "   docker exec -it $(docker compose $COMPOSE_FILES ps -q dev 2>/dev/null | head -1) bash"
 echo "============================================================"
 echo ""
