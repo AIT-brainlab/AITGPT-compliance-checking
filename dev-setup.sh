@@ -16,6 +16,7 @@ uv python install
 echo "-- Installing dependencies"
 uv sync
 
-# Install CLI completion
-echo "-- Installing CLI"
-uv run policy-checker --install-completion
+
+# Install OLLAMA model
+uv run --env-file=.env policy-ollama ollama-load
+

@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from typing import List
 
-from langgraph_agent.state import FOLItem, PipelineState, SHACLShape
+from policy_checker.langgraph_agent.state import FOLItem, PipelineState, SHACLShape
 from rdflib import Graph, Namespace, RDFS
  
 # PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -257,7 +257,7 @@ def _emit_override_triples(overrides: list[tuple[str, str]]) -> str:
 def _try_direct_fallback(fol: FOLItem) -> SHACLShape | None:
     """When _fol_to_turtle fails, attempt direct NL-to-SHACL via LLM.
     Reuses the same prompt and repair logic as direct_shacl_node."""
-    from langgraph_agent.nodes.direct_shacl import (
+    from policy_checker.langgraph_agent.nodes.direct_shacl import (
         _DIRECT_PROMPT, _strip_fences, _validate_turtle, _repair_turtle, _llm,
     )
     shape_id = fol["rule_id"].replace("-", "_")

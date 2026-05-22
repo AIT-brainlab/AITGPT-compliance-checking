@@ -27,7 +27,7 @@ from datetime import date
 # from db.connection import get_connection
 from policy_checker.database.connection import get_connection
 
-SCHEMA_FILE = Path(__file__).resolve().parent / "schema.sql"
+SCHEMA_FILE = Path(__file__).resolve().parent.parent.parent.parent / ".devcontainer" / "schema.sql"
 
 
 def _run_schema(conn) -> None:

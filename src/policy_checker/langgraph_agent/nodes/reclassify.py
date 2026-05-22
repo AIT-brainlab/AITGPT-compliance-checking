@@ -14,8 +14,8 @@ from policy_checker.core.llm_cache import get_cache
  
 from langchain_core.messages import HumanMessage
  
-from langgraph_agent.llm import SECOND_MODEL, get_second_llm
-from langgraph_agent.state import PipelineState, RuleItem
+from policy_checker.langgraph_agent.llm import SECOND_MODEL, get_second_llm
+from policy_checker.langgraph_agent.state import PipelineState, RuleItem
  
 _cache = get_cache()
 _llm = get_second_llm()
