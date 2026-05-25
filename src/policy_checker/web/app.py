@@ -33,7 +33,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from policy_checker import PROJECT_ROOT
  
 
-from core.turtle_utils import get_rule_block, prefix_block
+from policy_checker.core.turtle_utils import get_rule_block, prefix_block
 
 app = FastAPI(title="PolicyChecker Compliance Dashboard", version="2.0.0")
 
@@ -48,13 +48,13 @@ app.add_middleware(
 
 # ── Data paths ────────────────────────────────────────────────────────────
 DEMO_DIR = Path(__file__).parent
-OUTPUT_DIR = PROJECT_ROOT / "output" / "ait"
+OUTPUT_DIR = PROJECT_ROOT / "data" / "output" / "ait"
 SHAPES_FILE = OUTPUT_DIR / "shapes_generated.ttl"
 RULES_FILE = OUTPUT_DIR / "classified_rules.json"
 FOL_FILE = OUTPUT_DIR / "fol_formulas.json"
 REPORT_FILE = OUTPUT_DIR / "pipeline_report.json"
-TEST_DATA_FILE = PROJECT_ROOT / "shacl" / "test_data" / "tdd_test_data_fixed.ttl"
-ONTOLOGY_FILE = PROJECT_ROOT / "shacl" / "ontology" / "ait_policy_ontology.ttl"
+TEST_DATA_FILE = PROJECT_ROOT / "data" / "shacl" / "test_data" / "tdd_test_data_fixed.ttl"
+ONTOLOGY_FILE = PROJECT_ROOT / "data" / "shacl" / "ontology" / "ait_policy_ontology.ttl"
 DIST_DIR = DEMO_DIR / "frontend" / "dist"
 
 
@@ -529,7 +529,7 @@ async def run_pipeline(request: Request):
             env = os.environ.copy()
             env["PYTHONUNBUFFERED"] = "1"
 
-            cmd = [sys.executable, "-u", "-m", "langgraph_agent.run", "--source", source]
+            cmd = [sys.executable, "-u", "-m", "policy_checker.langgraph_agent.run", "--source", source]
             proc = subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
