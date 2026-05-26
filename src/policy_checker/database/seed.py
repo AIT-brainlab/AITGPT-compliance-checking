@@ -27,7 +27,7 @@ from datetime import date
 # from db.connection import get_connection
 from policy_checker.database.connection import get_connection
 
-SCHEMA_FILE = Path(__file__).resolve().parent / "schema.sql"
+SCHEMA_FILE = Path(__file__).resolve().parent.parent.parent.parent / ".devcontainer" / "schema.sql"
 
 
 def _run_schema(conn) -> None:
@@ -473,6 +473,10 @@ def seed(reset: bool = False) -> None:
         print(f"\n[seed] [OK] Database seeded with realistic AIT demo data")
 
 
-if __name__ == "__main__":
+def main() -> None:
     reset_flag = "--reset" in sys.argv
     seed(reset=reset_flag)
+
+
+if __name__ == "__main__":
+    main()

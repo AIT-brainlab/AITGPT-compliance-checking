@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import os
+import json
 import re
+import sys
 from pathlib import Path
 from typing import List, Tuple
 
@@ -119,6 +120,7 @@ def _repair_turtle(turtle: str, error: str, rule_id: str) -> Tuple[str, bool]:
 
 
 def direct_shacl_node(state: PipelineState) -> PipelineState:
+    import os
     if os.getenv("ABLATION_SKIP_DIRECT_SHACL", "0") == "1":
         return {"shacl_shapes": [], "errors": ["ablation: direct_shacl skipped"]}
 

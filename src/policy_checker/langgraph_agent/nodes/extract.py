@@ -44,7 +44,6 @@ def _normalise(raw: str) -> str:
     raw = re.sub(r"[ \t]+", " ", raw)
     return raw
 
-
 def _split_sentences(raw: str) -> List[str]:
     raw = _normalise(raw)
     if USE_SPACY:

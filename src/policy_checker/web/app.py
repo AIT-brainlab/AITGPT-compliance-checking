@@ -777,9 +777,40 @@ if DIST_DIR.exists():
         return FileResponse(DIST_DIR / "index.html")
 
 
+# ── Frontend helpers ──────────────────────────────────────────────────────
+
+def _npm_env() -> dict:
+    """Return an env dict with the nodeenv bin dir prepended to PATH."""
+    import sys
+    node_bin = Path(sys.prefix) / "node_env" / "bin"
+    env = os.environ.copy()
+    env["PATH"] = str(node_bin) + os.pathsep + env.get("PATH", "")
+    return env
+
+
+def run_frontend() -> None:
+    """Start the Vite dev server (npm run dev)."""
+    import subprocess
+    frontend_dir = DEMO_DIR / "frontend"
+    subprocess.run(["npm", "run", "dev"], cwd=frontend_dir, env=_npm_env(), check=True)
+
+
+def build_frontend() -> None:
+    """Build the React frontend for production (npm run build)."""
+    import subprocess
+    frontend_dir = DEMO_DIR / "frontend"
+    env = _npm_env()
+    if not (frontend_dir / "node_modules").exists():
+        print("Installing npm dependencies...")
+        subprocess.run(["npm", "install"], cwd=frontend_dir, env=env, check=True)
+    print("Building React frontend...")
+    subprocess.run(["npm", "run", "build"], cwd=frontend_dir, env=env, check=True)
+    print(f"Build complete → {DIST_DIR}")
+
+
 # ── Startup ───────────────────────────────────────────────────────────────
 
-if __name__ == "__main__":
+def main():
     import uvicorn
     print(f"\n{'='*60}")
     print(f"  PolicyChecker — Compliance Dashboard")
@@ -790,4 +821,8 @@ if __name__ == "__main__":
         print(f"  React build not found — run: cd web/frontend && npm run build")
         print(f"  Dev mode: cd web/frontend && npm run dev (port 5173)")
     print(f"{'='*60}\n")
-    uvicorn.run(app, host="0.0.0.0", port=3000, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+
+
+if __name__ == "__main__":
+    main()

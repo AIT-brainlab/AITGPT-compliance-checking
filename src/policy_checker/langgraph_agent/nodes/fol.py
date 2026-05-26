@@ -559,7 +559,6 @@ def fol_node(state: PipelineState) -> PipelineState:
     fol_failed: List[RuleItem] = []
 
     from tqdm import tqdm
-
     for rule in tqdm(rules, desc="Generating FOL", leave=False):
         text = rule["text"]
         rule_type = rule["rule_type"]
