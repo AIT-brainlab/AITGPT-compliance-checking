@@ -15,10 +15,10 @@ corpus:
 # ── File paths (relative to PROJECT_ROOT) ─────────────────────────────────
 paths:
   pdf_dir: "institutional_policy/GDPR"
-  ontology: "shacl/ontology/gdpr_policy_ontology.ttl"
-  vocabulary: "shacl/ontology/gdpr_property_list.txt"
-  gold_shapes: "shacl/shapes/gdpr_policy_shapes.ttl"
-  test_data: "shacl/test_data/gdpr_test_data.ttl"
+  ontology: "data/shacl/ontology/gdpr_policy_ontology.ttl"
+  vocabulary: "data/shacl/ontology/gdpr_property_list.txt"
+  gold_shapes: "data/shacl/shapes/gdpr_policy_shapes.ttl"
+  test_data: "data/shacl/test_data/gdpr_test_data.ttl"
 
 # ── FOL prompt customisation ─────────────────────────────────────────────
 prompts:
