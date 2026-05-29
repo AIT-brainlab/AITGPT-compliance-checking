@@ -35,7 +35,7 @@ policy rules from PDF documents into validatable SHACL shapes.
 │   │   ├── shapes/
 │   │   │   └── ait_policy_shapes.ttl       # 96 gold-standard SHACL shapes
 │   │   ├── test_data/
-│   │   │   └── tdd_test_data_fixed.ttl.ttl     # AIT domain ontology (vocabulary (hand-curated)
+│   │   │   └── tdd_test_data_fixed.ttl     # AIT domain ontology (vocabulary (hand-curated)
 │   ├── cache/                              # LLM response cache — gitignored
 │   │   └── llm_cache.db
 │   └── output/                             # Pipeline run artifacts — gitignored
@@ -129,7 +129,6 @@ Use this if you want to run the project directly on your machine without Docker.
 |---|---|
 | Python | 3.13+ |
 | uv | latest |
-| Node.js | 20 LTS (installed automatically by dev-setup.sh) |
 | Ollama | latest |
 | PostgreSQL | 15+ |
 
@@ -175,8 +174,6 @@ bash dev-setup.sh
 This will:
 - Install Python from `.python-version` via `uv python install`
 - Install all Python dependencies via `uv sync`
-- Install Node.js LTS 20 via `nodeenv` into the virtualenv
-- Install frontend dependencies via `npm install`
 - Pull the Ollama model specified in `.env`
 
 ### Step 5 — Run the pipeline
@@ -198,51 +195,39 @@ uv run policy-seed
 ## 4. Dev Container Setup
 
 Use this for a consistent, team-ready environment using Docker.
+Ollama and PostgreSQL run as Docker Compose services — no manual installs needed.
 
-### Step 1 — Install Ollama on your machine
+### Prerequisites
 
-Download and install from [ollama.com/download](https://ollama.com/download).
+| Tool | Notes |
+|---|---|
+| Docker Desktop | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop) |
+| VS Code | with the **Dev Containers** extension installed |
 
-Pull the model (one-time, ~4GB):
-```bash
-ollama pull mistral
-ollama serve
-```
-
-### Step 2 — Clone the repo
+### Step 1 — Clone the repo
 
 ```bash
 git clone <repo-url>
 cd compliance-checking
 ```
 
-### Step 3 — Set up environment
+### Step 2 — Set up environment
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and set these minimum required values:
-
-```bash
-# Inside Dev Container, use host.docker.internal not localhost
-OLLAMA_HOST=http://host.docker.internal:11434
-
-OLLAMA_MODEL=mistral                  # must match what you pulled
-OLLAMA_SEED=42                        # fixed seed for reproducibility
-PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
-
-POSTGRES_HOST=host.docker.internal
-```
-
-### Step 4 — Open in Dev Container
+### Step 3 — Open in Dev Container
 
 1. Open VS Code
 2. `File → Open Folder` → select the project folder
 3. `Ctrl + Shift + P` → select **Rebuild and Reopen in Container**
-4. Select **Docker Outside of Docker**
 
-### Step 5 — Run dev-setup.sh
+> **First time only:** Docker will pull the base images (Ubuntu, PostgreSQL, Ollama) and build
+> the dev image. This takes a few minutes. The database schema is applied automatically on
+> first boot.
+
+### Step 4 — Run dev-setup.sh
 
 Inside the VS Code terminal (you are now inside the container):
 
@@ -250,12 +235,7 @@ Inside the VS Code terminal (you are now inside the container):
 bash dev-setup.sh
 ```
 
-This will:
-- Fix container permissions
-- Install Python, all Python dependencies, Node.js LTS 20, and frontend dependencies
-- Pull the Ollama model specified in `.env`
-
-### Step 6 — Run the pipeline
+### Step 5 — Run the pipeline
 
 ```bash
 policy-checker
@@ -266,14 +246,13 @@ uv run policy-checker --source ait --verbose
 ### Subsequent runs (every day after first setup)
 
 ```bash
-# Windows: Ollama runs automatically — no action needed
-# macOS/Linux: make sure ollama serve is running
-
 # Start Docker services if stopped
 docker compose up -d
 
 # Open VS Code → Reopen in Container
 # Run pipeline
+policy-checker
+#or
 uv run policy-checker --source ait --verbose
 ```
 
@@ -377,7 +356,7 @@ User clicks → sees broken rules
 | Endpoint | Method | Description |
 |---|---|---|
 | `/api/policy` | GET | Return policy path |
-| `/api/policy` | POST | Replace policy file and change its path |
+| `/api/policy` | POST | Replace policy file |
 | `/api/policy` | DELETE | Delete current policy file |
 
 ### Build the backend
