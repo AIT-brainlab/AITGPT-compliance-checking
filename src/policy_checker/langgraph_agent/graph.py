@@ -1,103 +1,67 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+from importlib import import_module
+from typing import Any
+
 from langgraph.graph import END, StateGraph
 
-from policy_checker.langgraph_agent.state import PipelineState
 from policy_checker.langgraph_agent.edges.route_classify import route_classify
+from policy_checker.langgraph_agent.state import PipelineState
 
-# Node imports — replaced one-by-one as each Phase builds them out.
-# Until a real implementation exists the stubs in _stubs.py are used.
-try:
-    from policy_checker.langgraph_agent.nodes.extract import extract_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import extract_node
+NodeFn = Callable[[PipelineState], dict[str, Any]]
 
-try:
-    from policy_checker.langgraph_agent.nodes.prefilter import prefilter_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import prefilter_node
+_NODE_SPECS = (
+    ("extract", "policy_checker.langgraph_agent.nodes.extract", "extract_node"),
+    ("prefilter", "policy_checker.langgraph_agent.nodes.prefilter", "prefilter_node"),
+    ("classify", "policy_checker.langgraph_agent.nodes.classify", "classify_node"),
+    ("reclassify", "policy_checker.langgraph_agent.nodes.reclassify", "reclassify_node"),
+    ("fol", "policy_checker.langgraph_agent.nodes.fol", "fol_node"),
+    ("shacl", "policy_checker.langgraph_agent.nodes.shacl", "shacl_node"),
+    ("direct_shacl", "policy_checker.langgraph_agent.nodes.direct_shacl", "direct_shacl_node"),
+    ("validate", "policy_checker.langgraph_agent.nodes.validate", "validate_node"),
+    ("report", "policy_checker.langgraph_agent.nodes.report", "report_node"),
+)
 
-try:
-    from policy_checker.langgraph_agent.nodes.classify import classify_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import classify_node
+_FIXED_EDGES = (
+    ("extract", "prefilter"),
+    ("prefilter", "classify"),
+    ("reclassify", "fol"),
+    ("fol", "shacl"),
+    ("fol", "direct_shacl"),
+    ("shacl", "validate"),
+    ("direct_shacl", "validate"),
+    ("validate", "report"),
+    ("report", END),
+)
 
-try:
-    from policy_checker.langgraph_agent.nodes.reclassify import reclassify_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import reclassify_node
 
-try:
-    from policy_checker.langgraph_agent.nodes.fol import fol_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import fol_node
-
-try:
-    from policy_checker.langgraph_agent.nodes.shacl import shacl_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import shacl_node
-
-try:
-    from policy_checker.langgraph_agent.nodes.direct_shacl import direct_shacl_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import direct_shacl_node
-
-try:
-    from policy_checker.langgraph_agent.nodes.validate import validate_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import validate_node
-
-try:
-    from policy_checker.langgraph_agent.nodes.report import report_node
-except ImportError:
-    from policy_checker.langgraph_agent._stubs import report_node
+def _load_node(module_path: str, attr: str) -> NodeFn:
+    try:
+        return getattr(import_module(module_path), attr)
+    except (AttributeError, ImportError):
+        return getattr(import_module("policy_checker.langgraph_agent._stubs"), attr)
 
 
 def build_graph() -> StateGraph:
-    g = StateGraph(PipelineState)
+    graph = StateGraph(PipelineState)
 
-    # ── Nodes ──────────────────────────────────────────────────────────────
-    g.add_node("extract",      extract_node)
-    g.add_node("prefilter",    prefilter_node)
-    g.add_node("classify",     classify_node)
-    g.add_node("reclassify",   reclassify_node)
-    g.add_node("fol",          fol_node)
-    g.add_node("shacl",        shacl_node)
-    g.add_node("direct_shacl", direct_shacl_node)
-    g.add_node("validate",     validate_node)
-    g.add_node("report",       report_node)
+    for node_name, module_path, attr in _NODE_SPECS:
+        graph.add_node(node_name, _load_node(module_path, attr))
 
-    # ── Fixed edges ────────────────────────────────────────────────────────
-    g.set_entry_point("extract")
-    g.add_edge("extract",      "prefilter")
-    g.add_edge("prefilter",    "classify")
-    g.add_edge("reclassify",   "fol")       # after second opinion → FOL
-    # fol fans out to BOTH nodes in parallel:
-    #   shacl       → handles the 454 successful FOL formulas
-    #   direct_shacl → handles the N failed FOL formulas (NL fallback)
-    g.add_edge("fol",          "shacl")
-    g.add_edge("fol",          "direct_shacl")
-    # Both converge back to validate
-    g.add_edge("shacl",        "validate")
-    g.add_edge("direct_shacl", "validate")
-    g.add_edge("validate",     "report")
-    g.add_edge("report",       END)
+    graph.set_entry_point("extract")
+    for source, target in _FIXED_EDGES:
+        graph.add_edge(source, target)
 
-    # ── Conditional edges ──────────────────────────────────────────────────
-    g.add_conditional_edges(
+    graph.add_conditional_edges(
         "classify",
         route_classify,
-        {
-            "reclassify": "reclassify",
-            "fol":        "fol",
-            "end":        END,
-        },
+        {"reclassify": "reclassify", "fol": "fol", "end": END},
     )
 
-    return g.compile()
+    return graph.compile()
 
 
-# Allow `python -m policy_checker.langgraph_agent.graph` to print the Mermaid diagram
 if __name__ == "__main__":
-    graph = build_graph()
-    print(graph.get_graph().draw_mermaid())
+    compiled = build_graph()
+    print(compiled.get_graph().draw_mermaid())

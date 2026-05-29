@@ -1,3 +1,16 @@
+node_modules
+web/frontend/node_modules
+web/frontend/dist
+web/static_old
+web/templates_old
+__pycache__
+*.pyc
+.env
+.git
+.gitignore
+latex/
+research/
+*.pdf
 # Python cache
 __pycache__/
 *.py[cod]

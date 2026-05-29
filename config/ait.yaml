@@ -1,0 +1,177 @@
+# ───────────────────────────────────────────────────────────────────────────
+# PolicyChecker — Corpus Configuration for AIT
+# ───────────────────────────────────────────────────────────────────────────
+# This file parameterises every domain-specific element of the pipeline.
+# To process a new corpus, copy this file, adjust the values, and pass
+#   --corpus <name>   to the pipeline CLI.
+# ───────────────────────────────────────────────────────────────────────────
+
+corpus:
+  name: "ait"
+  display_name: "Asian Institute of Technology"
+  namespace: "http://example.org/ait-policy#"
+  prefix: "ait"
+
+# ── File paths (relative to PROJECT_ROOT) ─────────────────────────────────
+paths:
+  pdf_dir: "data/institutional_policy/AIT"
+  ontology: "data/shacl/ontology/ait_policy_ontology.ttl"
+  vocabulary: "data/shacl/ontology/property_list.txt"
+  gold_shapes: "data/shacl/shapes/ait_policy_shapes.ttl"
+  test_data: "data/shacl/test_data/tdd_test_data_fixed.ttl"
+
+# ── FOL prompt customisation ─────────────────────────────────────────────
+prompts:
+  fol_examples:
+    - text: "Students must submit their thesis by the deadline."
+      deontic_type: "obligation"
+      formula: "O(submittitlepage(student))"
+      expansion: "∀x (Student(x) → O(submittitlepage(x)))"
+      action: "submittitlepage"
+
+    - text: "Faculty may attend meetings with prior approval."
+      deontic_type: "permission"
+      formula: "P(attendHearing(faculty))"
+      expansion: "∀x (Faculty(x) → P(attendHearing(x)))"
+      action: "attendHearing"
+
+    - text: "Students must not disturb fellow students in residential areas."
+      deontic_type: "prohibition"
+      formula: "F(disturbFellowStudentsInResidentialAreas(student))"
+      expansion: "∀x (Student(x) → F(disturbFellowStudentsInResidentialAreas(x)))"
+      action: "disturbFellowStudentsInResidentialAreas"
+
+# ── SHACL target class mapping ────────────────────────────────────────────
+# Regex patterns → OWL target class names (matched against rule text)
+target_class_patterns:
+  - pattern: "student(s?)"
+    class: "Student"
+  - pattern: "applicant(s?)"
+    class: "Student"
+  - pattern: "scholarship"
+    class: "Student"
+  - pattern: "thesis|dissertation|research"
+    class: "Student"
+  - pattern: "account(s?)"
+    class: "Person"
+  - pattern: "tenant"
+    class: "Resident"
+  - pattern: "visa"
+    class: "Person"
+  - pattern: "department|office|unit"
+    class: "Department"
+  - pattern: "faculty|instructor|teacher"
+    class: "Faculty"
+  - pattern: "guest"
+    class: "Person"
+  - pattern: "assistant"
+    class: "Person"
+  - pattern: "employee|worker|staff"
+    class: "Employee"
+
+# ── Domain vocabulary for keyword matching ────────────────────────────────
+# Used by SHACL node's _keyword_match_property() for fuzzy property mapping
+domain_words:
+  - accommodation
+  - dormitory
+  - campus
+  - room
+  - unit
+  - building
+  - fee
+  - payment
+  - account
+  - financial
+  - invoice
+  - promissory
+  - course
+  - semester
+  - exam
+  - examination
+  - grade
+  - thesis
+  - register
+  - enroll
+  - enrolment
+  - graduate
+  - admission
+  - submit
+  - pay
+  - vacate
+  - attend
+  - maintain
+  - clean
+  - report
+  - disturb
+  - fellow
+  - residential
+  - area
+  - areas
+  - peace
+  - cook
+  - prohibited
+  - pet
+  - noise
+  - noisy
+  - party
+  - grievance
+  - hearing
+  - tribunal
+  - appeal
+  - discipline
+  - visa
+  - insurance
+  - health
+  - medical
+  - sport
+  - swim
+  - author
+  - research
+  - publication
+  - confidential
+  - confidentiality
+  - approve
+  - approval
+  - permission
+  - request
+  - write
+  - notice
+  - cancel
+  - cancelled
+  - overdue
+  - outstanding
+  - due
+  - sponsor
+  - exchange
+  - program
+  - waiting
+  - list
+  - ethical
+  - conduct
+  - integrity
+  - academic
+  - cheat
+  - orientation
+  - probation
+  - standing
+  - good
+  - furniture
+  - appliance
+  - linen
+  - bicycle
+  - vehicle
+
+# ── Extra stop words (corpus-specific) ────────────────────────────────────
+# Appended to the universal stop word list during keyword matching
+stop_words_extra:
+  - student
+  - students
+  - faculty
+  - staff
+  - person
+  - persons
+  - member
+  - members
+  - institute
+  - ait
+  - university

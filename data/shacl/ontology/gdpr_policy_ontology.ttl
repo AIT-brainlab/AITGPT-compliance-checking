@@ -1,0 +1,39 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix gdpr:  <http://example.org/gdpr-policy#> .
+
+# ── Classes ─────────────────────────────────────────────────────────────
+gdpr:Person a owl:Class ;
+    rdfs:label "Person" ;
+    rdfs:comment "Any natural person" .
+
+gdpr:DataSubject a owl:Class ;
+    rdfs:subClassOf gdpr:Person ;
+    rdfs:label "Data Subject" ;
+    rdfs:comment "An identified or identifiable natural person whose personal data is processed" .
+
+gdpr:DataController a owl:Class ;
+    rdfs:subClassOf gdpr:Organization ;
+    rdfs:label "Data Controller" ;
+    rdfs:comment "Entity that determines the purposes and means of processing personal data" .
+
+gdpr:DataProcessor a owl:Class ;
+    rdfs:subClassOf gdpr:Organization ;
+    rdfs:label "Data Processor" ;
+    rdfs:comment "Entity that processes personal data on behalf of the controller" .
+
+gdpr:Organization a owl:Class ;
+    rdfs:label "Organization" ;
+    rdfs:comment "Any legal entity subject to GDPR" .
+
+gdpr:SupervisoryAuthority a owl:Class ;
+    rdfs:subClassOf gdpr:Organization ;
+    rdfs:label "Supervisory Authority" ;
+    rdfs:comment "Independent public authority responsible for monitoring GDPR compliance" .
+
+gdpr:DataProtectionOfficer a owl:Class ;
+    rdfs:subClassOf gdpr:Person ;
+    rdfs:label "Data Protection Officer" ;
+    rdfs:comment "Person designated to ensure GDPR compliance within an organization" .

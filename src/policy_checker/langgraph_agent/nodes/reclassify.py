@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-import re
 import sys
 from pathlib import Path
 from typing import List
@@ -13,12 +11,21 @@ from typing import List
 from policy_checker.core.llm_cache import get_cache
  
 from langchain_core.messages import HumanMessage
- 
+from policy_checker.core.llm_cache import get_cache, prompt_key
 from policy_checker.langgraph_agent.llm import SECOND_MODEL, get_second_llm
+from policy_checker.langgraph_agent.nodes.common import cached_or_generate, invoke_text, parse_json_object
 from policy_checker.langgraph_agent.state import PipelineState, RuleItem
  
 _cache = get_cache()
-_llm = get_second_llm()
+_llm_instance = None
+
+
+def _get_llm():
+    """Lazy LLM initialization."""
+    global _llm_instance
+    if _llm_instance is None:
+        _llm_instance = get_second_llm()
+    return _llm_instance
 
 RECLASSIFY_PROMPT_VERSION = "v1"
 
@@ -45,13 +52,10 @@ Respond with ONLY a JSON object:
 
 
 def _parse(raw: str) -> dict:
-    match = re.search(r"\{.*?\}", raw, re.DOTALL)
-    if not match:
-        return {"is_rule": False, "rule_type": "none", "confidence": 0.0}
-    try:
-        return json.loads(match.group())
-    except json.JSONDecodeError:
-        return {"is_rule": False, "rule_type": "none", "confidence": 0.0}
+    return parse_json_object(
+        raw,
+        default={"is_rule": False, "rule_type": "none", "confidence": 0.0},
+    )
 
 
 def reclassify_node(state: PipelineState) -> PipelineState:
@@ -74,20 +78,18 @@ def reclassify_node(state: PipelineState) -> PipelineState:
     for rule in tqdm(uncertain, desc="Reclassifying", leave=False):
         text = rule["text"]
 
-        cached = _cache.get(text, model, "reclassification",
-                            extra_params={"prompt_version": RECLASSIFY_PROMPT_VERSION})
-        if cached:
-            result = cached
-        else:
-            try:
-                prompt = _RECLASSIFY_PROMPT.format(text=text)
-                response = _llm.invoke([HumanMessage(content=prompt)])
-                result = _parse(response.content)
-                _cache.set(text, model, "reclassification", result,
-                           extra_params={"prompt_version": RECLASSIFY_PROMPT_VERSION})
-            except Exception as exc:
-                errors.append(f"reclassify[{rule['rule_id']}]: {exc}")
-                result = {"is_rule": False}
+        try:
+            result = cached_or_generate(
+                _cache,
+                text,
+                model,
+                "reclassification",
+                prompt_key(RECLASSIFY_PROMPT_VERSION),
+                lambda: _parse(invoke_text(_get_llm(), _RECLASSIFY_PROMPT.format(text=text))),
+            )
+        except Exception as exc:
+            errors.append(f"reclassify[{rule['rule_id']}]: {exc}")
+            result = {"is_rule": False}
 
         if result.get("is_rule") and float(result.get("confidence", 0)) > 0.5:
             confirmed.append(RuleItem(

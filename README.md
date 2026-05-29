@@ -1,14 +1,14 @@
 # PolicyChecker — AI Policy Formalization System
- 
+
 An agentic LangGraph pipeline that extracts, classifies, and formalizes institutional
 policy rules from PDF documents into validatable SHACL shapes.
- 
+
 > **Master's Thesis — Asian Institute of Technology (AIT), 2026**
- 
+
 ---
- 
+
 ## Table of Contents
- 
+
 1. [Project Structure](#1-project-structure)
 2. [Pipeline Stages](#2-pipeline-stages)
 3. [Local Environment Setup](#3-local-environment-setup)
@@ -17,12 +17,17 @@ policy rules from PDF documents into validatable SHACL shapes.
 6. [Compliance Dashboard (Web UI)](#6-compliance-dashboard-web-ui)
 7. [Running Evaluation](#7-running-evaluation)
 8. [API Deployment](#8-api-deployment)
+
 ---
- 
+
 ## 1. Project Structure
- 
+
 ```
 .
+├── config/                                 # Corpus configuration files (one per domain)
+│   ├── ait.yaml                            # AIT corpus — paths, FOL examples, target classes
+│   └── gdpr.yaml                           # GDPR corpus — portability experiment
+│
 ├── data/                                   # All data files — input, reference, output
 │   ├── institutional_policy/
 │   │   └── AIT/                            # Source policy PDFs (pipeline input)
@@ -48,50 +53,52 @@ policy rules from PDF documents into validatable SHACL shapes.
 │           ├── validation_results.json     # Step 5 output
 │           └── pipeline_report.json        # Step 6 final report
 │
-├── models/                                 # LangGraph agent (pipeline orchestrator)
-│   └── langgraph_agent/
-│       ├── state.py                        # Shared PipelineState (TypedDict)
-│       ├── graph.py                        # Pipeline graph assembly (StateGraph)
-│       ├── llm.py                          # Ollama LLM configuration
-│       ├── run.py                          # CLI entry point
-│       ├── _stubs.py                       # Fallback stubs for missing nodes
-│       ├── edges/
-│       │   └── route_classify.py           # Conditional routing after classification
-│       └── nodes/                          # One file per pipeline stage
-│           ├── extract.py                  # Step 1: PDF → sentences
-│           ├── prefilter.py                # Step 2a: heuristic filter
-│           ├── classify.py                 # Step 2b: LLM classification (O/P/F)
-│           ├── reclassify.py               # Step 2c: second-opinion pass
-│           ├── fol.py                      # Step 3: FOL formalization
-│           ├── shacl.py                    # Step 4a: FOL → SHACL shapes
-│           ├── direct_shacl.py             # Step 4b: NL → SHACL fallback
-│           ├── validate.py                 # Step 5: pyshacl validation
-│           └── report.py                   # Step 6: structured report
-│
 ├── src/
 │   └── policy_checker/                     # Main Python package
 │       ├── __init__.py                     # Defines PROJECT_ROOT
+│       ├── cli.py                          # Ollama management CLI (policy-ollama)
 │       ├── core/
 │       │   ├── llm_cache.py                # SQLite-backed LLM response cache
 │       │   ├── mcp_server.py               # JSON-RPC MCP server (5 tools)
-│       │   └── prefilter.py                # Heuristic filter logic
+│       │   ├── prefilter.py                # Heuristic filter logic
+│       │   └── turtle_utils.py             # Turtle/RDF utilities shared across nodes
 │       ├── database/
 │       │   ├── connection.py               # PostgreSQL connection handler
 │       │   ├── rdf_converter.py            # SQL rows → RDF triples (data graph)
-│       │   ├── schema.sql                  # Database schema
 │       │   └── seed.py                     # Seed test student records
 │       ├── evaluation/
 │       │   ├── align.py                    # M1: pipeline vs gold-standard alignment
 │       │   ├── per_rule_eval.py            # M4: per-rule pyshacl correctness
 │       │   └── report.py                   # M1–M5 thesis metrics aggregator
+│       ├── langgraph_agent/                # LangGraph agent (pipeline orchestrator)
+│       │   ├── state.py                    # Shared PipelineState (TypedDict)
+│       │   ├── graph.py                    # Pipeline graph assembly (StateGraph)
+│       │   ├── llm.py                      # Ollama LLM configuration
+│       │   ├── run.py                      # CLI entry point
+│       │   ├── corpus_config.py            # Corpus adapter — loads config/<corpus>.yaml
+│       │   ├── _stubs.py                   # Fallback stubs for missing nodes
+│       │   ├── edges/
+│       │   │   └── route_classify.py       # Conditional routing after classification
+│       │   └── nodes/                      # One file per pipeline stage
+│       │       ├── common.py               # Shared node utilities
+│       │       ├── extract.py              # Step 1: PDF → sentences
+│       │       ├── prefilter.py            # Step 2a: heuristic filter
+│       │       ├── classify.py             # Step 2b: LLM classification (O/P/F)
+│       │       ├── reclassify.py           # Step 2c: second-opinion pass
+│       │       ├── fol.py                  # Step 3: FOL formalization
+│       │       ├── shacl.py                # Step 4a: FOL → SHACL shapes
+│       │       ├── direct_shacl.py         # Step 4b: NL → SHACL fallback
+│       │       ├── validate.py             # Step 5: pyshacl validation
+│       │       └── report.py               # Step 6: structured report
 │       └── web/
 │           ├── app.py                      # FastAPI compliance dashboard (port 8000)
-│           ├── static/                     # CSS + JS
-│           └── templates/
-│               └── index.html              # Dashboard UI
+│           └── frontend/                   # React/Vite dashboard UI
+│               ├── src/                    # Frontend source
+│               ├── dist/                   # Built assets (served by FastAPI)
+│               └── package.json
 │
 ├── .gitignore                              # Files that git should never track
-├── .gitattribute                           # Enforce LF line endings for shell scripts across all OS
+├── .gitattributes                          # Enforce LF line endings for shell scripts across all OS
 ├── dev-setup.sh                            # One-time setup script
 ├── docker-compose.yml                      # Dev + PostgreSQL services
 ├── dockerfile                              # Dev container image
@@ -100,12 +107,12 @@ policy rules from PDF documents into validatable SHACL shapes.
 ├── .env                                    # Local secrets — never committed
 └── .env.example                            # Environment variable template
 ```
- 
+
 ## 2. Pipeline Stages
- 
+
 The pipeline runs as a LangGraph state machine. Each stage passes its output
 to the next via a shared `PipelineState` object.
- 
+
 | Step | File | What it does |
 |---|---|---|
 | **Step 1** | `extract.py` | Opens all PDFs with pdfplumber, splits text into sentences, filters headers/footers |
@@ -117,8 +124,9 @@ to the next via a shared `PipelineState` object.
 | **Step 4b** | `direct_shacl.py` | Fallback for FOL failures. Converts rule text → SHACL directly, skipping FOL. Has syntax repair loop. **Skipped if no FOL failures.** |
 | **Step 5** | `validate.py` | Runs pyshacl engine. Merges generated shapes with gold-standard shapes. Validates against TDD test data. |
 | **Step 6** | `report.py` | Collects all stats from every stage. Builds final summary with counts, severity breakdown, top-5 shapes, environment metadata. |
+
 ### Output files summary
- 
+
 | File | Written by | Contents |
 |---|---|---|
 | `classified_rules.json` | Step 2b + 2c | All sentences — deontic type, confidence, rule ID |
@@ -126,47 +134,41 @@ to the next via a shared `PipelineState` object.
 | `shapes_generated.ttl` | Step 4a + 4b | All generated SHACL shapes in Turtle syntax |
 | `validation_results.json` | Step 5 | Which entities violated which shapes |
 | `pipeline_report.json` | Step 6 | Full run summary with stats and environment info |
- 
+
 ---
- 
+
 ## 3. Local Environment Setup
- 
+
 Use this if you want to run the project directly on your machine without Docker.
- 
+
 ### Prerequisites
- 
+
 | Tool | Version |
 |---|---|
-| Python | 3.10+ |
+| Python | 3.13+ |
 | uv | latest |
+| Node.js | 20 LTS (installed automatically by dev-setup.sh) |
 | Ollama | latest |
 | PostgreSQL | 15+ |
- 
+
 > **Note:** PostgreSQL is only needed if you use `src/policy_checker/database/` to load
-> student entity data. The core pipeline (`models/langgraph_agent/`) runs without it.
-  
+> student entity data. The core pipeline (`src/policy_checker/langgraph_agent/`) runs without it.
+
 ### Step 1 — Clone the repo
- 
+
 ```bash
 git clone <repo-url>
-cd compliance-checker
+cd compliance-checking
 ```
- 
-### Step 2 — Install dependencies
- 
-```bash
-uv python install    # installs Python from .python-version
-uv sync              # installs all packages from pyproject.toml
-```
- 
-### Step 3 — Set up environment
- 
+
+### Step 2 — Set up environment
+
 ```bash
 cp .env.example .env
 ```
- 
+
 Open `.env` and set these minimum required values:
- 
+
 ```bash
 OLLAMA_HOST=http://localhost:11434    # local Ollama
 OLLAMA_MODEL=mistral                  # must match what you pulled
@@ -174,149 +176,154 @@ OLLAMA_SEED=42                        # fixed seed for reproducibility
 PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
 POSTGRES_HOST=localhost               # local PostgreSQL (optional)
 ```
- 
-### Step 4 — Install and start Ollama
- 
+
+### Step 3 — Install and start Ollama
+
 Ollama must be running **before** the pipeline starts.
- 
+
 ```bash
 # Install from https://ollama.com/download
 # Then pull the model (one-time, ~4GB download):
 ollama pull mistral
 ```
- 
+
 **Windows:** Ollama runs automatically as a background service after install.
- 
+
 **macOS / Linux:** Start it manually:
 ```bash
 ollama serve
 ```
- 
+
+### Step 4 — Run dev-setup.sh
+
+```bash
+bash dev-setup.sh
+```
+
+This will:
+- Install Python from `.python-version` via `uv python install`
+- Install all Python dependencies via `uv sync`
+- Install Node.js LTS 20 via `nodeenv` into the virtualenv
+- Install frontend dependencies via `npm install`
+- Pull the Ollama model specified in `.env`
+
 ### Step 5 — Run the pipeline
- 
+
 ```bash
 uv run policy-checker --source ait --verbose
 ```
 
 ### Step 6 — Seed the database (optional)
- 
+
 Only needed if using the compliance dashboard database features:
- 
+
 ```bash
-uv run python -m policy_checker.database.seed
+uv run policy-seed
 ```
- 
+
 ---
- 
+
 ## 4. Dev Container Setup
- 
+
 Use this for a consistent, team-ready environment using Docker.
- 
+
 ### Step 1 — Install Ollama on your machine
- 
+
 Download and install from [ollama.com/download](https://ollama.com/download).
- 
+
 Pull the model (one-time, ~4GB):
 ```bash
 ollama pull mistral
-ollaa serve
+ollama serve
 ```
 
 ### Step 2 — Clone the repo
- 
+
 ```bash
 git clone <repo-url>
-cd compliance-checker
+cd compliance-checking
 ```
- 
+
 ### Step 3 — Set up environment
- 
+
 ```bash
 cp .env.example .env
 ```
- 
+
 Open `.env` and set these minimum required values:
- 
+
 ```bash
 # Inside Dev Container, use host.docker.internal not localhost
 OLLAMA_HOST=http://host.docker.internal:11434
- 
+
 OLLAMA_MODEL=mistral                  # must match what you pulled
 OLLAMA_SEED=42                        # fixed seed for reproducibility
 PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
- 
+
 POSTGRES_HOST=host.docker.internal
 ```
- 
+
 ### Step 4 — Open in Dev Container
- 
+
 1. Open VS Code
 2. `File → Open Folder` → select the project folder
-3. `Ctrl + Shift + P` → select rebuild and reopen in container
-4. Select docker outside docker
+3. `Ctrl + Shift + P` → select **Rebuild and Reopen in Container**
+4. Select **Docker Outside of Docker**
 
 ### Step 5 — Run dev-setup.sh
- 
+
 Inside the VS Code terminal (you are now inside the container):
- 
+
 ```bash
 bash dev-setup.sh
 ```
- 
+
 This will:
-- Load `.env`
-- Install uv and Python and all dependencies via `uv sync`
- 
+- Fix container permissions
+- Install Python, all Python dependencies, Node.js LTS 20, and frontend dependencies
+- Pull the Ollama model specified in `.env`
+
 ### Step 6 — Run the pipeline
- 
+
 ```bash
 uv run policy-checker --source ait --verbose
 ```
- 
+
 ### Subsequent runs (every day after first setup)
- 
+
 ```bash
 # Windows: Ollama runs automatically — no action needed
 # macOS/Linux: make sure ollama serve is running
- 
+
 # Start Docker services if stopped
 docker compose up -d
- 
+
 # Open VS Code → Reopen in Container
 # Run pipeline
 uv run policy-checker --source ait --verbose
 ```
- 
+
 ---
- 
+
 ## 5. Running the Pipeline
- 
- 
+
 ### Basic run
- 
+
 ```bash
 uv run policy-checker --source ait
 ```
 
-### Step 6 — Seed the database (optional)
- 
-Only needed if using the compliance dashboard database features:
- 
-```bash
-uv run python -m policy_checker.database.seed
-```
- 
 ### Verbose — shows per-step stats
- 
+
 ```bash
 uv run policy-checker --source ait --verbose
 ```
- 
+
 ### Ablation studies
- 
+
 Run these to measure the contribution of individual pipeline components
 (used for thesis experiments):
- 
+
 ```bash
 uv run policy-checker --source ait --ablation no-hints
 uv run policy-checker --source ait --ablation no-prefilter
@@ -325,7 +332,7 @@ uv run policy-checker --source ait --ablation no-fallback
 uv run policy-checker --source ait --ablation no-fol-retry
 uv run policy-checker --source ait --ablation no-may-disambig
 ```
- 
+
 | Flag | What it disables |
 |---|---|
 | `no-prefilter` | Skips heuristic filter — all sentences go to classifier |
@@ -334,11 +341,22 @@ uv run policy-checker --source ait --ablation no-may-disambig
 | `no-fallback` | Skips direct NL→SHACL fallback (Step 4b) |
 | `no-fol-retry` | Disables placeholder rejection retry in FOL step |
 | `no-may-disambig` | Skips epistemic "may" disambiguation |
- 
+
 Output is isolated to `data/output/ait_<ablation>/` for side-by-side comparison.
- 
+
+### Corpus switching
+
+The pipeline supports multiple corpora via `config/<corpus>.yaml`. To run on a different corpus:
+
+```bash
+uv run policy-checker --source gdpr --verbose
+```
+
+Each YAML file specifies PDF paths, ontology, gold shapes, FOL examples, and domain vocabulary.
+See `config/ait.yaml` for a fully annotated example.
+
 ### Expected terminal output
- 
+
 ```
 ============================================================
 Environment:
@@ -347,7 +365,7 @@ Environment:
   Version:   2.1-hints
   Ablation:  baseline
 ============================================================
- 
+
   >> Step 1  - PDF Extraction          {'sentences': 1565}
   >> Step 2a - Heuristic Pre-filter    {'candidates': 450}
   >> Step 2b - LLM Classification      {'rules': 440}
@@ -357,40 +375,62 @@ Environment:
   >> Step 4b - SHACL NL Fallback       {'shapes': 69}
   >> Step 5  - SHACL Validation
   >> Step 6  - Report
- 
+
 [DONE] Pipeline complete - report: data/output/ait/pipeline_report.json
 ```
- 
+
+### Ollama management
+
+```bash
+uv run policy-ollama ollama-load        # pull the model specified in .env
+uv run policy-ollama ollama-list        # list locally available models
+uv run policy-ollama ollama-host        # print the configured OLLAMA_HOST
+uv run policy-ollama chat <model>       # interactive chat with a model
+```
+
 ### MCP server (optional)
- 
+
 Exposes the pipeline as tools for MCP-compatible AI clients:
- 
+
 ```bash
 uv run policy-mcp    # stdio MCP mode — connect from Claude or other clients
 ```
- 
+
 Available tools: `verify_rule`, `check_status`, `list_rules`, `get_metrics`, `run_pipeline`.
- 
+
 ---
- 
+
 ## 6. Compliance Dashboard (Web UI)
- 
+
 An interactive web dashboard for browsing pipeline results and running live
-SHACL validation against custom RDF data.
- 
+SHACL validation against custom RDF data. The frontend is a React/Vite app
+served by the FastAPI backend.
+
 > **Important:** Run the pipeline at least once before starting the dashboard.
 > The dashboard reads from `data/output/ait/` which is populated by the pipeline.
- 
+
+### Build the frontend (first time / after frontend changes)
+
+```bash
+uv run policy-build
+```
+
 ### Start the dashboard
- 
+
+```bash
+uv run policy-web
+```
+
+Then open [http://localhost:8000](http://localhost:8000) in your browser.
+
+Alternatively, start with auto-reload for backend development:
+
 ```bash
 uv run python -m uvicorn policy_checker.web.app:app --host 0.0.0.0 --port 8000 --reload
 ```
- 
-Then open [http://localhost:8000](http://localhost:8000) in your browser.
- 
+
 ### Dashboard features
- 
+
 | Feature | Description |
 |---|---|
 | **Pipeline Stats** | Summary of extraction, classification, and shape generation metrics from the latest run |
@@ -398,9 +438,9 @@ Then open [http://localhost:8000](http://localhost:8000) in your browser.
 | **Rule Detail** | Click any rule to see its original text, FOL formula, and generated SHACL shape side by side |
 | **Compliance Check** | Paste RDF data in Turtle format and run live pyshacl validation against pipeline shapes |
 | **Violation Report** | Severity-coded violations showing affected entities, source shapes, and violation messages |
- 
+
 ### What the dashboard reads
- 
+
 | Data source | Used for |
 |---|---|
 | `data/output/ait/pipeline_report.json` | Pipeline stats on the home page |
@@ -409,33 +449,33 @@ Then open [http://localhost:8000](http://localhost:8000) in your browser.
 | `data/output/ait/shapes_generated.ttl` | SHACL shape in rule detail + live validation |
 | `data/shacl/test_data/tdd_test_data_fixed.ttl` | Sample RDF data for compliance check |
 | `data/shacl/ontology/ait_policy_ontology.ttl` | Domain ontology loaded during validation |
- 
+
 ---
- 
+
 ## 7. Running Evaluation
- 
+
 Run evaluation scripts **after** the pipeline completes to measure accuracy
 against the 96 gold-standard shapes in `data/shacl/shapes/ait_policy_shapes.ttl`.
- 
+
 ```bash
 # M1 — extraction coverage
 uv run python -m policy_checker.evaluation.align
- 
+
 # M4 — per-rule shape correctness
 uv run python -m policy_checker.evaluation.per_rule_eval
- 
+
 # M1–M5 — full thesis metrics summary
 uv run python -m policy_checker.evaluation.report
- 
+
 # Markdown table (for thesis document)
 uv run python -m policy_checker.evaluation.report --md
- 
+
 # Save results to JSON
 uv run python -m policy_checker.evaluation.report --save
 ```
- 
+
 ### Metrics reference
- 
+
 | Metric | Definition |
 |---|---|
 | M1 | Extraction coverage — gold rules with an aligned pipeline rule (cosine ≥ 0.65) |
@@ -443,17 +483,20 @@ uv run python -m policy_checker.evaluation.report --save
 | M3 | FOL quality — formulas with semantic (non-placeholder) predicates |
 | M4 | Shape correctness — per-rule precision/recall against Pos/Neg test entities |
 | M5 | Reproducibility — identical output across clean-cache runs with fixed seed |
- 
+
 ### Evaluation output files
- 
+
 | File | Written by | Contents |
 |---|---|---|
 | `data/output/ait/gold_alignment.json` | `align.py` | M1 alignment results — matched, missed, false positives |
 | `data/output/ait/per_rule_eval.json` | `per_rule_eval.py` | M4 per-rule verdicts (PASS/FAIL, too_strict/too_permissive) |
 | `data/output/ait/thesis_metrics.json` | `report.py --save` | M1–M5 summary for thesis |
 
+---
+
 ## 8. API Deployment
-Status - In Development Progress
+
+Status — In Development
 
 PolicyChecker exposes a REST API for integration with the AITGPT platform.
 
@@ -484,10 +527,10 @@ User clicks → sees broken rules
 | Endpoint | Method | Description |
 |---|---|---|
 | `/api/validate` | POST | Validate RDF Turtle data against SHACL shapes — returns violations |
+| `/api/run-pipeline` | POST | Trigger a pipeline run from the API |
 | `/api/rules` | GET | List all classified rules with filtering and pagination |
 | `/api/rules/{rule_id}` | GET | Get single rule with FOL formula and SHACL shape |
 | `/api/stats` | GET | Pipeline summary statistics |
 | `/api/db-status` | GET | Check PostgreSQL connection and entity count |
 | `/api/db-entities` | GET | List all entities in database |
 | `/api/load-from-db` | POST | Convert database entities to RDF Turtle |
-

@@ -3,7 +3,8 @@
 {
 	"name": "dev environment",
 	"dockerComposeFile": [
-		"docker-compose.yml"
+		"docker-compose.yml",
+		"docker-compose.override.yml"
 	],
 	"service": "dev",
 	"overrideCommand": true,

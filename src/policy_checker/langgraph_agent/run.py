@@ -17,18 +17,20 @@ import sys
 import logging
 from pathlib import Path
 
-from dotenv import load_dotenv
-load_dotenv(Path(__file__).resolve().parent.parent.parent.parent / ".env")
-
 # PROJECT_ROOT = Path(__file__).parent.parent
 # sys.path.insert(0, str(PROJECT_ROOT))
 from policy_checker import PROJECT_ROOT
+
+# Load .env so PIPELINE_VERSION, OLLAMA_* etc. are available via os.getenv()
+from dotenv import load_dotenv
+load_dotenv(PROJECT_ROOT / ".env")
 
 # Suppress rdflib's verbose tracebacks for ISO8601 parsing on failed literals
 logging.getLogger("rdflib.term").setLevel(logging.ERROR)
 
 from policy_checker.langgraph_agent.graph import build_graph
 from policy_checker.langgraph_agent.state import PipelineState
+from policy_checker.langgraph_agent.corpus_config import get_corpus_config, reset_config_cache
 
 SOURCES = {
     "ait": {
@@ -47,6 +49,18 @@ ABLATIONS = {
     "no-fallback":        {"ABLATION_SKIP_DIRECT_SHACL": "1"},
     "no-fol-retry":       {"ABLATION_NO_FOL_RETRY": "1"},
     "no-may-disambig":    {"ABLATION_NO_MAY_DISAMBIG": "1"},
+}
+
+STEP_LABELS = {
+    "extract":      "Step 1 - PDF Extraction",
+    "prefilter":    "Step 2a - Heuristic Pre-filter",
+    "classify":     "Step 2b - LLM Classification",
+    "reclassify":   "Step 2c - Second-Opinion Reclassification",
+    "fol":          "Step 3 - FOL Formalization",
+    "shacl":        "Step 4a - SHACL Generation (FOL-mediated)",
+    "direct_shacl": "Step 4b - SHACL Generation (Direct NL fallback)",
+    "validate":     "Step 5 - SHACL Validation",
+    "report":       "Step 6 - Report",
 }
 
 
@@ -86,7 +100,24 @@ def _initial_state(source: str) -> PipelineState:
     )
 
 
-def run(source: str, verbose: bool = False, ablation: str = "baseline") -> dict:
+def run(source: str, verbose: bool = False, ablation: str = "baseline",
+        corpus: str | None = None) -> dict:
+    # Set corpus config (defaults to source name if not specified)
+    corpus_name = corpus or source
+    os.environ["POLICYCHECKER_CORPUS"] = corpus_name
+    reset_config_cache()  # ensure fresh config for this run
+
+    # Load corpus config — if a config file exists, override SOURCES entry
+    try:
+        cfg = get_corpus_config(corpus_name)
+        if source not in SOURCES:
+            SOURCES[source] = {
+                "name": cfg.display_name,
+                "pdf_dir": str(cfg.pdf_dir),
+            }
+    except FileNotFoundError:
+        pass  # fall back to hardcoded SOURCES
+
     # Apply ablation environment variables
     if ablation in ABLATIONS:
         os.environ.update(ABLATIONS[ablation])
@@ -114,17 +145,6 @@ def run(source: str, verbose: bool = False, ablation: str = "baseline") -> dict:
         node_state = step[node_name]
         current = node_state.get("current_step", node_name)
 
-        STEP_LABELS = {
-            "extract":      "Step 1 - PDF Extraction",
-            "prefilter":    "Step 2a - Heuristic Pre-filter",
-            "classify":     "Step 2b - LLM Classification",
-            "reclassify":   "Step 2c - Second-Opinion Reclassification",
-            "fol":          "Step 3 - FOL Formalization",
-            "shacl":        "Step 4a - SHACL Generation (FOL-mediated)",
-            "direct_shacl": "Step 4b - SHACL Generation (Direct NL fallback)",
-            "validate":     "Step 5 - SHACL Validation",
-            "report":       "Step 6 - Report",
-        }
         label = STEP_LABELS.get(current, current)
         print(f"  >> {label}")
 
@@ -183,8 +203,12 @@ def main() -> None:
         default="baseline",
         help="Run an ablation study (output goes to output/<source>_<ablation>/)",
     )
+    parser.add_argument(
+        "--corpus", default=None,
+        help="Corpus config name (default: same as --source). Loads config/<name>.yaml",
+    )
     args = parser.parse_args()
-    run(args.source, verbose=args.verbose, ablation=args.ablation)
+    run(args.source, verbose=args.verbose, ablation=args.ablation, corpus=args.corpus)
 
 
 if __name__ == "__main__":

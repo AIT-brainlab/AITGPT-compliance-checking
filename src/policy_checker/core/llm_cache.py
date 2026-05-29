@@ -64,6 +64,11 @@ class LLMCache:
             CREATE INDEX IF NOT EXISTS idx_last_accessed
             ON llm_cache(last_accessed)
         """)
+        
+        ###### Change ######
+        # Enable WAL mode for better concurrent read/write performance
+        cursor.execute("PRAGMA journal_mode=WAL")
+        ###### Change ######
 
         conn.commit()
         conn.close()

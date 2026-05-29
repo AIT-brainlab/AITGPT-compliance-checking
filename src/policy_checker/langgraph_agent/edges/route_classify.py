@@ -1,8 +1,5 @@
 from policy_checker.langgraph_agent.state import PipelineState
 
-CONFIDENCE_HIGH = 0.6
-CONFIDENCE_LOW = 0.4
-
 
 def route_classify(state: PipelineState) -> str:
     """Route after classify_node based on what was found."""

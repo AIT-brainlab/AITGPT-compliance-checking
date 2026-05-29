@@ -3,13 +3,13 @@ import requests
 import typer
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://ollama:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "mistral")
 
 cli = typer.Typer()
 
 
 @cli.command()
-def ollama_load(
+def load(
     model_name: str = typer.Argument(OLLAMA_MODEL, help="Name of the model to load in ollama")
 ):
     """
@@ -30,7 +30,7 @@ def ollama_load(
 
 
 @cli.command()
-def ollama_list():
+def list():
     """
     List model already load in ollama using cli command via REST API: ollama list.
     """
@@ -59,7 +59,7 @@ def ollama_list():
 
 
 @cli.command()
-def ollama_host():
+def host():
     """
     Print ollama host using cli command: $OLLAMA_HOST
     """
@@ -67,7 +67,7 @@ def ollama_host():
 
 
 @cli.command()
-def ollama_chat(
+def chat(
     model_name: str = typer.Argument(..., help="Name of the model to chat with")
 ):
     """
@@ -99,7 +99,7 @@ def ollama_chat(
             raise typer.Exit(1)
 
 @cli.command()
-def ollama_delete(
+def delete(
     model_name: str = typer.Argument(..., help="Name of the model to delete from ollama")
 ):
     """

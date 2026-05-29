@@ -126,6 +126,7 @@ def _build_student_turtle(conn, student_names: Optional[list[str]] = None) -> li
          registered, grade_det, makeup, corr_author, journal, first_auth) = row
 
         # Determine entity type
+        # entity_type = "Student"
         entity_type = "PostgraduateStudent" if degree == "PhD" else "Student"
         entity_name = first
 
@@ -136,62 +137,97 @@ def _build_student_turtle(conn, student_names: Optional[list[str]] = None) -> li
                       and tuition is not None and amt_paid >= tuition)
         first_paid = bool(first_inst)
 
+        has_accom = bldg is not None
+
+        # Build property list — SHACL semantics:
+        #   Obligations (sh:minCount 1): only emit when TRUE → present = compliant
+        #   Prohibitions (sh:maxCount 0): only emit when TRUE → present = violation
+        #   Omitted property → minCount fails (obligation violation)
+        #   Omitted property → maxCount satisfied (no prohibition violation)
+        props = []
+
+        # -- Always-present metadata --
+        props.append(("student", "true"))
+        props.append(("enrolled", _b(is_enrolled)))
+        props.append(("newStudent", _b(bool(is_new))))
+
+        # -- Fee obligations: emit only when paid --
+        if fees_paid:
+            props.append(("payFee", "true"))
+        if first_paid:
+            props.append(("payFirstSemesterFee", "true"))
+        if fully_paid:
+            props.append(("fullPayment", "true"))
+            props.append(("paidinadvanceorfully", "true"))
+            props.append(("feesPaid", "true"))
+
+        # -- Accommodation obligations: emit only when compliant --
+        if has_accom and bool(confirmed):
+            props.append(("confirmOfferMove", "true"))
+        if has_accom and bool(with_spouse):
+            props.append(("moveWithSpouse", "true"))
+        if has_accom and bool(arrival_date):
+            props.append(("provideapproximatedateofarrivaloncampus", "true"))
+        if bool(rent_ok) if has_accom else True:
+            props.append(("payRentForStayOnCampus", "true"))
+        if bool(vacated) if has_accom else True:
+            props.append(("vacatesRoom", "true"))
+            props.append(("vacateRoom", "true"))
+        if bool(room_clean) if has_accom else True:
+            props.append(("clean", "true"))
+            props.append(("maintainCleanlinessOfBedroomAndFacilities", "true"))
+        if bool(unit_hygiene) if has_accom else True:
+            props.append(("regularcleaningandhygieneoftheunit", "true"))
+        if bool(common_clean) if has_accom else True:
+            props.append(("maintainCleanlinessOfCommonAreaAndLandscape", "true"))
+
+        # -- Conduct obligations: emit only when compliant --
+        if bool(concerns) if concerns is not None else True:
+            props.append(("bringConcernsToAttention", "true"))
+        if bool(ethical) if ethical is not None else True:
+            props.append(("meetHighestStandardsOfPersonalEthicalAndMoralConduct", "true"))
+        if bool(peaceful) if peaceful is not None else True:
+            props.append(("maintainPeacefulHealthyLearningEnvironmentForFreeDiscussion", "true"))
+        if bool(library_use) if library_use is not None else True:
+            props.append(("useAITLibraryAndEducationalResourcesResponsibly", "true"))
+        if bool(it_use) if it_use is not None else True:
+            props.append(("abideByAcceptableUsePolicyForITResources", "true"))
+
+        # -- Prohibition violations: emit only when violating --
+        if cooking:
+            props.append(("cookInUnit", "true"))
+            props.append(("cookInProhibitedDormitory", "true"))
+        if noisy:
+            props.append(("noisyGroupStudyOrPartyInStudentAccommodation", "true"))
+        if pet:
+            props.append(("petInStudentAccommodation", "true"))
+        if disturbing:
+            props.append(("disturbFellowStudentsInResidentialAreas", "true"))
+            props.append(("disturbingpeace", "true"))
+
+        # -- Academic obligations: emit only when compliant --
+        if bool(registered) if registered is not None else True:
+            props.append(("registry", "true"))
+        if bool(grade_det) if grade_det is not None else True:
+            props.append(("determineGradeInCourse", "true"))
+        if bool(makeup) if makeup is not None else True:
+            props.append(("scheduledoutsideregularhoursmakeupclasses", "true"))
+        if bool(corr_author):
+            props.append(("serveAsCorrespondingAuthor", "true"))
+            props.append(("correspondAsAuthorWithJournal", "true"))
+        if bool(first_auth):
+            props.append(("multiAuthoredArticleWrittenByStudentShouldBeFirstAuthorUnlessJournalRequiresDifferentOrder", "true"))
+
+        # -- Build Turtle block --
         lines.append(f"# -- {first} {last} ({student_id}) --")
         lines.append(f"# Program: {program or 'N/A'} | {degree or 'N/A'} | Status: {status}")
         if bldg:
             lines.append(f"# Housing: {bldg}, Room {room}")
         lines.append(f"ait:{entity_name} a ait:{entity_type} ;")
         lines.append(f'    rdfs:label "{first} {last} - {degree or ""} Student ({status})" ;')
-        lines.append(f"    ait:student {_b(True)} ;")
-        lines.append(f"    ait:enrolled {_b(is_enrolled)} ;")
-        lines.append(f"    ait:newStudent {_b(bool(is_new))} ;")
-        
-        # -- Fee properties
-        lines.append(f"    ait:payFee {_b(fees_paid)} ;")
-        lines.append(f"    ait:payFirstSemesterFee {_b(first_paid)} ;")
-        lines.append(f"    ait:fullPayment {_b(fully_paid)} ;")
-        lines.append(f"    ait:paidinadvanceorfully {_b(fully_paid)} ;")
-
-        # -- Accommodation properties
-        has_accom = bldg is not None
-        lines.append(f"    ait:queuing {_b(has_accom)} ;")
-        lines.append(f"    ait:confirmOfferMove {_b(bool(confirmed) if has_accom else False)} ;")
-        lines.append(f"    ait:moveWithSpouse {_b(bool(with_spouse) if has_accom else False)} ;")
-        lines.append(f"    ait:provideapproximatedateofarrivaloncampus {_b(bool(arrival_date) if has_accom else False)} ;")
-        lines.append(f"    ait:putNameOnWaitingListForCampusAccommodation {_b(bool(waiting_list) if has_accom else True)} ;")
-        lines.append(f"    ait:payRentForStayOnCampus {_b(bool(rent_ok) if has_accom else True)} ;")
-        lines.append(f"    ait:vacatesRoom {_b(bool(vacated) if has_accom else True)} ;")
-        lines.append(f"    ait:vacateRoom {_b(bool(vacated) if has_accom else True)} ;")
-        lines.append(f"    ait:clean {_b(bool(room_clean) if has_accom else True)} ;")
-        lines.append(f"    ait:regularcleaningandhygieneoftheunit {_b(bool(unit_hygiene) if has_accom else True)} ;")
-        lines.append(f"    ait:maintainCleanlinessOfCommonAreaAndLandscape {_b(bool(common_clean) if has_accom else True)} ;")
-        lines.append(f"    ait:maintainCleanlinessOfBedroomAndFacilities {_b(bool(room_clean) if has_accom else True)} ;")
-        
-        # -- Conduct violations (true = violation)
-        lines.append(f"    ait:bringConcernsToAttention {_b(bool(concerns) if concerns is not None else True)} ;")
-        lines.append(f"    ait:meetHighestStandardsOfPersonalEthicalAndMoralConduct {_b(bool(ethical) if ethical is not None else True)} ;")
-        lines.append(f"    ait:maintainPeacefulHealthyLearningEnvironmentForFreeDiscussion {_b(bool(peaceful) if peaceful is not None else True)} ;")
-        lines.append(f"    ait:useAITLibraryAndEducationalResourcesResponsibly {_b(bool(library_use) if library_use is not None else True)} ;")
-        lines.append(f"    ait:abideByAcceptableUsePolicyForITResources {_b(bool(it_use) if it_use is not None else True)} ;")
-
-        # Dorm violations
-        if cooking:
-            lines.append(f"    ait:cookInUnit true ;")
-            lines.append(f"    ait:cookInProhibitedDormitory true ;")
-        if noisy:
-            lines.append(f"    ait:noisyGroupStudyOrPartyInStudentAccommodation true ;")
-        if pet:
-            lines.append(f"    ait:petInStudentAccommodation true ;")
-        if disturbing:
-            lines.append(f"    ait:disturbFellowStudentsInResidentialAreas true ;")
-
-        # -- Academic properties
-        lines.append(f"    ait:registry {_b(bool(registered) if registered is not None else True)} ;")
-        lines.append(f"    ait:determineGradeInCourse {_b(bool(grade_det) if grade_det is not None else True)} ;")
-        lines.append(f"    ait:scheduledoutsideregularhoursmakeupclasses {_b(bool(makeup) if makeup is not None else True)} ;")
-        lines.append(f"    ait:serveAsCorrespondingAuthor {_b(bool(corr_author) if corr_author is not None else False)} ;")
-        lines.append(f"    ait:correspondAsAuthorWithJournal {_b(bool(journal) if journal is not None else False)} ;")
-        lines.append(f"    ait:multiAuthoredArticleWrittenByStudentShouldBeFirstAuthorUnlessJournalRequiresDifferentOrder {_b(bool(first_auth) if first_auth is not None else False)} .")
+        for i, (pred, val) in enumerate(props):
+            end = " ." if i == len(props) - 1 else " ;"
+            lines.append(f"    ait:{pred} {val}{end}")
         lines.append("")
 
     return lines
@@ -218,15 +254,25 @@ def _build_faculty_turtle(conn, entity_names: Optional[list[str]] = None) -> lis
         name = f"{title}{first}{last}".replace(" ", "").replace(".", "")
         if entity_names and name not in entity_names:
             continue
+        props = []
+        if grading:
+            props.append(("makeKnownCriteriaForGrading", "true"))
+        if disciplinary:
+            props.append(("followProceduresForDisciplinaryActions", "true"))
+        if discloses:
+            props.append(("disclose", "true"))
+        if reports:
+            props.append(("suspectCheatingDuringExamOrAssignmentOrResearchProject", "true"))
+            props.append(("reported", "true"))
         lines.append(f"# -- {title} {first} {last} ({fid}) --")
         lines.append(f"# Department: {dept} | Position: {pos}")
         lines.append(f"ait:{name} a ait:Faculty ;")
         lines.append(f'    rdfs:label "{title} {first} {last} - {pos}" ;')
-        lines.append(f"    ait:makeKnownCriteriaForGrading {_b(grading)} ;")
-        lines.append(f"    ait:followProceduresForDisciplinaryActions {_b(disciplinary)} ;")
-        lines.append(f"    ait:disclose {_b(discloses)} ;")
-        lines.append(f"    ait:suspectCheatingDuringExamOrAssignmentOrResearchProject {_b(reports)} ;")
-        lines.append(f"    ait:reported {_b(reports)} .")
+        for i, (pred, val) in enumerate(props):
+            end = " ." if i == len(props) - 1 else " ;"
+            lines.append(f"    ait:{pred} {val}{end}")
+        if not props:
+            lines[-1] = lines[-1].rstrip(" ;") + " ."
         lines.append("")
 
     return lines
@@ -252,17 +298,26 @@ def _build_staff_turtle(conn, entity_names: Optional[list[str]] = None) -> list[
          gifts, settlements, fees, ethical) in rows:
         if entity_names and first not in entity_names:
             continue
+        props = []
+        if gifts:
+            props.append(("reported", "true"))
+        if settlements:
+            props.append(("settled", "true"))
+        if fees:
+            props.append(("feesPaid", "true"))
+            props.append(("payFees", "true"))
+        if ethical:
+            props.append(("usesAuthorityEthicallyWithRespectAndSensitivityAndInAccordanceWithInstitutesPolicies", "true"))
+            props.append(("disclose", "true"))  # ethical employees disclose conflicts
+        props.append(("expresses_personal_opinion", "true"))
+        props.append(("undergoDisciplinaryAction", "true"))
         lines.append(f"# -- {first} {last} ({sid}) --")
         lines.append(f"# Department: {dept} | Role: {role}")
         lines.append(f"ait:{first} a ait:Employee ;")
         lines.append(f'    rdfs:label "{first} {last} - {role}" ;')
-        lines.append(f"    ait:reported {_b(gifts)} ;")
-        lines.append(f"    ait:settled {_b(settlements)} ;")
-        lines.append(f"    ait:feesPaid {_b(fees)} ;")
-        lines.append(f"    ait:payFees {_b(fees)} ;")
-        lines.append(f"    ait:usesAuthorityEthicallyWithRespectAndSensitivityAndInAccordanceWithInstitutesPolicies {_b(ethical)} ;")
-        lines.append(f"    ait:expresses_personal_opinion true ;")
-        lines.append(f"    ait:undergoDisciplinaryAction true .")
+        for i, (pred, val) in enumerate(props):
+            end = " ." if i == len(props) - 1 else " ;"
+            lines.append(f"    ait:{pred} {val}{end}")
         lines.append("")
 
     return lines
@@ -370,51 +425,124 @@ def list_entities() -> list[dict]:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT s.first_name, s.last_name,
-                       CASE WHEN s.degree_level = 'PhD' THEN 'PostgraduateStudent'
-                            ELSE 'Student' END as entity_type,
+                       'Student' as entity_type,
                        s.program, s.enrollment_status, s.degree_level,
-                       (SELECT COUNT(*) FROM fee_records f WHERE f.student_id = s.student_id) as fee_count,
-                       (SELECT COUNT(*) FROM accommodations a WHERE a.student_id = s.student_id) as accom_count,
-                       (SELECT COUNT(*) FROM conduct_records cr WHERE cr.student_id = s.student_id) as violation_count
-                FROM students s ORDER BY s.student_id
+                       (SELECT COUNT(*) FROM conduct_records cr WHERE cr.student_id = s.student_id) as violation_count,
+                       COALESCE(fr.payment_status, 'N/A') as pay_status,
+                       COALESCE(sc.cooking_in_dorm, false) as cooking,
+                       COALESCE(sc.pet_in_dorm, false) as pet,
+                       COALESCE(sc.noisy_in_dorm, false) as noisy,
+                       COALESCE(sc.disturbing_residents, false) as disturbing
+                FROM students s
+                LEFT JOIN LATERAL (
+                    SELECT payment_status FROM fee_records f
+                    WHERE f.student_id = s.student_id
+                    ORDER BY f.semester DESC LIMIT 1
+                ) fr ON true
+                LEFT JOIN student_conduct sc ON sc.student_id = s.student_id
+                ORDER BY s.student_id
             """)
             for row in cur.fetchall():
+                (first, last, etype, program, status, degree,
+                 viol_count, pay_status, cooking, pet, noisy, disturbing) = row
+                # Build detail string
+                issues = []
+                if pay_status in ("Overdue", "Partial"):
+                    issues.append(f"Fee: {pay_status}")
+                if cooking:
+                    issues.append("Cooking violation")
+                if pet:
+                    issues.append("Pet violation")
+                if noisy:
+                    issues.append("Noise violation")
+                if disturbing:
+                    issues.append("Disturbing residents")
+                detail_str = ", ".join(issues) if issues else "No known issues"
                 entities.append({
-                    "name": row[0],
-                    "type": row[2],
-                    "label": f"{row[0]} {row[1]} ({row[5]} - {row[3]})",
-                    "property_count": 30 + (row[6] or 0) + (row[7] or 0),
-                    "detail": f"{row[4]} | {row[8]} violations",
+                    "name": first,
+                    "type": etype,
+                    "label": f"{first} {last} ({degree} - {program})",
+                    "properties": 30,
+                    "detail": f"{status} | {detail_str}",
+                    "status": status,
+                    "issues": len(issues),
                 })
 
-            cur.execute("SELECT title, first_name, last_name, department, position FROM faculty ORDER BY id")
+            # Faculty
+            cur.execute("""
+                SELECT title, first_name, last_name, department, position,
+                       grading_criteria_published, follows_disciplinary_procedures,
+                       discloses_conflicts, reports_cheating_suspects
+                FROM faculty ORDER BY id
+            """)
             for row in cur.fetchall():
+                title, first, last, dept, pos, grading, disc, conflicts, reports = row
+                issues = []
+                if not grading:
+                    issues.append("No grading criteria")
+                if not disc:
+                    issues.append("No disciplinary procedures")
+                if not conflicts:
+                    issues.append("Undisclosed conflicts")
+                if not reports:
+                    issues.append("Not reporting cheating")
+                detail_str = ", ".join(issues) if issues else "No known issues"
                 entities.append({
-                    "name": f"{row[0]}{row[1]}{row[2]}".replace(" ", "").replace(".", ""),
+                    "name": f"{title}{first}{last}".replace(" ", "").replace(".", ""),
                     "type": "Faculty",
-                    "label": f"{row[0]} {row[1]} {row[2]} ({row[4]}, {row[3]})",
-                    "property_count": 5,
-                    "detail": row[4],
+                    "label": f"{title} {first} {last} ({pos}, {dept})",
+                    "properties": 5,
+                    "detail": detail_str,
+                    "status": "Active",
+                    "issues": len(issues),
                 })
 
-            cur.execute("SELECT first_name, last_name, department, role FROM staff ORDER BY id")
+            # Staff
+            cur.execute("""
+                SELECT first_name, last_name, department, role,
+                       gifts_reported, settlements_reported,
+                       fees_managed_properly, ethical_authority_use
+                FROM staff ORDER BY id
+            """)
             for row in cur.fetchall():
+                first, last, dept, role, gifts, settle, fees, ethical = row
+                issues = []
+                if not gifts:
+                    issues.append("Unreported gifts")
+                if not settle:
+                    issues.append("Unsettled obligations")
+                if not ethical:
+                    issues.append("Authority misuse")
+                detail_str = ", ".join(issues) if issues else "No known issues"
                 entities.append({
-                    "name": row[0],
+                    "name": first,
                     "type": "Employee",
-                    "label": f"{row[0]} {row[1]} ({row[3]}, {row[2]})",
-                    "property_count": 7,
-                    "detail": row[3],
+                    "label": f"{first} {last} ({role}, {dept})",
+                    "properties": 7,
+                    "detail": detail_str,
+                    "status": "Active",
+                    "issues": len(issues),
                 })
 
-            cur.execute("SELECT committee_name, committee_type FROM committees ORDER BY id")
+            # Committees
+            cur.execute("""
+                SELECT committee_name, committee_type, chair_elected
+                FROM committees ORDER BY id
+            """)
             for row in cur.fetchall():
+                name, ctype, chair = row
+                issues = []
+                if not chair:
+                    issues.append("No chair elected")
+                detail_str = ", ".join(issues) if issues else "No known issues"
                 entities.append({
-                    "name": row[0].replace(" ", "").replace("&", "And"),
+                    "name": name.replace(" ", "").replace("&", "And"),
                     "type": "Committee",
-                    "label": f"{row[0]} ({row[1]})",
-                    "property_count": 14,
-                    "detail": row[1],
+                    "label": f"{name} ({ctype})",
+                    "properties": 14,
+                    "detail": detail_str,
+                    "status": "Active",
+                    "issues": len(issues),
                 })
 
     return entities

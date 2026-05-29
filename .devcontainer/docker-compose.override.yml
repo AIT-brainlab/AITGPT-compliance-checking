@@ -1,20 +1,20 @@
 name: devcontainer
 services:
   # Use ollama in CPU mode
-  ollama:
+   ollama:
     image: ollama/ollama:latest
   
   # Use ollama in GPU-Nvidia mode
   # ollama:
-  #   image: ollama/ollama:latest
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             count: 1
-  #             capabilities: [gpu]
-  
+  #  image: ollama/ollama:latest
+  # deploy:
+  #    resources:
+  #      reservations:
+  #        devices:
+  #          - driver: nvidia
+  #            count: 1
+  #            capabilities: [gpu]
+
   # Use ollama in GPU-AMD mode
   # ollama:
   #   image: ollama/ollama:rocm

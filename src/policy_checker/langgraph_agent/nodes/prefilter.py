@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+import sys
+from collections import defaultdict
 from pathlib import Path
 from typing import List
 
@@ -26,7 +28,7 @@ def prefilter_node(state: PipelineState) -> PipelineState:
             "errors": ["ablation: prefilter skipped"],
         }
 
-    from collections import defaultdict
+    # Group sentences by their source PDF so the PreFilter can use page context
     by_source: dict[str, List[SentenceItem]] = defaultdict(list)
     for s in sentences:
         by_source[s["source"]].append(s)

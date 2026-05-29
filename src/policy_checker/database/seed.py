@@ -59,33 +59,61 @@ def _drop_tables(conn) -> None:
     print("[seed] [OK] Old tables dropped")
 
 
+# ═══════════════════════════════════════════════════════════════════
+# STUDENTS — 12 entities with diverse compliance profiles
+# ═══════════════════════════════════════════════════════════════════
+
 def _seed_students(conn) -> dict:
-    """Insert students and return {name: id} mapping."""
+    """Insert students and return {first_name: student_id} mapping."""
     students = [
-        # (student_id, first, last, email, program, degree, status, enroll_date, grad_date, new, advisor)
+        # 1. Somchai — model student, fully compliant
         ("ST12400", "Somchai", "Prasert", "st12400@ait.asia",
          "Computer Science and Information Management", "Master", "Active",
          date(2025, 8, 15), date(2027, 5, 30), False, "Dr. Kenji Tanaka"),
-
-        ("ST12401", "Napat", "Srikhao", "st12401@ait.asia",
-         "Industrial Engineering and Management", "Bachelor", "Active",
-         date(2026, 1, 10), date(2029, 12, 15), True, "Dr. Amara Chen"),
-
+        # 2. Priya — multiple violations (cooking, pet, noise, dirty room)
         ("ST12402", "Priya", "Sharma", "st12402@ait.asia",
          "Environmental Engineering and Management", "Master", "Active",
          date(2025, 8, 15), date(2027, 5, 30), False, "Dr. Rajesh Kumar"),
-
+        # 3. Lin — model PhD, family housing, fully compliant
         ("ST12403", "Lin", "Wei", "st12403@ait.asia",
          "Remote Sensing and Geographic Information Systems", "PhD", "Active",
          date(2024, 1, 10), date(2028, 12, 15), False, "Prof. Yuko Sato"),
-
+        # 4. Napat — fee defaulter, good conduct otherwise
+        ("ST12401", "Napat", "Srikhao", "st12401@ait.asia",
+         "Industrial Engineering and Management", "Master", "Active",
+         date(2026, 1, 10), date(2028, 12, 15), True, "Dr. Amara Chen"),
+        # 5. Ahmad — new student, partial payment, waiting list
         ("ST12404", "Ahmad", "Rizky", "st12404@ait.asia",
          "Water Engineering and Management", "Master", "Active",
          date(2026, 1, 10), date(2027, 12, 15), True, "Dr. Kenji Tanaka"),
-
+        # 6. Mei — suspended, ethical issues, unpaid fees
         ("ST12405", "Mei", "Nguyen", "st12405@ait.asia",
          "Data Science and Artificial Intelligence", "Master", "Suspended",
          date(2025, 8, 15), date(2027, 5, 30), False, "Dr. Amara Chen"),
+        # 7. Yuki — single conduct violation (disturbing residents)
+        ("ST12406", "Yuki", "Tanaka", "st12406@ait.asia",
+         "Computer Science and Information Management", "Master", "Active",
+         date(2025, 8, 15), date(2027, 5, 30), False, "Dr. Kenji Tanaka"),
+        # 8. Carlos — model PhD, compliant
+        ("ST12407", "Carlos", "Rivera", "st12407@ait.asia",
+         "Structural Engineering", "PhD", "Active",
+         date(2024, 8, 15), date(2028, 5, 30), False, "Prof. Rajesh Kumar"),
+        # 9. Fatima — cleanliness violation only
+        ("ST12408", "Fatima", "AlSaid", "st12408@ait.asia",
+         "Food Engineering and Bioprocess Technology", "Master", "Active",
+         date(2025, 8, 15), date(2027, 5, 30), False, "Dr. Amara Chen"),
+        # 10. Jirawat — pet in dorm only
+        ("ST12409", "Jirawat", "Kittisak", "st12409@ait.asia",
+         "Environmental Engineering and Management", "Master", "Active",
+         date(2025, 8, 15), date(2027, 5, 30), False, "Dr. Siti Rahman"),
+        # 11. Anna — partial payment + cooking violation
+        ("ST12410", "Anna", "Kowalski", "st12410@ait.asia",
+         "Data Science and Artificial Intelligence", "Master", "Active",
+         date(2026, 1, 10), date(2027, 12, 15), True, "Dr. Amara Chen"),
+        # 12. Ravi — graduated, didn't vacate on time
+        ("ST12411", "Ravi", "Patel", "st12411@ait.asia",
+         "Computer Science and Information Management", "Master", "Graduated",
+         date(2024, 1, 10), date(2025, 12, 15), False, "Dr. Kenji Tanaka"),
     ]
 
     ids = {}
@@ -102,44 +130,44 @@ def _seed_students(conn) -> dict:
                 RETURNING student_id
             """, s)
             row_id = cur.fetchone()[0]
-            ids[s[1]] = row_id  # first_name -> student_id
+            ids[s[1]] = row_id
     conn.commit()
     print(f"  -> students: {len(students)} records")
     return ids
 
 
-def _seed_fee_records(conn, student_ids: dict) -> None:
+def _seed_fee_records(conn, si: dict) -> None:
     """Insert fee payment records."""
     records = [
-        # Somchai - fully paid
-        (student_ids["Somchai"], "2025-2", 85000.00, 0, 85000.00, "Paid",
-         date(2025, 8, 1), True, "Bank Transfer"),
-        (student_ids["Somchai"], "2026-1", 85000.00, 0, 85000.00, "Paid",
-         date(2026, 1, 5), True, "Bank Transfer"),
-
-        # Napat - UNPAID (fee defaulter scenario)
-        (student_ids["Napat"], "2026-1", 72000.00, 0, 0, "Overdue",
-         None, False, None),
-
-        # Priya - paid via scholarship
-        (student_ids["Priya"], "2025-2", 85000.00, 40000.00, 85000.00, "Paid",
-         date(2025, 8, 10), True, "Sponsor"),
-        (student_ids["Priya"], "2026-1", 85000.00, 40000.00, 85000.00, "Paid",
-         date(2026, 1, 8), True, "Sponsor"),
-
-        # Lin - PhD, fully paid
-        (student_ids["Lin"], "2025-2", 95000.00, 95000.00, 95000.00, "Paid",
-         date(2025, 8, 3), True, "Scholarship"),
-        (student_ids["Lin"], "2026-1", 95000.00, 95000.00, 95000.00, "Paid",
-         date(2026, 1, 2), True, "Scholarship"),
-
-        # Ahmad - new student, partial payment
-        (student_ids["Ahmad"], "2026-1", 85000.00, 0, 42500.00, "Partial",
-         date(2026, 1, 12), True, "Bank Transfer"),
-
-        # Mei - suspended, fees unpaid
-        (student_ids["Mei"], "2026-1", 85000.00, 0, 0, "Overdue",
-         None, False, None),
+        # Somchai — fully paid both semesters
+        (si["Somchai"], "2025-2", 85000, 0, 85000, "Paid", date(2025, 8, 1), True, "Bank Transfer"),
+        (si["Somchai"], "2026-1", 85000, 0, 85000, "Paid", date(2026, 1, 5), True, "Bank Transfer"),
+        # Priya — paid via scholarship
+        (si["Priya"], "2025-2", 85000, 40000, 85000, "Paid", date(2025, 8, 10), True, "Sponsor"),
+        (si["Priya"], "2026-1", 85000, 40000, 85000, "Paid", date(2026, 1, 8), True, "Sponsor"),
+        # Lin — PhD fully funded
+        (si["Lin"], "2025-2", 95000, 95000, 95000, "Paid", date(2025, 8, 3), True, "Scholarship"),
+        (si["Lin"], "2026-1", 95000, 95000, 95000, "Paid", date(2026, 1, 2), True, "Scholarship"),
+        # Napat — UNPAID, no first installment
+        (si["Napat"], "2026-1", 72000, 0, 0, "Overdue", None, False, None),
+        # Ahmad — partial payment, first installment paid
+        (si["Ahmad"], "2026-1", 85000, 0, 42500, "Partial", date(2026, 1, 12), True, "Bank Transfer"),
+        # Mei — suspended, fees unpaid
+        (si["Mei"], "2026-1", 85000, 0, 0, "Overdue", None, False, None),
+        # Yuki — fully paid
+        (si["Yuki"], "2025-2", 85000, 0, 85000, "Paid", date(2025, 8, 5), True, "Bank Transfer"),
+        (si["Yuki"], "2026-1", 85000, 0, 85000, "Paid", date(2026, 1, 6), True, "Bank Transfer"),
+        # Carlos — PhD fully funded
+        (si["Carlos"], "2025-2", 95000, 95000, 95000, "Paid", date(2025, 8, 3), True, "Scholarship"),
+        (si["Carlos"], "2026-1", 95000, 95000, 95000, "Paid", date(2026, 1, 4), True, "Scholarship"),
+        # Fatima — paid
+        (si["Fatima"], "2026-1", 85000, 0, 85000, "Paid", date(2026, 1, 7), True, "Bank Transfer"),
+        # Jirawat — paid
+        (si["Jirawat"], "2026-1", 85000, 0, 85000, "Paid", date(2026, 1, 9), True, "Bank Transfer"),
+        # Anna — partial, first installment paid
+        (si["Anna"], "2026-1", 85000, 0, 30000, "Partial", date(2026, 1, 14), True, "Bank Transfer"),
+        # Ravi — graduated, all cleared
+        (si["Ravi"], "2025-2", 85000, 0, 85000, "Paid", date(2025, 7, 20), True, "Bank Transfer"),
     ]
 
     with conn.cursor() as cur:
@@ -156,30 +184,52 @@ def _seed_fee_records(conn, student_ids: dict) -> None:
     print(f"  -> fee_records: {len(records)} records")
 
 
-def _seed_accommodations(conn, student_ids: dict) -> None:
+def _seed_accommodations(conn, si: dict) -> None:
     """Insert accommodation records."""
+    # (student_id, building, room, type, check_in, check_out, rent,
+    #  deposit, rent_current, with_spouse, waiting_list, arrival_date,
+    #  room_clean, common_clean, unit_hygiene, confirmed, vacated)
     records = [
-        # Somchai - good resident
-        (student_ids["Somchai"], "AIT Dormitory Block A", "A-204", "Single",
-         date(2025, 8, 18), None, 4500.00,
+        # Somchai — good resident
+        (si["Somchai"], "Dormitory Block A", "A-204", "Single",
+         date(2025, 8, 18), None, 4500,
          True, True, False, False, True, True, True, True, True, True),
-
-        # Priya - disruptive dorm resident (cooking, noise, pet)
-        (student_ids["Priya"], "AIT Dormitory Block C", "C-112", "Double",
-         date(2025, 8, 20), None, 3500.00,
-         True, True, False, False, True,
-         False, False, False,  # room_clean=F, common_area_clean=F, unit_hygiene=F
-         True, True),
-
-        # Lin - PhD with spouse, family housing
-        (student_ids["Lin"], "AIT Family Housing", "FH-08", "Family",
-         date(2024, 1, 20), None, 7500.00,
+        # Priya — dirty room, dirty common area
+        (si["Priya"], "Dormitory Block C", "C-112", "Double",
+         date(2025, 8, 20), None, 3500,
+         True, True, False, False, True, False, False, False, True, True),
+        # Lin — family housing with spouse
+        (si["Lin"], "Family Housing", "FH-08", "Family",
+         date(2024, 1, 20), None, 7500,
          True, True, True, False, True, True, True, True, True, True),
-
-        # Ahmad - new student, on waiting list
-        (student_ids["Ahmad"], "AIT Dormitory Block B", "B-301", "Single",
-         date(2026, 1, 15), None, 4500.00,
+        # Ahmad — waiting list, no deposit
+        (si["Ahmad"], "Dormitory Block B", "B-301", "Single",
+         date(2026, 1, 15), None, 4500,
          False, True, False, True, True, True, True, True, False, True),
+        # Yuki — good resident
+        (si["Yuki"], "Dormitory Block A", "A-310", "Single",
+         date(2025, 8, 18), None, 4500,
+         True, True, False, False, True, True, True, True, True, True),
+        # Carlos — family housing
+        (si["Carlos"], "Family Housing", "FH-12", "Family",
+         date(2024, 8, 20), None, 7500,
+         True, True, True, False, True, True, True, True, True, True),
+        # Fatima — room NOT clean, common area NOT clean
+        (si["Fatima"], "Dormitory Block B", "B-205", "Single",
+         date(2025, 8, 18), None, 4500,
+         True, True, False, False, True, False, False, False, True, True),
+        # Jirawat — clean room
+        (si["Jirawat"], "Dormitory Block C", "C-305", "Single",
+         date(2025, 8, 18), None, 4500,
+         True, True, False, False, True, True, True, True, True, True),
+        # Anna — clean room
+        (si["Anna"], "Dormitory Block B", "B-108", "Double",
+         date(2026, 1, 18), None, 3500,
+         True, True, False, False, True, True, True, True, True, True),
+        # Ravi — graduated, NOT vacated on time
+        (si["Ravi"], "Dormitory Block A", "A-102", "Single",
+         date(2024, 1, 18), None, 4500,
+         True, True, False, False, True, True, True, True, True, False),
     ]
 
     with conn.cursor() as cur:
@@ -199,24 +249,35 @@ def _seed_accommodations(conn, student_ids: dict) -> None:
     print(f"  -> accommodations: {len(records)} records")
 
 
-def _seed_conduct_records(conn, student_ids: dict) -> None:
-    """Insert conduct violation records for problematic students."""
+def _seed_conduct_records(conn, si: dict) -> None:
+    """Insert conduct violation incident records."""
     records = [
-        # Priya - multiple dorm violations
-        (student_ids["Priya"], "Cooking",
+        # Priya — 3 incidents
+        (si["Priya"], "Cooking",
          "Caught using electric cooker in dorm room C-112. Category-1 dorms prohibit cooking.",
          date(2025, 10, 15), "Open", "Dorm Manager"),
-        (student_ids["Priya"], "Noise",
+        (si["Priya"], "Noise",
          "Multiple complaints from neighbors about loud group study sessions after 22:00.",
          date(2025, 11, 2), "Open", "Resident Advisor"),
-        (student_ids["Priya"], "Pet",
+        (si["Priya"], "Pet",
          "Unauthorized cat found in room during routine inspection.",
          date(2025, 12, 8), "Escalated", "Dorm Manager"),
-
-        # Mei - academic misconduct
-        (student_ids["Mei"], "Cheating",
+        # Mei — academic misconduct
+        (si["Mei"], "Cheating",
          "Plagiarism detected in final project submission for DSAI-601.",
          date(2026, 1, 5), "Escalated", "Dr. Amara Chen"),
+        # Yuki — noise disturbance
+        (si["Yuki"], "Noise",
+         "Repeated loud music and group activity in room A-310 past 23:00.",
+         date(2026, 2, 14), "Open", "Resident Advisor"),
+        # Jirawat — pet
+        (si["Jirawat"], "Pet",
+         "Small dog found during building inspection. Student notified.",
+         date(2026, 3, 1), "Open", "Dorm Manager"),
+        # Anna — cooking
+        (si["Anna"], "Cooking",
+         "Hot plate discovered during fire safety check in B-108.",
+         date(2026, 2, 20), "Open", "Safety Officer"),
     ]
 
     with conn.cursor() as cur:
@@ -231,35 +292,23 @@ def _seed_conduct_records(conn, student_ids: dict) -> None:
     print(f"  -> conduct_records: {len(records)} records")
 
 
-def _seed_student_conduct(conn, student_ids: dict) -> None:
+def _seed_student_conduct(conn, si: dict) -> None:
     """Insert behavioral conduct flags for each student."""
+    # (student_id, ethical, peaceful, library, IT, concerns,
+    #  cooking, noisy, pet, disturbing)
     records = [
-        # (student_id, ethical, peaceful, library, IT, concerns,
-        #  cooking, noisy, pet, disturbing)
-
-        # Somchai - model student
-        (student_ids["Somchai"], True, True, True, True, True,
-         False, False, False, False),
-
-        # Napat - good conduct, just can't pay fees
-        (student_ids["Napat"], True, True, True, True, True,
-         False, False, False, False),
-
-        # Priya - dorm violations
-        (student_ids["Priya"], True, True, True, True, True,
-         True, True, True, True),    # cooking, noisy, pet, disturbing
-
-        # Lin - model PhD student
-        (student_ids["Lin"], True, True, True, True, True,
-         False, False, False, False),
-
-        # Ahmad - new, good conduct
-        (student_ids["Ahmad"], True, True, True, True, True,
-         False, False, False, False),
-
-        # Mei - suspended, ethical issues
-        (student_ids["Mei"], False, True, True, True, False,
-         False, False, False, False),
+        (si["Somchai"], True, True, True, True, True, False, False, False, False),
+        (si["Priya"],   True, True, True, True, True, True, True, True, True),
+        (si["Lin"],     True, True, True, True, True, False, False, False, False),
+        (si["Napat"],   True, True, True, True, True, False, False, False, False),
+        (si["Ahmad"],   True, True, True, True, True, False, False, False, False),
+        (si["Mei"],     False, True, True, True, False, False, False, False, False),
+        (si["Yuki"],    True, True, True, True, True, False, False, False, True),
+        (si["Carlos"],  True, True, True, True, True, False, False, False, False),
+        (si["Fatima"],  True, True, True, True, True, False, False, False, False),
+        (si["Jirawat"], True, True, True, True, True, False, False, True, False),
+        (si["Anna"],    True, True, True, True, True, True, False, False, False),
+        (si["Ravi"],    True, True, True, True, True, False, False, False, False),
     ]
 
     with conn.cursor() as cur:
@@ -278,16 +327,22 @@ def _seed_student_conduct(conn, student_ids: dict) -> None:
     print(f"  -> student_conduct: {len(records)} records")
 
 
-def _seed_academic_records(conn, student_ids: dict) -> None:
+def _seed_academic_records(conn, si: dict) -> None:
     """Insert academic/publication records."""
+    # (student_id, registered, grade_det, makeup, corresponding, journal, first_author)
     records = [
-        # (student_id, registered, grade_det, makeup, corresponding, journal, first_author)
-        (student_ids["Somchai"], True, True, True, True, True, True),
-        (student_ids["Napat"], True, True, True, False, False, False),
-        (student_ids["Priya"], True, True, True, True, True, True),
-        (student_ids["Lin"], True, True, True, True, True, True),
-        (student_ids["Ahmad"], True, True, True, False, False, False),
-        (student_ids["Mei"], False, True, True, False, False, False),
+        (si["Somchai"], True, True, True, True, True, True),
+        (si["Priya"],   True, True, True, True, True, True),
+        (si["Lin"],     True, True, True, True, True, True),
+        (si["Napat"],   True, True, True, False, False, False),
+        (si["Ahmad"],   True, True, True, False, False, False),
+        (si["Mei"],     False, True, True, False, False, False),
+        (si["Yuki"],    True, True, True, False, False, False),
+        (si["Carlos"],  True, True, True, True, True, True),
+        (si["Fatima"],  True, True, True, False, False, False),
+        (si["Jirawat"], True, True, True, False, False, False),
+        (si["Anna"],    True, True, True, False, False, False),
+        (si["Ravi"],    True, True, True, True, True, True),
     ]
 
     with conn.cursor() as cur:
@@ -309,19 +364,20 @@ def _seed_academic_records(conn, student_ids: dict) -> None:
 def _seed_faculty(conn) -> None:
     """Insert faculty members."""
     faculty = [
-        # (faculty_id, title, first, last, email, department, position,
+        # (faculty_id, title, first, last, email, dept, position,
         #  grading_pub, disciplinary, discloses, reports_cheating)
         ("FAC-001", "Dr.", "Kenji", "Tanaka", "kenji.t@ait.ac.th",
          "Computer Science and Information Management", "Associate Professor",
          True, True, True, True),
-
         ("FAC-002", "Dr.", "Amara", "Chen", "amara.c@ait.ac.th",
          "Data Science and Artificial Intelligence", "Assistant Professor",
          True, True, True, True),
-
         ("FAC-003", "Prof.", "Rajesh", "Kumar", "rajesh.k@ait.ac.th",
          "Environmental Engineering and Management", "Professor",
-         False, True, True, False),   # hasn't published grading criteria
+         False, True, True, False),  # no grading criteria, doesn't report cheating
+        ("FAC-004", "Dr.", "Siti", "Rahman", "siti.r@ait.ac.th",
+         "Food Engineering and Bioprocess Technology", "Associate Professor",
+         True, False, False, True),  # no disciplinary, doesn't disclose conflicts
     ]
 
     with conn.cursor() as cur:
@@ -342,15 +398,17 @@ def _seed_faculty(conn) -> None:
 def _seed_staff(conn) -> None:
     """Insert administrative staff."""
     staff_records = [
-        # (staff_id, first, last, email, department, role,
-        #  gifts_reported, settlements_reported, fees_managed, ethical_auth)
+        # (staff_id, first, last, email, dept, role,
+        #  gifts, settlements, fees, ethical_auth)
         ("STF-001", "Maria", "Santos", "maria.s@ait.ac.th",
          "Office of Student Affairs", "Administrative Officer",
-         False, False, True, True),    # unreported gift
-
+         False, False, True, True),  # unreported gifts & settlements
         ("STF-002", "David", "Park", "david.p@ait.ac.th",
          "Finance Department", "Accounts Manager",
-         True, True, True, True),
+         True, True, True, True),    # fully compliant
+        ("STF-003", "Tom", "Wilson", "tom.w@ait.ac.th",
+         "Human Resources", "HR Manager",
+         True, True, True, False),   # ethical authority misuse
     ]
 
     with conn.cursor() as cur:
@@ -371,12 +429,12 @@ def _seed_staff(conn) -> None:
 def _seed_committees(conn) -> None:
     """Insert institutional committees."""
     committees = [
-        # (name, type, chair_elected, active, grievances, confidential, records, tribunals)
         ("AIT Grievance and Ethics Committee", "Grievance",
          True, True, True, True, True, True),
-
         ("Academic Standards Committee", "Academic",
          True, True, False, True, True, False),
+        ("Student Welfare Board", "Welfare",
+         False, True, False, True, True, False),  # no chair elected
     ]
 
     with conn.cursor() as cur:
@@ -415,6 +473,10 @@ def seed(reset: bool = False) -> None:
         print(f"\n[seed] [OK] Database seeded with realistic AIT demo data")
 
 
-if __name__ == "__main__":
+def main() -> None:
     reset_flag = "--reset" in sys.argv
     seed(reset=reset_flag)
+
+
+if __name__ == "__main__":
+    main()
