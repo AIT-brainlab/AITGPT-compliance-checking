@@ -11,7 +11,7 @@ app = FastAPI(title="PolicyChecker Compliance Dashboard", version="2.0.0")
 
 
 # ── Data paths ────────────────────────────────────────────────────────────
-POLICY_DIR = PROJECT_ROOT / "data" / "institutional_policy" / "ait"
+POLICY_DIR = PROJECT_ROOT / "data" / "institutional_policy" / "AIT"
 
 def find_policy():
     pdf_files = list(POLICY_DIR.glob("*.pdf"))

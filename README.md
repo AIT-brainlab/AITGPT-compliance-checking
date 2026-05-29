@@ -14,9 +14,7 @@ policy rules from PDF documents into validatable SHACL shapes.
 3. [Local Environment Setup](#3-local-environment-setup)
 4. [Dev Container Setup](#4-dev-container-setup)
 5. [Running the Pipeline](#5-running-the-pipeline)
-6. [Compliance Dashboard (Web UI)](#6-compliance-dashboard-web-ui)
-7. [Running Evaluation](#7-running-evaluation)
-8. [API Deployment](#8-api-deployment)
+6. [API Deployment](#6-api-deployment)
 
 ---
 
@@ -25,24 +23,19 @@ policy rules from PDF documents into validatable SHACL shapes.
 ```
 .
 ├── config/                                 # Corpus configuration files (one per domain)
-│   ├── ait.yaml                            # AIT corpus — paths, FOL examples, target classes
-│   └── gdpr.yaml                           # GDPR corpus — portability experiment
+│   └── ait.yaml                            # AIT corpus — paths, FOL examples, target classes
 │
 ├── data/                                   # All data files — input, reference, output
 │   ├── institutional_policy/
 │   │   └── AIT/                            # Source policy PDFs (pipeline input)
-│   │       ├── AA-4-1-1 Academic Integrity...pdf
-│   │       ├── FB-6-1-1 Credit Policy...pdf
-│   │       ├── FS-1-1-1 Campus Accommodation...pdf
-│   │       ├── PA-2-1-2 Ethical Behavior...pdf
 │   │       └── Student-Handbook_August-2021.pdf
 │   ├── shacl/
 │   │   ├── ontology/
 │   │   │   └── ait_policy_ontology.ttl     # AIT domain ontology (vocabulary definitions)
 │   │   ├── shapes/
-│   │   │   └── ait_policy_shapes.ttl       # 96 gold-standard SHACL shapes (hand-curated)
-│   │   └── test_data/
-│   │       └── tdd_test_data_fixed.ttl     # TDD test entities (Pos/Neg per rule)
+│   │   │   └── ait_policy_shapes.ttl       # 96 gold-standard SHACL shapes
+│   │   ├── test_data/
+│   │   │   └── tdd_test_data_fixed.ttl.ttl     # AIT domain ontology (vocabulary (hand-curated)
 │   ├── cache/                              # LLM response cache — gitignored
 │   │   └── llm_cache.db
 │   └── output/                             # Pipeline run artifacts — gitignored
@@ -66,10 +59,6 @@ policy rules from PDF documents into validatable SHACL shapes.
 │       │   ├── connection.py               # PostgreSQL connection handler
 │       │   ├── rdf_converter.py            # SQL rows → RDF triples (data graph)
 │       │   └── seed.py                     # Seed test student records
-│       ├── evaluation/
-│       │   ├── align.py                    # M1: pipeline vs gold-standard alignment
-│       │   ├── per_rule_eval.py            # M4: per-rule pyshacl correctness
-│       │   └── report.py                   # M1–M5 thesis metrics aggregator
 │       ├── langgraph_agent/                # LangGraph agent (pipeline orchestrator)
 │       │   ├── state.py                    # Shared PipelineState (TypedDict)
 │       │   ├── graph.py                    # Pipeline graph assembly (StateGraph)
@@ -90,18 +79,11 @@ policy rules from PDF documents into validatable SHACL shapes.
 │       │       ├── direct_shacl.py         # Step 4b: NL → SHACL fallback
 │       │       ├── validate.py             # Step 5: pyshacl validation
 │       │       └── report.py               # Step 6: structured report
-│       └── web/
-│           ├── app.py                      # FastAPI compliance dashboard (port 8000)
-│           └── frontend/                   # React/Vite dashboard UI
-│               ├── src/                    # Frontend source
-│               ├── dist/                   # Built assets (served by FastAPI)
-│               └── package.json
-│
+│       └── api/
+│           └── policy_checker.py           # API call (port 8000)
 ├── .gitignore                              # Files that git should never track
 ├── .gitattributes                          # Enforce LF line endings for shell scripts across all OS
 ├── dev-setup.sh                            # One-time setup script
-├── docker-compose.yml                      # Dev + PostgreSQL services
-├── dockerfile                              # Dev container image
 ├── pyproject.toml                          # Project config + dependencies
 ├── uv.lock                                 # Pinned dependency versions
 ├── .env                                    # Local secrets — never committed
@@ -165,16 +147,6 @@ cd compliance-checking
 
 ```bash
 cp .env.example .env
-```
-
-Open `.env` and set these minimum required values:
-
-```bash
-OLLAMA_HOST=http://localhost:11434    # local Ollama
-OLLAMA_MODEL=mistral                  # must match what you pulled
-OLLAMA_SEED=42                        # fixed seed for reproducibility
-PIPELINE_VERSION=2.1-hints            # bump to invalidate LLM cache after prompt changes
-POSTGRES_HOST=localhost               # local PostgreSQL (optional)
 ```
 
 ### Step 3 — Install and start Ollama
@@ -286,6 +258,8 @@ This will:
 ### Step 6 — Run the pipeline
 
 ```bash
+policy-checker
+#or
 uv run policy-checker --source ait --verbose
 ```
 
@@ -310,6 +284,8 @@ uv run policy-checker --source ait --verbose
 ### Basic run
 
 ```bash
+policy-checker
+#or
 uv run policy-checker --source ait
 ```
 
@@ -317,39 +293,6 @@ uv run policy-checker --source ait
 
 ```bash
 uv run policy-checker --source ait --verbose
-```
-
-### Ablation studies
-
-Run these to measure the contribution of individual pipeline components
-(used for thesis experiments):
-
-```bash
-uv run policy-checker --source ait --ablation no-hints
-uv run policy-checker --source ait --ablation no-prefilter
-uv run policy-checker --source ait --ablation no-reclassify
-uv run policy-checker --source ait --ablation no-fallback
-uv run policy-checker --source ait --ablation no-fol-retry
-uv run policy-checker --source ait --ablation no-may-disambig
-```
-
-| Flag | What it disables |
-|---|---|
-| `no-prefilter` | Skips heuristic filter — all sentences go to classifier |
-| `no-hints` | Strips prefilter hints from classifier prompt |
-| `no-reclassify` | Skips second-opinion pass for uncertain rules |
-| `no-fallback` | Skips direct NL→SHACL fallback (Step 4b) |
-| `no-fol-retry` | Disables placeholder rejection retry in FOL step |
-| `no-may-disambig` | Skips epistemic "may" disambiguation |
-
-Output is isolated to `data/output/ait_<ablation>/` for side-by-side comparison.
-
-### Corpus switching
-
-The pipeline supports multiple corpora via `config/<corpus>.yaml`. To run on a different corpus:
-
-```bash
-uv run policy-checker --source gdpr --verbose
 ```
 
 Each YAML file specifies PDF paths, ontology, gold shapes, FOL examples, and domain vocabulary.
@@ -382,10 +325,10 @@ Environment:
 ### Ollama management
 
 ```bash
-uv run policy-ollama ollama-load        # pull the model specified in .env
-uv run policy-ollama ollama-list        # list locally available models
-uv run policy-ollama ollama-host        # print the configured OLLAMA_HOST
-uv run policy-ollama chat <model>       # interactive chat with a model
+policy-ollama load        # pull the model specified in .env
+policy-ollama list        # list locally available models
+policy-ollama host        # print the configured OLLAMA_HOST
+policy-ollama chat <model>       # interactive chat with a model
 ```
 
 ### MCP server (optional)
@@ -400,104 +343,11 @@ Available tools: `verify_rule`, `check_status`, `list_rules`, `get_metrics`, `ru
 
 ---
 
-## 6. Compliance Dashboard (Web UI)
-
-An interactive web dashboard for browsing pipeline results and running live
-SHACL validation against custom RDF data. The frontend is a React/Vite app
-served by the FastAPI backend.
-
-> **Important:** Run the pipeline at least once before starting the dashboard.
-> The dashboard reads from `data/output/ait/` which is populated by the pipeline.
-
-### Build the frontend (first time / after frontend changes)
-
-```bash
-uv run policy-build
-```
-
-### Start the dashboard
-
-```bash
-uv run policy-web
-```
-
-Then open [http://localhost:8000](http://localhost:8000) in your browser.
-
-Alternatively, start with auto-reload for backend development:
-
-```bash
-uv run python -m uvicorn policy_checker.web.app:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### Dashboard features
-
-| Feature | Description |
-|---|---|
-| **Pipeline Stats** | Summary of extraction, classification, and shape generation metrics from the latest run |
-| **Rule Browser** | Browse and search all classified rules — filter by type (obligation / permission / prohibition) |
-| **Rule Detail** | Click any rule to see its original text, FOL formula, and generated SHACL shape side by side |
-| **Compliance Check** | Paste RDF data in Turtle format and run live pyshacl validation against pipeline shapes |
-| **Violation Report** | Severity-coded violations showing affected entities, source shapes, and violation messages |
-
-### What the dashboard reads
-
-| Data source | Used for |
-|---|---|
-| `data/output/ait/pipeline_report.json` | Pipeline stats on the home page |
-| `data/output/ait/classified_rules.json` | Rule browser |
-| `data/output/ait/fol_formulas.json` | FOL formula in rule detail view |
-| `data/output/ait/shapes_generated.ttl` | SHACL shape in rule detail + live validation |
-| `data/shacl/test_data/tdd_test_data_fixed.ttl` | Sample RDF data for compliance check |
-| `data/shacl/ontology/ait_policy_ontology.ttl` | Domain ontology loaded during validation |
-
----
-
-## 7. Running Evaluation
-
-Run evaluation scripts **after** the pipeline completes to measure accuracy
-against the 96 gold-standard shapes in `data/shacl/shapes/ait_policy_shapes.ttl`.
-
-```bash
-# M1 — extraction coverage
-uv run python -m policy_checker.evaluation.align
-
-# M4 — per-rule shape correctness
-uv run python -m policy_checker.evaluation.per_rule_eval
-
-# M1–M5 — full thesis metrics summary
-uv run python -m policy_checker.evaluation.report
-
-# Markdown table (for thesis document)
-uv run python -m policy_checker.evaluation.report --md
-
-# Save results to JSON
-uv run python -m policy_checker.evaluation.report --save
-```
-
-### Metrics reference
-
-| Metric | Definition |
-|---|---|
-| M1 | Extraction coverage — gold rules with an aligned pipeline rule (cosine ≥ 0.65) |
-| M2 | Classification accuracy — correct deontic type (O/P/F) assignment |
-| M3 | FOL quality — formulas with semantic (non-placeholder) predicates |
-| M4 | Shape correctness — per-rule precision/recall against Pos/Neg test entities |
-| M5 | Reproducibility — identical output across clean-cache runs with fixed seed |
-
-### Evaluation output files
-
-| File | Written by | Contents |
-|---|---|---|
-| `data/output/ait/gold_alignment.json` | `align.py` | M1 alignment results — matched, missed, false positives |
-| `data/output/ait/per_rule_eval.json` | `per_rule_eval.py` | M4 per-rule verdicts (PASS/FAIL, too_strict/too_permissive) |
-| `data/output/ait/thesis_metrics.json` | `report.py --save` | M1–M5 summary for thesis |
-
----
-
-## 8. API Deployment
+## 6. API Deployment
 
 Status — In Development
 
+Goal
 PolicyChecker exposes a REST API for integration with the AITGPT platform.
 
 When a user logs into AITGPT, the platform calls PolicyChecker to check
@@ -526,11 +376,14 @@ User clicks → sees broken rules
 
 | Endpoint | Method | Description |
 |---|---|---|
-| `/api/validate` | POST | Validate RDF Turtle data against SHACL shapes — returns violations |
-| `/api/run-pipeline` | POST | Trigger a pipeline run from the API |
-| `/api/rules` | GET | List all classified rules with filtering and pagination |
-| `/api/rules/{rule_id}` | GET | Get single rule with FOL formula and SHACL shape |
-| `/api/stats` | GET | Pipeline summary statistics |
-| `/api/db-status` | GET | Check PostgreSQL connection and entity count |
-| `/api/db-entities` | GET | List all entities in database |
-| `/api/load-from-db` | POST | Convert database entities to RDF Turtle |
+| `/api/policy` | GET | Return policy path |
+| `/api/policy` | POST | Replace policy file and change its path |
+| `/api/policy` | DELETE | Delete current policy file |
+
+### Build the backend
+
+```bash
+policy-api
+```
+
+Then to check the endpoint open swagger through [http://localhost:8000/docs]
