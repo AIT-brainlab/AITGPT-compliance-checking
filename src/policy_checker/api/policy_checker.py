@@ -15,7 +15,9 @@ POLICY_DIR = PROJECT_ROOT / "data" / "institutional_policy" / "ait"
 
 def find_policy():
     pdf_files = list(POLICY_DIR.glob("*.pdf"))
-    return pdf_files[0] if pdf_files else None
+    if pdf_files:
+        return pdf_files[0]
+    return None
 
 @app.get("/api/policy")
 async def get_policy():
