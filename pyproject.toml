@@ -17,9 +17,10 @@ dependencies = [
     "langchain-core>=0.3.0",
     # LLM HTTP calls (mcp_server.py, report_node.py)
     "requests>=2.31.0",
-    # PDF processing (extract.py)
+    # PDF processing (extract.py, policy_checker.py)
     "pdfplumber>=0.10.0",
     "pymupdf>=1.23.0",
+    "pypdf>=4.0.0",
     # RDF / SHACL (shacl.py, validate.py, align.py)
     "rdflib>=7.0.0",
     "pyshacl>=0.25.0",
@@ -62,9 +63,7 @@ package = true   # team convention
 [project.scripts]
 policy-ollama    = "policy_checker.cli:cli"
 policy-checker   = "policy_checker.langgraph_agent.run:main"
-policy-web       = "policy_checker.web.app:main"
-policy-frontend  = "policy_checker.web.app:run_frontend"
-policy-build     = "policy_checker.web.app:build_frontend"
+policy-api       = "policy_checker.api.policy_checker:main"
 policy-seed      = "policy_checker.database.seed:main"
 policy-mcp       = "policy_checker.core.mcp_server:run_mcp_server"
 
