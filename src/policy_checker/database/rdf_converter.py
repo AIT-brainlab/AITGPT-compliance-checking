@@ -416,6 +416,210 @@ def convert_db_to_turtle(
         "property_count": prop_count,
     }
 
+def list_persons() -> list[dict]:
+    """Return all persons as {id, name, type} matching the Person mock object."""
+    from policy_checker.database.connection import get_connection
+
+    persons = []
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT student_id, first_name, last_name
+                FROM students ORDER BY student_id
+            """)
+            for student_id, first, last in cur.fetchall():
+                persons.append({
+                    "id": student_id,
+                    "name": f"{first} {last}",
+                    "type": "student",
+                })
+
+            cur.execute("""
+                SELECT faculty_id, title, first_name, last_name
+                FROM faculty ORDER BY id
+            """)
+            for faculty_id, title, first, last in cur.fetchall():
+                persons.append({
+                    "id": faculty_id,
+                    "name": f"{title} {first} {last}".strip(),
+                    "type": "faculty",
+                })
+
+            cur.execute("""
+                SELECT staff_id, first_name, last_name
+                FROM staff ORDER BY id
+            """)
+            for staff_id, first, last in cur.fetchall():
+                persons.append({
+                    "id": staff_id,
+                    "name": f"{first} {last}",
+                    "type": "staff",
+                })
+
+    return persons
+
+def list_fetch() -> list[dict]:
+    """Return all entities with every field used to build their RDF Turtle."""
+    from policy_checker.database.connection import get_connection
+
+    persons = []
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute("""
+                SELECT
+                    s.student_id, s.first_name, s.last_name,
+                    s.program, s.degree_level, s.enrollment_status,
+                    s.is_new_student, s.advisor,
+                    fr.payment_status, fr.first_installment_paid,
+                    fr.amount_paid, fr.tuition_amount,
+                    a.building, a.room_number, a.room_type,
+                    a.deposit_paid, a.rent_current, a.with_spouse,
+                    a.on_waiting_list, a.provided_arrival_date,
+                    a.room_clean, a.common_area_clean, a.unit_hygiene,
+                    a.confirmed_offer, a.vacated_on_time,
+                    sc.ethical_conduct, sc.peaceful_environment,
+                    sc.library_responsible_use, sc.it_acceptable_use,
+                    sc.brings_concerns_to_attention,
+                    sc.cooking_in_dorm, sc.noisy_in_dorm,
+                    sc.pet_in_dorm, sc.disturbing_residents,
+                    ar.registered_with_registry, ar.grade_determined_in_courses,
+                    ar.makeup_classes_scheduled,
+                    ar.serves_as_corresponding_author,
+                    ar.corresponds_with_journal,
+                    ar.first_author_in_multi_authored
+                FROM students s
+                LEFT JOIN LATERAL (
+                    SELECT payment_status, first_installment_paid,
+                           amount_paid, tuition_amount
+                    FROM fee_records f
+                    WHERE f.student_id = s.student_id
+                    ORDER BY f.semester DESC LIMIT 1
+                ) fr ON true
+                LEFT JOIN LATERAL (
+                    SELECT building, room_number, room_type,
+                           deposit_paid, rent_current, with_spouse,
+                           on_waiting_list, provided_arrival_date,
+                           room_clean, common_area_clean, unit_hygiene,
+                           confirmed_offer, vacated_on_time
+                    FROM accommodations ac
+                    WHERE ac.student_id = s.student_id
+                    ORDER BY ac.check_in_date DESC LIMIT 1
+                ) a ON true
+                LEFT JOIN student_conduct sc ON sc.student_id = s.student_id
+                LEFT JOIN academic_records ar ON ar.student_id = s.student_id
+                ORDER BY s.student_id
+            """)
+            for row in cur.fetchall():
+                (student_id, first, last, program, degree, status,
+                 is_new, advisor,
+                 pay_status, first_inst, amt_paid, tuition,
+                 building, room_number, room_type, deposit, rent_ok,
+                 with_spouse, waiting_list, arrival_date,
+                 room_clean, common_clean, unit_hygiene, confirmed, vacated,
+                 ethical, peaceful, library_use, it_use, concerns,
+                 cooking, noisy, pet, disturbing,
+                 registered, grade_det, makeup,
+                 corr_author, journal, first_auth) = row
+
+                persons.append({
+                    "id": student_id,
+                    "name": f"{first} {last}",
+                    "type": "student",
+                    "program": program,
+                    "degree_level": degree,
+                    "enrollment_status": status,
+                    "is_new_student": is_new,
+                    "advisor": advisor,
+                    "fee": {
+                        "payment_status": pay_status,
+                        "first_installment_paid": first_inst,
+                        "amount_paid": float(amt_paid) if amt_paid is not None else None,
+                        "tuition_amount": float(tuition) if tuition is not None else None,
+                    },
+                    "accommodation": None if building is None else {
+                        "building": building,
+                        "room_number": room_number,
+                        "room_type": room_type,
+                        "deposit_paid": deposit,
+                        "rent_current": rent_ok,
+                        "with_spouse": with_spouse,
+                        "on_waiting_list": waiting_list,
+                        "provided_arrival_date": arrival_date,
+                        "room_clean": room_clean,
+                        "common_area_clean": common_clean,
+                        "unit_hygiene": unit_hygiene,
+                        "confirmed_offer": confirmed,
+                        "vacated_on_time": vacated,
+                    },
+                    "conduct": {
+                        "ethical_conduct": ethical,
+                        "peaceful_environment": peaceful,
+                        "library_responsible_use": library_use,
+                        "it_acceptable_use": it_use,
+                        "brings_concerns_to_attention": concerns,
+                        "cooking_in_dorm": cooking,
+                        "noisy_in_dorm": noisy,
+                        "pet_in_dorm": pet,
+                        "disturbing_residents": disturbing,
+                    },
+                    "academic": {
+                        "registered_with_registry": registered,
+                        "grade_determined_in_courses": grade_det,
+                        "makeup_classes_scheduled": makeup,
+                        "serves_as_corresponding_author": corr_author,
+                        "corresponds_with_journal": journal,
+                        "first_author_in_multi_authored": first_auth,
+                    },
+                })
+
+            cur.execute("""
+                SELECT faculty_id, title, first_name, last_name,
+                       email, department, position,
+                       grading_criteria_published,
+                       follows_disciplinary_procedures,
+                       discloses_conflicts, reports_cheating_suspects
+                FROM faculty ORDER BY id
+            """)
+            for (faculty_id, title, first, last, email, dept, pos,
+                 grading, disciplinary, discloses, reports) in cur.fetchall():
+                persons.append({
+                    "id": faculty_id,
+                    "name": f"{title} {first} {last}".strip(),
+                    "type": "faculty",
+                    "title": title,
+                    "email": email,
+                    "department": dept,
+                    "position": pos,
+                    "grading_criteria_published": grading,
+                    "follows_disciplinary_procedures": disciplinary,
+                    "discloses_conflicts": discloses,
+                    "reports_cheating_suspects": reports,
+                })
+
+            cur.execute("""
+                SELECT staff_id, first_name, last_name,
+                       email, department, role,
+                       gifts_reported, settlements_reported,
+                       fees_managed_properly, ethical_authority_use
+                FROM staff ORDER BY id
+            """)
+            for (staff_id, first, last, email, dept, role,
+                 gifts, settlements, fees, ethical) in cur.fetchall():
+                persons.append({
+                    "id": staff_id,
+                    "name": f"{first} {last}",
+                    "type": "staff",
+                    "email": email,
+                    "department": dept,
+                    "role": role,
+                    "gifts_reported": gifts,
+                    "settlements_reported": settlements,
+                    "fees_managed_properly": fees,
+                    "ethical_authority_use": ethical,
+                })
+
+    return persons
 
 def list_entities() -> list[dict]:
     from policy_checker.database.connection import get_connection
