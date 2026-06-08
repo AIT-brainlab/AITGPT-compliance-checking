@@ -88,13 +88,16 @@ def run_shacl_on_turtle(turtle_str: str) -> dict:
         AIT.AIT_0029Shape,  # settled (Employee, min1)
     }
 
+    #student data
     data_graph = Graph()
     data_graph.parse(data=turtle_str, format="turtle")
 
+    #rules data
     shapes_graph = Graph()
     if SHAPES_FILE.exists():
         shapes_graph.parse(str(SHAPES_FILE), format="turtle")
 
+    # Remove all NodeShapes NOT in the curated set
     all_node_shapes = set(shapes_graph.subjects(RDF_TYPE, SH.NodeShape))
     for ns in all_node_shapes - _CURATED_SHAPES:
         for prop_shape in shapes_graph.objects(ns, SH.property):
@@ -103,6 +106,9 @@ def run_shacl_on_turtle(turtle_str: str) -> dict:
         for p, o in list(shapes_graph.predicate_objects(ns)):
             shapes_graph.remove((ns, p, o))
 
+    # Strip sh:datatype and sh:pattern from curated shapes to avoid
+    # false positives (we use presence/absence for compliance checking,
+    # not typed value validation)
     for ns in _CURATED_SHAPES:
         for prop_shape in shapes_graph.objects(ns, SH.property):
             for dt in list(shapes_graph.objects(prop_shape, SH.datatype)):
@@ -110,6 +116,7 @@ def run_shacl_on_turtle(turtle_str: str) -> dict:
             for pat in list(shapes_graph.objects(prop_shape, SH.pattern)):
                 shapes_graph.remove((prop_shape, SH.pattern, pat))
 
+    #validate
     _, results_graph, _ = validate(
         data_graph,
         shacl_graph=shapes_graph,
@@ -118,6 +125,7 @@ def run_shacl_on_turtle(turtle_str: str) -> dict:
         do_owl_imports=False,
     )
 
+    #parse violations
     violations_by_entity: dict = {}
     for result in results_graph.subjects(RDF_TYPE, SH.ValidationResult):
         focus_node    = str(results_graph.value(result, SH.focusNode)      or "")
@@ -290,20 +298,20 @@ async def get_persons():
     ]
 
 
-@app.post("/api/person/validate-by-name", response_model=Person)
+@app.post("/api/person/validate-by-name", response_model=bool)
 async def validate_by_name(body: ValidateByNameRequest):
     person = get_person_by_name(body.name)
     if not person:
         raise HTTPException(status_code=404, detail=f"Person '{body.name}' not found")
-    return validate_person(person)
+    return len(validate_person(person).not_conforms) == 0
 
 
-@app.post("/api/person/validate-by-id", response_model=Person)
+@app.post("/api/person/validate-by-id", response_model=bool)
 async def validate_by_id(body: ValidateByIdRequest):
     person = get_person_by_id(body.id)
     if not person:
         raise HTTPException(status_code=404, detail=f"Person with ID {body.id} not found")
-    return validate_person(person)
+    return len(validate_person(person).not_conforms) == 0
 
 
 @app.get("/api/person/turtle-by-id", response_class=PlainTextResponse)
