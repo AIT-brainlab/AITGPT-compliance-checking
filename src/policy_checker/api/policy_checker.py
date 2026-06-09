@@ -229,7 +229,7 @@ def validate_person(person: dict) -> Person:
     cached = _validation_cache.get(person["id"])
     if cached and cached[0] == turtle_hash:
         violations = cached[1]
-    else:
+    else: 
         violations_by_entity = run_shacl_on_turtle(result["turtle"])
         violations = violations_by_entity.get(person["id"], [])
         _validation_cache[person["id"]] = (turtle_hash, violations)
