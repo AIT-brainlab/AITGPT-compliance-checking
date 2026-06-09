@@ -55,12 +55,14 @@ def _b(val: bool) -> str:
 # STUDENT MAPPING
 # =============================================================================
 
-def _build_student_turtle(conn, student_id: Optional[str] = None) -> list[str]:
+def _build_student_turtle(conn, student_names: Optional[list[str]] = None) -> list[str]:
     """Query students + related tables and produce Turtle blocks."""
     with conn.cursor() as cur:
-        if student_id:
-            where = "WHERE s.student_id = %s"
-            params = [student_id]
+        # Build WHERE clause
+        if student_names:
+            placeholders = ",".join(["%s"] * len(student_names))
+            where = f"WHERE s.first_name IN ({placeholders})"
+            params = student_names
         else:
             where = ""
             params = []
@@ -123,8 +125,10 @@ def _build_student_turtle(conn, student_id: Optional[str] = None) -> list[str]:
          cooking, noisy, pet, disturbing,
          registered, grade_det, makeup, corr_author, journal, first_auth) = row
 
+        # Determine entity type
+        # entity_type = "Student"
         entity_type = "PostgraduateStudent" if degree == "PhD" else "Student"
-        entity_name = student_id
+        entity_name = first
 
         # Fee compliance
         is_enrolled = (status == "Active")
@@ -233,30 +237,23 @@ def _build_student_turtle(conn, student_id: Optional[str] = None) -> list[str]:
 # FACULTY MAPPING
 # =============================================================================
 
-def _build_faculty_turtle(conn, faculty_id: Optional[str] = None) -> list[str]:
+def _build_faculty_turtle(conn, entity_names: Optional[list[str]] = None) -> list[str]:
     with conn.cursor() as cur:
-        if faculty_id:
-            cur.execute("""
-                SELECT faculty_id, title, first_name, last_name, email,
-                       department, position,
-                       grading_criteria_published, follows_disciplinary_procedures,
-                       discloses_conflicts, reports_cheating_suspects
-                FROM faculty WHERE faculty_id = %s
-            """, [faculty_id])
-        else:
-            cur.execute("""
-                SELECT faculty_id, title, first_name, last_name, email,
-                       department, position,
-                       grading_criteria_published, follows_disciplinary_procedures,
-                       discloses_conflicts, reports_cheating_suspects
-                FROM faculty ORDER BY id
-            """)
+        cur.execute("""
+            SELECT faculty_id, title, first_name, last_name, email,
+                   department, position,
+                   grading_criteria_published, follows_disciplinary_procedures,
+                   discloses_conflicts, reports_cheating_suspects
+            FROM faculty ORDER BY id
+        """)
         rows = cur.fetchall()
 
     lines = []
     for (fid, title, first, last, email, dept, pos,
          grading, disciplinary, discloses, reports) in rows:
-        name = fid
+        name = f"{title}{first}{last}".replace(" ", "").replace(".", "")
+        if entity_names and name not in entity_names:
+            continue
         props = []
         if grading:
             props.append(("makeKnownCriteriaForGrading", "true"))
@@ -285,29 +282,22 @@ def _build_faculty_turtle(conn, faculty_id: Optional[str] = None) -> list[str]:
 # STAFF MAPPING
 # =============================================================================
 
-def _build_staff_turtle(conn, staff_id: Optional[str] = None) -> list[str]:
+def _build_staff_turtle(conn, entity_names: Optional[list[str]] = None) -> list[str]:
     with conn.cursor() as cur:
-        if staff_id:
-            cur.execute("""
-                SELECT staff_id, first_name, last_name, email,
-                       department, role,
-                       gifts_reported, settlements_reported,
-                       fees_managed_properly, ethical_authority_use
-                FROM staff WHERE staff_id = %s
-            """, [staff_id])
-        else:
-            cur.execute("""
-                SELECT staff_id, first_name, last_name, email,
-                       department, role,
-                       gifts_reported, settlements_reported,
-                       fees_managed_properly, ethical_authority_use
-                FROM staff ORDER BY id
-            """)
+        cur.execute("""
+            SELECT staff_id, first_name, last_name, email,
+                   department, role,
+                   gifts_reported, settlements_reported,
+                   fees_managed_properly, ethical_authority_use
+            FROM staff ORDER BY id
+        """)
         rows = cur.fetchall()
 
     lines = []
     for (sid, first, last, email, dept, role,
          gifts, settlements, fees, ethical) in rows:
+        if entity_names and first not in entity_names:
+            continue
         props = []
         if gifts:
             props.append(("reported", "true"))
@@ -323,7 +313,7 @@ def _build_staff_turtle(conn, staff_id: Optional[str] = None) -> list[str]:
         props.append(("undergoDisciplinaryAction", "true"))
         lines.append(f"# -- {first} {last} ({sid}) --")
         lines.append(f"# Department: {dept} | Role: {role}")
-        lines.append(f"ait:{sid} a ait:Employee ;")
+        lines.append(f"ait:{first} a ait:Employee ;")
         lines.append(f'    rdfs:label "{first} {last} - {role}" ;')
         for i, (pred, val) in enumerate(props):
             end = " ." if i == len(props) - 1 else " ;"
@@ -381,16 +371,15 @@ def _build_committee_turtle(conn, entity_names: Optional[list[str]] = None) -> l
 # =============================================================================
 
 def convert_db_to_turtle(
-        entity_id: Optional[str] = None,
-        entity_type: Optional[str] = None,
+        entity_names: Optional[list[str]] = None
     ) -> dict:
     """
-    Query entity tables from PostgreSQL and generate valid Turtle RDF.
+    Query all entity tables from PostgreSQL and generate valid Turtle RDF.
 
     Args:
-        entity_id:   Optional DB primary key to restrict output to one person.
-        entity_type: Required when entity_id is given — one of "Student",
-                     "Faculty", or "Employee".
+        entity_names: Optional list of entity names to include.
+                      Filters across ALL entity types (students, faculty,
+                      staff, committees). None or empty = include all.
 
     Returns:
         dict with: turtle, entity_count, property_count
@@ -398,20 +387,10 @@ def convert_db_to_turtle(
     from policy_checker.database.connection import get_connection
 
     with get_connection() as conn:
-        if entity_id and entity_type == "Student":
-            student_lines = _build_student_turtle(conn, entity_id)
-            faculty_lines, staff_lines, committee_lines = [], [], []
-        elif entity_id and entity_type == "Faculty":
-            faculty_lines = _build_faculty_turtle(conn, entity_id)
-            student_lines, staff_lines, committee_lines = [], [], []
-        elif entity_id and entity_type == "Employee":
-            staff_lines = _build_staff_turtle(conn, entity_id)
-            student_lines, faculty_lines, committee_lines = [], [], []
-        else:
-            student_lines = _build_student_turtle(conn)
-            faculty_lines = _build_faculty_turtle(conn)
-            staff_lines = _build_staff_turtle(conn)
-            committee_lines = _build_committee_turtle(conn)
+        student_lines = _build_student_turtle(conn, entity_names)
+        faculty_lines = _build_faculty_turtle(conn, entity_names)
+        staff_lines = _build_staff_turtle(conn, entity_names)
+        committee_lines = _build_committee_turtle(conn, entity_names)
 
     all_lines = [TURTLE_PREFIXES, "", HEADER]
     entity_count = 0
@@ -575,7 +554,8 @@ if __name__ == "__main__":
             if hasattr(stream, "reconfigure"):
                 stream.reconfigure(encoding="utf-8", errors="replace")
 
-    result = convert_db_to_turtle()
+    names = sys.argv[1:] if len(sys.argv) > 1 else None
+    result = convert_db_to_turtle(entity_names=names)
     print(result["turtle"])
     print(f"\n# Converted {result['entity_count']} entities, "
           f"{result['property_count']} properties", file=sys.stderr)

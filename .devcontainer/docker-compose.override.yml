@@ -3,17 +3,17 @@ services:
   # Use ollama in CPU mode
    ollama:
     image: ollama/ollama:latest
-  
+
   # Use ollama in GPU-Nvidia mode
   # ollama:
-  #  image: ollama/ollama:latest
-  # deploy:
+  # image: ollama/ollama:latest
+  #  deploy:
   #    resources:
   #      reservations:
   #        devices:
-  #          - driver: nvidia
+  #         - driver: nvidia
   #            count: 1
-  #            capabilities: [gpu]
+  #           capabilities: [gpu]
 
   # Use ollama in GPU-AMD mode
   # ollama:
