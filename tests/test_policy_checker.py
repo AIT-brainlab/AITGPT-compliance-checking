@@ -18,12 +18,12 @@ _PDF_HEADER = b"%PDF-1.4\n"
 # Shape returned by _get_all_persons / get_person_by_id / _get_person_by_name
 # (display name + turtle subject key + type).
 SAMPLE_PERSON_ROWS = [
-    {"id": "1", "name": "Anna Kowalski", "type": "Student", "key": "Anna"},
-    {"id": "2", "name": "Napat Srikhao", "type": "Student", "key": "Napat"},
+    {"id": "1", "name": "Anna Kowalski", "type": "Student"},
+    {"id": "2", "name": "Napat Srikhao", "type": "Student"},
 ]
 
 SAMPLE_VIOLATIONS = {
-    "Anna": [
+    "1": [
         {
             "rule_id": "AIT_0086Shape",
             "rule_text": "cookInProhibitedDormitory",
@@ -31,7 +31,7 @@ SAMPLE_VIOLATIONS = {
             "message": "Student must not cook in prohibited dormitory.",
         }
     ],
-    "Napat": [],
+    "2": [],
 }
 
 
@@ -196,11 +196,7 @@ class TestValidateByName:
             )
 
         assert resp.status_code == 200
-        data = resp.json()
-        assert data["id"] == "1"
-        assert data["name"] == "Anna Kowalski"
-        assert data["type"] == "Student"
-        assert data["not_conforms"] == []
+        assert resp.json() is True
 
     def test_unknown_name_returns_404(self):
         with patch(
@@ -231,7 +227,7 @@ class TestValidateByName:
             ),
             patch(
                 "policy_checker.api.policy_checker.run_shacl_on_turtle",
-                return_value={"Anna": []},
+                return_value={"student_1": []},
             ) as mock_shacl,
         ):
             resp = client.post(
@@ -262,11 +258,7 @@ class TestValidateById:
             )
 
         assert resp.status_code == 200
-        data = resp.json()
-        assert data["id"] == "2"
-        assert data["name"] == "Napat Srikhao"
-        assert data["type"] == "Student"
-        assert data["not_conforms"] == []
+        assert resp.json() is True
 
     def test_unknown_id_returns_404(self):
         with patch(
@@ -297,7 +289,7 @@ class TestValidateById:
             ),
             patch(
                 "policy_checker.api.policy_checker.run_shacl_on_turtle",
-                return_value={"Napat": []},
+                return_value={"student_2": []},
             ) as mock_shacl,
         ):
             resp = client.post(

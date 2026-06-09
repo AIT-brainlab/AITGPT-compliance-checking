@@ -6,6 +6,7 @@ from typing import List, Optional
 import uvicorn
 import pypdf
 import io
+import hashlib
 
 from policy_checker import PROJECT_ROOT
 
@@ -147,9 +148,9 @@ def run_shacl_on_turtle(turtle_str: str) -> dict:
 
 
 # ── DB helpers ────────────────────────────────────────────────────────────
+
 def get_all_persons() -> list:
-    """Return every person (students, faculty, staff) with the local name
-    used as their RDF subject, so SHACL violations can be matched back.
+    """Return every person (students, faculty, staff).
 
     Committees are excluded — they are organizational units, not persons.
     """
@@ -166,7 +167,6 @@ def get_all_persons() -> list:
                     "id": str(sid),
                     "name": f"{first} {last}",
                     "type": "Student",
-                    "key": first,
                 })
 
             cur.execute(
@@ -177,7 +177,6 @@ def get_all_persons() -> list:
                     "id": str(fid),
                     "name": f"{title} {first} {last}".strip(),
                     "type": "Faculty",
-                    "key": f"{title}{first}{last}".replace(" ", "").replace(".", ""),
                 })
 
             cur.execute(
@@ -188,7 +187,6 @@ def get_all_persons() -> list:
                     "id": str(sid),
                     "name": f"{first} {last}",
                     "type": "Employee",
-                    "key": first,
                 })
 
     return persons
@@ -216,12 +214,26 @@ def get_person_by_id(person_id) -> Optional[dict]:
     return None
 
 
+# Cache of SHACL results per person, keyed by person["id"].
+# Each entry is (turtle_hash, violations) — the SHACL run is skipped when the
+# turtle for that person hashes the same as last time, since pyshacl validation
+# is the expensive step while the DB fetch + turtle conversion is cheap.
+_validation_cache: dict = {}
+
+
 def validate_person(person: dict) -> Person:
     from policy_checker.database.rdf_converter import convert_db_to_turtle
 
-    result = convert_db_to_turtle(entity_names=[person["key"]])
-    violations_by_entity = run_shacl_on_turtle(result["turtle"])
-    violations = violations_by_entity.get(person["key"], [])
+    result = convert_db_to_turtle(entity_id=person["id"], entity_type=person["type"])
+    turtle_hash = hashlib.sha256(result["turtle"].encode("utf-8")).hexdigest()
+    cached = _validation_cache.get(person["id"])
+    if cached and cached[0] == turtle_hash:
+        violations = cached[1]
+    else:
+        violations_by_entity = run_shacl_on_turtle(result["turtle"])
+        violations = violations_by_entity.get(person["id"], [])
+        _validation_cache[person["id"]] = (turtle_hash, violations)
+
     return Person(
         id=person["id"],
         name=person["name"],
@@ -276,26 +288,10 @@ async def delete_policy():
 # ── Person endpoints ──────────────────────────────────────────────────────
 @app.get("/api/person", response_model=List[Person])
 async def get_persons():
-    from policy_checker.database.rdf_converter import convert_db_to_turtle
-
     all_persons = get_all_persons()
     if not all_persons:
         return []
-
-    result = convert_db_to_turtle()
-    violations_by_entity = run_shacl_on_turtle(result["turtle"])
-
-    return [
-        Person(
-            id=p["id"],
-            name=p["name"],
-            type=p["type"],
-            not_conforms=[
-                Conform(**v) for v in violations_by_entity.get(p["key"], [])
-            ],
-        )
-        for p in all_persons
-    ]
+    return [validate_person(p) for p in all_persons]
 
 
 @app.post("/api/person/validate-by-name", response_model=bool)
@@ -321,8 +317,14 @@ async def turtle_by_id(id: str):
     person = get_person_by_id(id)
     if not person:
         raise HTTPException(status_code=404, detail=f"Person with ID {id} not found")
-    result = convert_db_to_turtle(entity_names=[person["key"]])
+    result = convert_db_to_turtle(entity_id=person["id"], entity_type=person["type"])
     return result["turtle"]
+
+
+@app.get("/api/cache/validate")
+async def check_validation_cache():
+    global _validation_cache
+    return _validation_cache
 
 
 def main():

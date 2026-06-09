@@ -2,6 +2,12 @@
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def clear_validation_cache():
+    import policy_checker.api.policy_checker as m
+    m._validation_cache.clear()
+
+
 SAMPLE_RULES = [
     {
         "rule_id": "AIT_0001",
