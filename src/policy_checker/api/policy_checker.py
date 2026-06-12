@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import PlainTextResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from pydantic import BaseModel
 from typing import List, Optional
@@ -12,6 +13,13 @@ from policy_checker import PROJECT_ROOT
 
 app = FastAPI(title="PolicyChecker Compliance Dashboard", version="2.0.0")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ── Data paths ────────────────────────────────────────────────────────────
 POLICY_DIR = PROJECT_ROOT / "data" / "institutional_policy" / "AIT"
@@ -328,7 +336,7 @@ async def check_validation_cache():
 
 
 def main():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8005)
 
 
 if __name__ == "__main__":
